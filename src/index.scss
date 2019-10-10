@@ -9,5 +9,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin: 5px;
+
+  &__card {
+    width: 16em;
+    font-size: 13px;
+    margin: 5px;
+  }
 }
