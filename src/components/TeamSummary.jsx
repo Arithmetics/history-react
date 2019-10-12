@@ -3,9 +3,10 @@ import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
 
 function TeamSummary({ match }) {
-  const [fantasyTeam, setTeam] = useState([]);
+  const [fantasyTeam, setTeam] = useState({});
 
   useEffect(() => {
     const teamID = match.params.id;
@@ -13,7 +14,7 @@ function TeamSummary({ match }) {
       const result = await axios(
         `http://localhost:3001/fantasy_teams/${teamID}.json`
       );
-      setTeam((result && result.data && result.data.fantasyTeam) || []);
+      setTeam((result && result.data && result.data.fantasyTeam) || {});
     };
     fetchData();
   }, [match.params.id]);
@@ -65,8 +66,11 @@ function StartWeek({ startWeek }) {
 function Start({ start }) {
   return (
     <div>
-      <strong>{start.position}</strong>: {start.player && start.player.name} -{" "}
-      {start.points}
+      <strong>{start.position}</strong>:{" "}
+      <Link to={`/players/${start.player && start.player.id}`}>
+        {start.player && start.player.name}
+      </Link>
+      - {start.points}
     </div>
   );
 }

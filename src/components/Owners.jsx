@@ -40,7 +40,7 @@ function Owner({ owner }) {
       <Card style={{ width: "18rem" }}>
         <Card.Img
           variant="top"
-          src={require("./male-default-placeholder-avatar-profile-260nw-387516193.webp")}
+          src={require("../male-default-placeholder-avatar-profile-260nw-387516193.webp")}
         />
         <Card.Body>
           <Card.Title>{owner.name}</Card.Title>
