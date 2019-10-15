@@ -12,7 +12,7 @@ function PlayerSummary({ match }) {
     const playerID = match.params.id;
     const fetchData = async () => {
       const result = await axios(
-        `http://localhost:3001/players/${playerID}.json`
+        `http://localhost:8080/players/${playerID}.json`
       );
       setPlayer((result && result.data && result.data.player) || {});
     };

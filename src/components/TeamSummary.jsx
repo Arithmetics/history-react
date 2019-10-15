@@ -12,7 +12,7 @@ function TeamSummary({ match }) {
     const teamID = match.params.id;
     const fetchData = async () => {
       const result = await axios(
-        `http://localhost:3001/fantasy_teams/${teamID}.json`
+        `http://localhost:8080/fantasy_teams/${teamID}.json`
       );
       setTeam((result && result.data && result.data.fantasyTeam) || {});
     };

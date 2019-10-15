@@ -12,7 +12,7 @@ function Owners() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("http://localhost:3001/owners.json");
+      const result = await axios("http://localhost:8080/owners.json");
       setOwners((result && result.data && result.data.owners) || []);
     };
     fetchData();
@@ -35,6 +35,9 @@ function Owners() {
 }
 
 function Owner({ owner }) {
+  const { cumulativeStats = {} } = owner;
+  console.log(owner);
+  const { totalPoints, totalGames, totalWins, pointsPerGame } = cumulativeStats;
   return (
     <div>
       <Card style={{ width: "18rem" }}>
@@ -44,10 +47,12 @@ function Owner({ owner }) {
         />
         <Card.Body>
           <Card.Title>{owner.name}</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
+          <ul>
+            <li>Reg Season Points: {totalPoints}</li>
+            <li>Reg Season Games: {totalGames}</li>
+            <li>Reg Season Wins: {totalWins}</li>
+            <li>Reg Season Points/Game: {pointsPerGame}</li>
+          </ul>
         </Card.Body>
         <ListGroup className="list-group-flush">
           {owner.fantasyTeams &&
