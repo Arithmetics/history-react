@@ -6,13 +6,14 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import { Link } from "react-router-dom";
+import { config } from "../api";
 
 function Owners() {
   const [owners, setOwners] = useState([]);
-
+  console.log(config);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("http://localhost:8080/owners.json");
+      const result = await axios(`${config}/owners.json`);
       setOwners((result && result.data && result.data.owners) || []);
     };
     fetchData();

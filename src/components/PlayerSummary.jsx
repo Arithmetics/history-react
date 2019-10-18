@@ -4,6 +4,7 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
+import { config } from "../api";
 
 function PlayerSummary({ match }) {
   const [player, setPlayer] = useState({});
@@ -11,9 +12,7 @@ function PlayerSummary({ match }) {
   useEffect(() => {
     const playerID = match.params.id;
     const fetchData = async () => {
-      const result = await axios(
-        `http://localhost:8080/players/${playerID}.json`
-      );
+      const result = await axios(`${config}/players/${playerID}.json`);
       setPlayer((result && result.data && result.data.player) || {});
     };
     fetchData();
@@ -39,8 +38,8 @@ function PlayerSummary({ match }) {
             </tr>
           </thead>
           <tbody>
-            {fantasyStarts.map(start => (
-              <tr>
+            {fantasyStarts.map((start, i) => (
+              <tr key={i}>
                 <td>{start.year}</td>
                 <td>{start.week}</td>
                 <td>{start.position}</td>

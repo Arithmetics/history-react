@@ -4,6 +4,7 @@ import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
+import { config } from "../api";
 
 function TeamSummary({ match }) {
   const [fantasyTeam, setTeam] = useState({});
@@ -11,9 +12,7 @@ function TeamSummary({ match }) {
   useEffect(() => {
     const teamID = match.params.id;
     const fetchData = async () => {
-      const result = await axios(
-        `http://localhost:8080/fantasy_teams/${teamID}.json`
-      );
+      const result = await axios(`${config}/fantasy_teams/${teamID}.json`);
       setTeam((result && result.data && result.data.fantasyTeam) || {});
     };
     fetchData();
