@@ -10,7 +10,8 @@ import { config } from "../api";
 
 function Owners() {
   const [owners, setOwners] = useState([]);
-  console.log(config);
+  console.log("config", config);
+  console.log("env", process.env.NODE_ENV);
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/owners.json`);
