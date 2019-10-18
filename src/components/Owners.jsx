@@ -11,7 +11,7 @@ import { config } from "../api";
 function Owners() {
   const [owners, setOwners] = useState([]);
   console.log("config", config);
-  console.log("rails_api", process.env.RAILS_API);
+  console.log("rails_api", process.env["RAILS_API"]);
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/owners.json`);
