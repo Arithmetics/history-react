@@ -27,45 +27,49 @@ function Auctions() {
           <h1 className="header">Auctions</h1>
         </Jumbotron>
 
-        <Table striped bordered hover size="sm">
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>Player</th>
-              <th>Position</th>
-              <th>Owner</th>
-              <th>Team</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {auction.map((purchase, i) => (
-              <tr key={i}>
-                <td>{purchase.year}</td>
-                <td>
-                  <Link
-                    to={`/players/${purchase.player && purchase.player.id}`}
-                  >
-                    {purchase.player && purchase.player.name}
-                  </Link>
-                </td>
-                <td>{purchase.position}</td>
-                <td>{purchase.owner && purchase.owner.name}</td>
-                <td>
-                  <Link
-                    to={`/fantasyTeams/${purchase.fantasyTeam &&
-                      purchase.fantasyTeam.id}`}
-                  >
-                    {purchase.fantasyTeam && purchase.fantasyTeam.name}
-                  </Link>
-                </td>
-                <td>{purchase.price}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <AuctionTable auction={auction} />
       </Container>
     </div>
+  );
+}
+
+export function AuctionTable({ auction }) {
+  return (
+    <Table striped bordered hover size="sm">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Player</th>
+          <th>Position</th>
+          <th>Owner</th>
+          <th>Team</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {auction.map((purchase, i) => (
+          <tr key={i}>
+            <td>{purchase.year}</td>
+            <td>
+              <Link to={`/players/${purchase.player && purchase.player.id}`}>
+                {purchase.player && purchase.player.name}
+              </Link>
+            </td>
+            <td>{purchase.position}</td>
+            <td>{purchase.owner && purchase.owner.name}</td>
+            <td>
+              <Link
+                to={`/fantasyTeams/${purchase.fantasyTeam &&
+                  purchase.fantasyTeam.id}`}
+              >
+                {purchase.fantasyTeam && purchase.fantasyTeam.name}
+              </Link>
+            </td>
+            <td>{purchase.price}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
 }
 

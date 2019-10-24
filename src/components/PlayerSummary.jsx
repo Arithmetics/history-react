@@ -3,6 +3,7 @@ import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
+import { AuctionTable } from "./Auctions";
 import { Link } from "react-router-dom";
 import { config } from "../api";
 
@@ -20,12 +21,15 @@ function PlayerSummary({ match }) {
 
   const playerName = player && player.name;
   const fantasyStarts = (player && player.fantasyStarts) || [];
+  const auction = (player && player.purchases) || [];
+
   return (
     <div>
       <Container className="p-3">
         <Jumbotron>
           <h1 className="header">{playerName}</h1>
         </Jumbotron>
+        <AuctionTable auction={auction} />
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
