@@ -12,6 +12,8 @@ function Home() {
         </Jumbotron>
         <div>Home page</div>
         <Link to={`/owners`}>Owners</Link>
+        <br />
+        <Link to={`/auctions`}>Auctions</Link>
       </Container>
     </div>
   );
