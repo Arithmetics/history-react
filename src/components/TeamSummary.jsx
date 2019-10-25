@@ -3,6 +3,7 @@ import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import { AuctionTable } from "./Auctions";
 import { Link } from "react-router-dom";
 import { config } from "../api";
 
@@ -23,6 +24,8 @@ function TeamSummary({ match }) {
     (fantasyTeam && fantasyTeam.owner && fantasyTeam.owner.name) || "";
   const fantasyTeamName = (fantasyTeam && fantasyTeam.name) || "";
   const year = (fantasyTeam && fantasyTeam.year) || "";
+  const auction = (fantasyTeam && fantasyTeam.purchases) || [];
+
   return (
     <div>
       <Container className="p-3">
@@ -32,6 +35,7 @@ function TeamSummary({ match }) {
             {ownerName} - {year} - {fantasyTeamName}
           </h1>
         </Jumbotron>
+        <AuctionTable auction={auction} />
         <div className="startWeeks">
           {Object.keys(fantasyStartWeeks).map((startWeek, i) => (
             <div key={startWeek}>
