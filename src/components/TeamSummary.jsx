@@ -3,6 +3,7 @@ import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import Table from "react-bootstrap/Table";
 import { AuctionTable } from "./Auctions";
 import { Link } from "react-router-dom";
 import { config } from "../api";
@@ -25,6 +26,7 @@ function TeamSummary({ match }) {
   const fantasyTeamName = (fantasyTeam && fantasyTeam.name) || "";
   const year = (fantasyTeam && fantasyTeam.year) || "";
   const auction = (fantasyTeam && fantasyTeam.purchases) || [];
+  const fantasyGames = (fantasyTeam && fantasyTeam.fantasyGames) || [];
 
   return (
     <div>
@@ -36,6 +38,10 @@ function TeamSummary({ match }) {
           </h1>
         </Jumbotron>
         <AuctionTable auction={auction} />
+        <GameTable
+          fantasyGames={fantasyGames}
+          fantasyTeamName={fantasyTeamName}
+        />
         <div className="startWeeks">
           {Object.keys(fantasyStartWeeks).map((startWeek, i) => (
             <div key={startWeek}>
@@ -91,3 +97,58 @@ function weekTotal(startWeek) {
 }
 
 export default TeamSummary;
+
+function GameTable({ fantasyGames, fantasyTeamName }) {
+  return (
+    <Table striped bordered hover size="sm">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Home Team</th>
+          <th>Home Score</th>
+          <th>Away Score</th>
+          <th>Away Team</th>
+        </tr>
+      </thead>
+      <tbody>
+        {fantasyGames.map((game, i) => (
+          <tr
+            key={i}
+            className={
+              wonGame(fantasyTeamName, game) ? "table-success" : "table-danger"
+            }
+          >
+            <td>{game.week}</td>
+            <td>
+              <Link to={`/fantasyTeams/${game.awayTeam && game.awayTeam.id}`}>
+                {game.awayTeam && game.awayTeam.name}
+              </Link>
+            </td>
+            <td>{game.awayScore}</td>
+            <td>{game.homeScore}</td>
+            <td>
+              <Link to={`/fantasyTeams/${game.homeTeam && game.homeTeam.id}`}>
+                {game.homeTeam && game.homeTeam.name}
+              </Link>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+}
+
+function wonGame(teamName, game) {
+  if (teamName === (game.homeTeam && game.homeTeam.name)) {
+    if (game.homeScore > game.awayScore) {
+      return true;
+    }
+    return false;
+  } else if (teamName === (game.awayTeam && game.awayTeam.name)) {
+    if (game.awayScore > game.homeScore) {
+      return true;
+    }
+    return false;
+  }
+  return false;
+}
