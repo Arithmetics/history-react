@@ -27,6 +27,7 @@ function TeamSummary({ match }) {
   const year = (fantasyTeam && fantasyTeam.year) || "";
   const auction = (fantasyTeam && fantasyTeam.purchases) || [];
   const fantasyGames = (fantasyTeam && fantasyTeam.fantasyGames) || [];
+  const cuumulativeStats = (fantasyTeam && fantasyTeam.cuumulativeStats) || {};
 
   return (
     <div>
@@ -36,6 +37,10 @@ function TeamSummary({ match }) {
             {" "}
             {ownerName} - {year} - {fantasyTeamName}
           </h1>
+          <h2 className="header">
+            Wins: {cuumulativeStats.seasonWins}, Points:
+            {Math.round(cuumulativeStats.seasonPoints)}
+          </h2>
         </Jumbotron>
         <AuctionTable auction={auction} />
         <GameTable
