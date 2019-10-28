@@ -28,6 +28,8 @@ function TeamSummary({ match }) {
   const auction = (fantasyTeam && fantasyTeam.purchases) || [];
   const fantasyGames = (fantasyTeam && fantasyTeam.fantasyGames) || [];
   const cuumulativeStats = (fantasyTeam && fantasyTeam.cuumulativeStats) || {};
+  const regularSeasonGames = fantasyGames.filter(game => game.week < 14);
+  const playoffGames = fantasyGames.filter(game => game.week > 13);
 
   return (
     <div>
@@ -44,7 +46,13 @@ function TeamSummary({ match }) {
         </Jumbotron>
         <AuctionTable auction={auction} />
         <GameTable
-          fantasyGames={fantasyGames}
+          regularSeason={true}
+          fantasyGames={regularSeasonGames}
+          fantasyTeamName={fantasyTeamName}
+        />
+        <GameTable
+          regularSeason={false}
+          fantasyGames={playoffGames}
           fantasyTeamName={fantasyTeamName}
         />
         <div className="startWeeks">
@@ -103,43 +111,48 @@ function weekTotal(startWeek) {
 
 export default TeamSummary;
 
-function GameTable({ fantasyGames, fantasyTeamName }) {
+function GameTable({ regularSeason, fantasyGames, fantasyTeamName }) {
   return (
-    <Table striped bordered hover size="sm">
-      <thead>
-        <tr>
-          <th>Week</th>
-          <th>Home Team</th>
-          <th>Home Score</th>
-          <th>Away Score</th>
-          <th>Away Team</th>
-        </tr>
-      </thead>
-      <tbody>
-        {fantasyGames.map((game, i) => (
-          <tr
-            key={i}
-            className={
-              wonGame(fantasyTeamName, game) ? "table-success" : "table-danger"
-            }
-          >
-            <td>{game.week}</td>
-            <td>
-              <Link to={`/fantasyTeams/${game.awayTeam && game.awayTeam.id}`}>
-                {game.awayTeam && game.awayTeam.name}
-              </Link>
-            </td>
-            <td>{game.awayScore}</td>
-            <td>{game.homeScore}</td>
-            <td>
-              <Link to={`/fantasyTeams/${game.homeTeam && game.homeTeam.id}`}>
-                {game.homeTeam && game.homeTeam.name}
-              </Link>
-            </td>
+    <>
+      <h3>{regularSeason ? "Regular Season" : "Playoffs"}</h3>
+      <Table striped bordered hover size="sm">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Home Team</th>
+            <th>Home Score</th>
+            <th>Away Score</th>
+            <th>Away Team</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {fantasyGames.map((game, i) => (
+            <tr
+              key={i}
+              className={
+                wonGame(fantasyTeamName, game)
+                  ? "table-success"
+                  : "table-danger"
+              }
+            >
+              <td>{game.week}</td>
+              <td>
+                <Link to={`/fantasyTeams/${game.awayTeam && game.awayTeam.id}`}>
+                  {game.awayTeam && game.awayTeam.name}
+                </Link>
+              </td>
+              <td>{game.awayScore}</td>
+              <td>{game.homeScore}</td>
+              <td>
+                <Link to={`/fantasyTeams/${game.homeTeam && game.homeTeam.id}`}>
+                  {game.homeTeam && game.homeTeam.name}
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 }
 

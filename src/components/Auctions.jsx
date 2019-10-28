@@ -35,41 +35,44 @@ function Auctions() {
 
 export function AuctionTable({ auction }) {
   return (
-    <Table striped bordered hover size="sm">
-      <thead>
-        <tr>
-          <th>Year</th>
-          <th>Player</th>
-          <th>Position</th>
-          <th>Owner</th>
-          <th>Team</th>
-          <th>Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        {auction.map((purchase, i) => (
-          <tr key={i}>
-            <td>{purchase.year}</td>
-            <td>
-              <Link to={`/players/${purchase.player && purchase.player.id}`}>
-                {purchase.player && purchase.player.name}
-              </Link>
-            </td>
-            <td>{purchase.position}</td>
-            <td>{purchase.owner && purchase.owner.name}</td>
-            <td>
-              <Link
-                to={`/fantasyTeams/${purchase.fantasyTeam &&
-                  purchase.fantasyTeam.id}`}
-              >
-                {purchase.fantasyTeam && purchase.fantasyTeam.name}
-              </Link>
-            </td>
-            <td>{purchase.price}</td>
+    <>
+      <h3>Auctions</h3>
+      <Table striped bordered hover size="sm">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Player</th>
+            <th>Position</th>
+            <th>Owner</th>
+            <th>Team</th>
+            <th>Price</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {auction.map((purchase, i) => (
+            <tr key={i}>
+              <td>{purchase.year}</td>
+              <td>
+                <Link to={`/players/${purchase.player && purchase.player.id}`}>
+                  {purchase.player && purchase.player.name}
+                </Link>
+              </td>
+              <td>{purchase.position}</td>
+              <td>{purchase.owner && purchase.owner.name}</td>
+              <td>
+                <Link
+                  to={`/fantasyTeams/${purchase.fantasyTeam &&
+                    purchase.fantasyTeam.id}`}
+                >
+                  {purchase.fantasyTeam && purchase.fantasyTeam.name}
+                </Link>
+              </td>
+              <td>{purchase.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 }
 
