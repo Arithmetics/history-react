@@ -18,6 +18,7 @@ function Owners() {
       setOwners((result && result.data && result.data.owners) || []);
     };
     fetchData();
+    console.log(owners);
   }, []);
 
   return (
@@ -39,7 +40,16 @@ function Owners() {
 function Owner({ owner }) {
   const { cumulativeStats = {} } = owner;
   console.log(owner);
-  const { totalPoints, totalGames, totalWins, pointsPerGame } = cumulativeStats;
+  const {
+    totalPoints,
+    totalGames,
+    totalWins,
+    pointsPerGame,
+    totalPlayoffPoints,
+    totalPlayoffGames,
+    totalPlayoffWins,
+    playoffPointsPerGame
+  } = cumulativeStats;
   return (
     <div>
       <Card style={{ width: "18rem" }}>
@@ -54,6 +64,10 @@ function Owner({ owner }) {
             <li>Reg Season Games: {totalGames}</li>
             <li>Reg Season Wins: {totalWins}</li>
             <li>Reg Season Points/Game: {pointsPerGame}</li>
+            <li>Playoff Points: {totalPlayoffPoints}</li>
+            <li>Playoff Games: {totalPlayoffGames}</li>
+            <li>Playoff Wins: {totalPlayoffWins}</li>
+            <li>Playoff Points/Game: {playoffPointsPerGame}</li>
           </ul>
         </Card.Body>
         <ListGroup className="list-group-flush">
