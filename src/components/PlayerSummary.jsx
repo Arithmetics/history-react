@@ -7,7 +7,7 @@ import { AuctionTable } from "./Auctions";
 import { Link } from "react-router-dom";
 import { config } from "../api";
 
-function PlayerSummary({ match }) {
+function PlayerSummary({ match, history }) {
   const [player, setPlayer] = useState({});
 
   useEffect(() => {
@@ -29,7 +29,17 @@ function PlayerSummary({ match }) {
         <Jumbotron>
           <h1 className="header">{playerName}</h1>
         </Jumbotron>
-        <AuctionTable auction={auction} />
+        <AuctionTable
+          history={history}
+          auction={auction}
+          chosenColumns={[
+            "year",
+            "position",
+            "owner.name",
+            "fantasyTeam.name",
+            "price"
+          ]}
+        />
         <Table striped bordered hover size="sm">
           <thead>
             <tr>

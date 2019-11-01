@@ -44,7 +44,10 @@ function TeamSummary({ match }) {
             {Math.round(cuumulativeStats.seasonPoints)}
           </h2>
         </Jumbotron>
-        <AuctionTable auction={auction} />
+        <AuctionTable
+          auction={auction}
+          chosenColumns={["player.name", "position", "price"]}
+        />
         <GameTable
           regularSeason={true}
           fantasyGames={regularSeasonGames}
