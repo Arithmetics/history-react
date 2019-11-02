@@ -107,7 +107,7 @@ export function StatTable({ title, statData, chosenColumns, history }) {
       text: "Team",
       sort: true,
       filter: textFilter(),
-      classes: "table-link",
+      classes: "table-link table-trail",
       events: {
         onClick: (e, column, columnIndex, row, rowIndex) => {
           history.push(`/fantasyTeams/${row.fantasyTeam.id}`);
