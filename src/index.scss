@@ -11,7 +11,7 @@
   justify-content: space-around;
 
   &__card {
-    width: 16em;
+    width: 18em;
     font-size: 13px;
     margin: 5px;
   }
@@ -20,4 +20,14 @@
 .spinner {
   display: block !important;
   margin: 0 auto;
+}
+
+.table-link {
+  color: blue;
+  cursor: grab;
+
+  &:hover {
+    color: darkblue;
+    text-decoration: underline;
+  }
 }

@@ -43,6 +43,7 @@ function Auctions(props) {
               "player.name",
               "position",
               "owner.name",
+              "fantasyTeam.id",
               "fantasyTeam.name",
               "price"
             ]}
@@ -71,9 +72,9 @@ export function AuctionTable({ auction, chosenColumns, history }) {
       text: "Player",
       sort: true,
       filter: textFilter(),
+      classes: "table-link",
       events: {
         onClick: (e, column, columnIndex, row, rowIndex) => {
-          console.log(row.player.id);
           history.push(`/players/${row.player.id}`);
         }
       }
@@ -94,7 +95,13 @@ export function AuctionTable({ auction, chosenColumns, history }) {
       dataField: "fantasyTeam.name",
       text: "Team",
       sort: true,
-      filter: textFilter()
+      filter: textFilter(),
+      classes: "table-link",
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          history.push(`/fantasyTeams/${row.fantasyTeam.id}`);
+        }
+      }
     },
     {
       dataField: "price",
@@ -114,6 +121,7 @@ export function AuctionTable({ auction, chosenColumns, history }) {
       <h3>Auctions</h3>
       <BootstrapTable
         bootstrap4
+        hover
         condensed
         keyField="id"
         data={auction}

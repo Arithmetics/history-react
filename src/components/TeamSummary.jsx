@@ -9,7 +9,7 @@ import { AuctionTable } from "./Auctions";
 import { Link } from "react-router-dom";
 import { config } from "../api";
 
-function TeamSummary({ match }) {
+function TeamSummary({ match, history }) {
   const [fantasyTeam, setTeam] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -55,20 +55,30 @@ function TeamSummary({ match }) {
         {loading && <Spinner className="spinner" animation="border" />}
         {!loading && (
           <div>
-            <AuctionTable
-              auction={auction}
-              chosenColumns={["player.name", "position", "price"]}
-            />
+            {auction.length > 0 && (
+              <AuctionTable
+                auction={auction}
+                history={history}
+                chosenColumns={[
+                  "player.id",
+                  "player.name",
+                  "position",
+                  "price"
+                ]}
+              />
+            )}
             <GameTable
               regularSeason={true}
               fantasyGames={regularSeasonGames}
               fantasyTeamName={fantasyTeamName}
             />
-            <GameTable
-              regularSeason={false}
-              fantasyGames={playoffGames}
-              fantasyTeamName={fantasyTeamName}
-            />
+            {playoffGames.length > 0 && (
+              <GameTable
+                regularSeason={false}
+                fantasyGames={playoffGames}
+                fantasyTeamName={fantasyTeamName}
+              />
+            )}
             <div className="startWeeks">
               {Object.keys(fantasyStartWeeks).map((startWeek, i) => (
                 <div key={startWeek}>
@@ -138,10 +148,10 @@ function GameTable({ regularSeason, fantasyGames, fantasyTeamName }) {
         <thead>
           <tr>
             <th>Week</th>
-            <th>Home Team</th>
-            <th>Home Score</th>
-            <th>Away Score</th>
             <th>Away Team</th>
+            <th>Away Score</th>
+            <th>Home Score</th>
+            <th>Home Team</th>
           </tr>
         </thead>
         <tbody>
