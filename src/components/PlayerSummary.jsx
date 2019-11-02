@@ -9,7 +9,8 @@ import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, {
   textFilter,
   numberFilter,
-  Comparator
+  Comparator,
+  multiSelectFilter
 } from "react-bootstrap-table2-filter";
 
 function PlayerSummary({ match, history }) {
@@ -77,24 +78,60 @@ function PlayerSummary({ match, history }) {
 export default PlayerSummary;
 
 export function FantasyStartsTable({ fantasyStarts, chosenColumns, history }) {
+  const [distinct, setDistinct] = useState({
+    distinctYears: {},
+    distinctPositions: {},
+    distinctOwners: {}
+  });
+
+  useEffect(() => {
+    const distinctYears = [...new Set(fantasyStarts.map(x => x.year))].reduce(
+      (o, val) => {
+        o[val] = val;
+        return o;
+      },
+      {}
+    );
+    const distinctPositions = [
+      ...new Set(fantasyStarts.map(x => x.position))
+    ].reduce((o, val) => {
+      o[val] = val;
+      return o;
+    }, {});
+    const distinctOwners = [
+      ...new Set(fantasyStarts.map(x => x.owner && x.owner.name))
+    ].reduce((o, val) => {
+      o[val] = val;
+      return o;
+    }, {});
+
+    setDistinct({ distinctYears, distinctPositions, distinctOwners });
+  }, [fantasyStarts]);
+
   const columns = [
     {
       dataField: "year",
       text: "Year",
       sort: true,
-      filter: textFilter()
+      filter: multiSelectFilter({
+        options: distinct.distinctYears
+      })
     },
     {
       dataField: "week",
       text: "Week",
       sort: true,
-      filter: textFilter()
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
     },
     {
       dataField: "position",
       text: "Position",
       sort: true,
-      filter: textFilter()
+      filter: multiSelectFilter({
+        options: distinct.distinctPositions
+      })
     },
     {
       dataField: "points",
@@ -108,7 +145,9 @@ export function FantasyStartsTable({ fantasyStarts, chosenColumns, history }) {
       dataField: "owner.name",
       text: "Owner",
       sort: true,
-      filter: textFilter()
+      filter: multiSelectFilter({
+        options: distinct.distinctOwners
+      })
     },
     {
       dataField: "fantasyTeam.id",

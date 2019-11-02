@@ -8,7 +8,8 @@ import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, {
   textFilter,
   numberFilter,
-  Comparator
+  Comparator,
+  multiSelectFilter
 } from "react-bootstrap-table2-filter";
 
 function Auctions(props) {
@@ -55,12 +56,47 @@ function Auctions(props) {
 }
 
 export function AuctionTable({ auction, chosenColumns, history }) {
+  // const distinctYears = auction && [...new Set(auction.years)];
+  // console.log(distinctYears);
+  const [distinct, setDistinct] = useState({
+    distinctYears: {},
+    distinctPositions: {},
+    distinctOwners: {}
+  });
+
+  useEffect(() => {
+    const distinctYears = [...new Set(auction.map(x => x.year))].reduce(
+      (o, val) => {
+        o[val] = val;
+        return o;
+      },
+      {}
+    );
+    const distinctPositions = [...new Set(auction.map(x => x.position))].reduce(
+      (o, val) => {
+        o[val] = val;
+        return o;
+      },
+      {}
+    );
+    const distinctOwners = [
+      ...new Set(auction.map(x => x.owner && x.owner.name))
+    ].reduce((o, val) => {
+      o[val] = val;
+      return o;
+    }, {});
+
+    setDistinct({ distinctYears, distinctPositions, distinctOwners });
+  }, [auction]);
+
   const columns = [
     {
       dataField: "year",
       text: "Year",
       sort: true,
-      filter: textFilter()
+      filter: multiSelectFilter({
+        options: distinct.distinctYears
+      })
     },
     {
       dataField: "player.id",
@@ -83,13 +119,17 @@ export function AuctionTable({ auction, chosenColumns, history }) {
       dataField: "position",
       text: "Position",
       sort: true,
-      filter: textFilter()
+      filter: multiSelectFilter({
+        options: distinct.distinctPositions
+      })
     },
     {
       dataField: "owner.name",
       text: "Owner",
       sort: true,
-      filter: textFilter()
+      filter: multiSelectFilter({
+        options: distinct.distinctOwners
+      })
     },
     {
       dataField: "fantasyTeam.name",
