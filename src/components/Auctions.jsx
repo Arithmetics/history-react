@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import { config } from "../api";
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, {
@@ -12,6 +13,7 @@ import filterFactory, {
 
 function Auctions(props) {
   const [auction, setAuction] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,6 +21,7 @@ function Auctions(props) {
       const result = await axios(`${config}/purchases.json`);
       console.log(result);
       setAuction((result && result.data && result.data.purchases) || []);
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -29,20 +32,22 @@ function Auctions(props) {
         <Jumbotron>
           <h1 className="header">Auctions</h1>
         </Jumbotron>
-
-        <AuctionTable
-          history={props.history}
-          auction={auction}
-          chosenColumns={[
-            "player.id",
-            "year",
-            "player.name",
-            "position",
-            "owner.name",
-            "fantasyTeam.name",
-            "price"
-          ]}
-        />
+        {loading && <Spinner className="spinner" animation="border" />}
+        {!loading && (
+          <AuctionTable
+            history={props.history}
+            auction={auction}
+            chosenColumns={[
+              "player.id",
+              "year",
+              "player.name",
+              "position",
+              "owner.name",
+              "fantasyTeam.name",
+              "price"
+            ]}
+          />
+        )}
       </Container>
     </div>
   );

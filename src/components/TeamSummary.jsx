@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
+import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import { AuctionTable } from "./Auctions";
@@ -10,12 +11,14 @@ import { config } from "../api";
 
 function TeamSummary({ match }) {
   const [fantasyTeam, setTeam] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const teamID = match.params.id;
     const fetchData = async () => {
       const result = await axios(`${config}/fantasy_teams/${teamID}.json`);
       setTeam((result && result.data && result.data.fantasyTeam) || {});
+      setLoading(false);
     };
     fetchData();
   }, [match.params.id]);
@@ -35,44 +38,57 @@ function TeamSummary({ match }) {
     <div>
       <Container className="p-3">
         <Jumbotron>
-          <h1 className="header">
-            {" "}
-            {ownerName} - {year} - {fantasyTeamName}
-          </h1>
-          <h2 className="header">
-            Wins: {cuumulativeStats.seasonWins}, Points:
-            {Math.round(cuumulativeStats.seasonPoints)}
-          </h2>
-        </Jumbotron>
-        <AuctionTable
-          auction={auction}
-          chosenColumns={["player.name", "position", "price"]}
-        />
-        <GameTable
-          regularSeason={true}
-          fantasyGames={regularSeasonGames}
-          fantasyTeamName={fantasyTeamName}
-        />
-        <GameTable
-          regularSeason={false}
-          fantasyGames={playoffGames}
-          fantasyTeamName={fantasyTeamName}
-        />
-        <div className="startWeeks">
-          {Object.keys(fantasyStartWeeks).map((startWeek, i) => (
-            <div key={startWeek}>
-              <Card className="startWeeks__card">
-                <Card.Body>
-                  <Card.Title>
-                    week: {startWeek} -{" "}
-                    {weekTotal(fantasyStartWeeks[startWeek])}
-                  </Card.Title>
-                  <StartWeek key={i} startWeek={fantasyStartWeeks[startWeek]} />
-                </Card.Body>
-              </Card>
+          <h1 className="header">Team Summary</h1>
+          {!loading && (
+            <div>
+              <h2 className="header">
+                {ownerName} - {year} - {fantasyTeamName}
+              </h2>
+              <h3 className="header">
+                Record: ({cuumulativeStats.seasonWins} -{" "}
+                {13 - cuumulativeStats.seasonWins}), Points:
+                {Math.round(cuumulativeStats.seasonPoints)}
+              </h3>
             </div>
-          ))}
-        </div>
+          )}
+        </Jumbotron>
+        {loading && <Spinner className="spinner" animation="border" />}
+        {!loading && (
+          <div>
+            <AuctionTable
+              auction={auction}
+              chosenColumns={["player.name", "position", "price"]}
+            />
+            <GameTable
+              regularSeason={true}
+              fantasyGames={regularSeasonGames}
+              fantasyTeamName={fantasyTeamName}
+            />
+            <GameTable
+              regularSeason={false}
+              fantasyGames={playoffGames}
+              fantasyTeamName={fantasyTeamName}
+            />
+            <div className="startWeeks">
+              {Object.keys(fantasyStartWeeks).map((startWeek, i) => (
+                <div key={startWeek}>
+                  <Card className="startWeeks__card">
+                    <Card.Body>
+                      <Card.Title>
+                        week: {startWeek} -{" "}
+                        {weekTotal(fantasyStartWeeks[startWeek])}
+                      </Card.Title>
+                      <StartWeek
+                        key={i}
+                        startWeek={fantasyStartWeeks[startWeek]}
+                      />
+                    </Card.Body>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </Container>
     </div>
   );
