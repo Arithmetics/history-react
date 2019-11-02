@@ -1,3 +1,12 @@
+import React, { useState, useEffect } from "react";
+import BootstrapTable from "react-bootstrap-table-next";
+import filterFactory, {
+  textFilter,
+  numberFilter,
+  Comparator,
+  multiSelectFilter
+} from "react-bootstrap-table2-filter";
+
 export function StatTable({ title, statData, chosenColumns, history }) {
   const [distinct, setDistinct] = useState({
     distinctYears: {},

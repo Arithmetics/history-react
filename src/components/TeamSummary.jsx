@@ -8,6 +8,7 @@ import Table from "react-bootstrap/Table";
 import { AuctionTable } from "./Auctions";
 import { Link } from "react-router-dom";
 import { config } from "../api";
+import StatTable from "./StatTable";
 
 function TeamSummary({ match, history }) {
   const [fantasyTeam, setTeam] = useState({});
@@ -56,8 +57,9 @@ function TeamSummary({ match, history }) {
         {!loading && (
           <div>
             {auction.length > 0 && (
-              <AuctionTable
-                auction={auction}
+              <StatTable
+                title="Auctions"
+                statData={auction}
                 history={history}
                 chosenColumns={[
                   "player.id",

@@ -2,16 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
-import { AuctionTable } from "./Auctions";
 import Spinner from "react-bootstrap/Spinner";
 import { config } from "../api";
-import BootstrapTable from "react-bootstrap-table-next";
-import filterFactory, {
-  textFilter,
-  numberFilter,
-  Comparator,
-  multiSelectFilter
-} from "react-bootstrap-table2-filter";
+import StatTable from "./StatTable";
 
 function PlayerSummary({ match, history }) {
   const [player, setPlayer] = useState({});
@@ -42,9 +35,10 @@ function PlayerSummary({ match, history }) {
         {!loading && (
           <div>
             {auction.length > 0 && (
-              <AuctionTable
+              <StatTable
+                title="Auctions"
                 history={history}
-                auction={auction}
+                statData={auction}
                 chosenColumns={[
                   "year",
                   "position",
@@ -55,9 +49,10 @@ function PlayerSummary({ match, history }) {
                 ]}
               />
             )}
-            <FantasyStartsTable
+            <StatTable
+              title="Fantasy Starts"
               history={history}
-              fantasyStarts={fantasyStarts}
+              statData={fantasyStarts}
               chosenColumns={[
                 "year",
                 "week",
@@ -76,113 +71,3 @@ function PlayerSummary({ match, history }) {
 }
 
 export default PlayerSummary;
-
-export function FantasyStartsTable({ fantasyStarts, chosenColumns, history }) {
-  const [distinct, setDistinct] = useState({
-    distinctYears: {},
-    distinctPositions: {},
-    distinctOwners: {}
-  });
-
-  useEffect(() => {
-    const distinctYears = [...new Set(fantasyStarts.map(x => x.year))].reduce(
-      (o, val) => {
-        o[val] = val;
-        return o;
-      },
-      {}
-    );
-    const distinctPositions = [
-      ...new Set(fantasyStarts.map(x => x.position))
-    ].reduce((o, val) => {
-      o[val] = val;
-      return o;
-    }, {});
-    const distinctOwners = [
-      ...new Set(fantasyStarts.map(x => x.owner && x.owner.name))
-    ].reduce((o, val) => {
-      o[val] = val;
-      return o;
-    }, {});
-
-    setDistinct({ distinctYears, distinctPositions, distinctOwners });
-  }, [fantasyStarts]);
-
-  const columns = [
-    {
-      dataField: "year",
-      text: "Year",
-      sort: true,
-      filter: multiSelectFilter({
-        options: distinct.distinctYears
-      })
-    },
-    {
-      dataField: "week",
-      text: "Week",
-      sort: true,
-      filter: numberFilter({
-        defaultValue: { number: 0, comparator: Comparator.GT }
-      })
-    },
-    {
-      dataField: "position",
-      text: "Position",
-      sort: true,
-      filter: multiSelectFilter({
-        options: distinct.distinctPositions
-      })
-    },
-    {
-      dataField: "points",
-      text: "Points",
-      sort: true,
-      filter: numberFilter({
-        defaultValue: { number: 0, comparator: Comparator.GT }
-      })
-    },
-    {
-      dataField: "owner.name",
-      text: "Owner",
-      sort: true,
-      filter: multiSelectFilter({
-        options: distinct.distinctOwners
-      })
-    },
-    {
-      dataField: "fantasyTeam.id",
-      text: "fantasyTeamID",
-      hidden: true
-    },
-    {
-      dataField: "fantasyTeam.name",
-      text: "Team",
-      sort: true,
-      filter: textFilter(),
-      classes: "table-link",
-      events: {
-        onClick: (e, column, columnIndex, row, rowIndex) => {
-          history.push(`/fantasyTeams/${row.fantasyTeam.id}`);
-        }
-      }
-    }
-  ];
-
-  const displayedColumns = columns.filter(col =>
-    chosenColumns.includes(col.dataField)
-  );
-  return (
-    <>
-      <h3>Fantasy Starts</h3>
-      <BootstrapTable
-        bootstrap4
-        hover
-        condensed
-        keyField="id"
-        data={fantasyStarts}
-        columns={displayedColumns}
-        filter={filterFactory()}
-      />
-    </>
-  );
-}
