@@ -12,7 +12,6 @@ function Auctions(props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(`${config}/purchases.json`);
       const result = await axios(`${config}/purchases.json`);
       console.log(result);
       setAuction((result && result.data && result.data.purchases) || []);
@@ -20,6 +19,14 @@ function Auctions(props) {
     };
     fetchData();
   }, []);
+
+  const cleanedAuction = auction.map(purchase => {
+    if (!purchase.player.rankReg) {
+      purchase.player.rankReg = 999;
+      purchase.player.rankPpr = 999;
+    }
+    return purchase;
+  });
 
   return (
     <div>
@@ -32,7 +39,7 @@ function Auctions(props) {
           <StatTable
             title="Auctions"
             history={props.history}
-            statData={auction}
+            statData={cleanedAuction}
             chosenColumns={[
               "player.id",
               "year",
@@ -41,7 +48,9 @@ function Auctions(props) {
               "owner.name",
               "fantasyTeam.id",
               "fantasyTeam.name",
-              "price"
+              "price",
+              "player.rankReg",
+              "player.rankPpr"
             ]}
           />
         )}

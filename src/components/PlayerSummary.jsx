@@ -21,8 +21,10 @@ function PlayerSummary({ match, history }) {
   }, [match.params.id]);
 
   const playerName = player && player.name;
+  const playerID = player && player.ID;
   const fantasyStarts = (player && player.fantasyStarts) || [];
   const auction = (player && player.purchases) || [];
+  const seasonStats = (player && player.seasonStats) || [];
 
   return (
     <div>
@@ -49,6 +51,23 @@ function PlayerSummary({ match, history }) {
                 ]}
               />
             )}
+            <hr></hr>
+            <StatTable
+              title="Season Stats"
+              history={history}
+              statData={seasonStats}
+              chosenColumns={[
+                "year",
+                "gamesPlayed",
+                "ageAtSeason",
+                "experienceAtSeason",
+                "fantasyPointsReg",
+                "fantasyPointsPpr",
+                "rankReg",
+                "rankPpr"
+              ]}
+            />
+            <hr></hr>
             <StatTable
               title="Fantasy Starts"
               history={history}

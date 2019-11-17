@@ -5,7 +5,6 @@ import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
-import { AuctionTable } from "./Auctions";
 import { Link } from "react-router-dom";
 import { config } from "../api";
 import StatTable from "./StatTable";

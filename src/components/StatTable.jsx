@@ -121,6 +121,54 @@ export function StatTable({ title, statData, chosenColumns, history }) {
       filter: numberFilter({
         defaultValue: { number: 0, comparator: Comparator.GT }
       })
+    },
+    {
+      dataField: "fantasyPointsReg",
+      text: "Fantasy Points",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
+    },
+    {
+      dataField: "fantasyPointsPpr",
+      text: "Fantasy Points PPR",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
+    },
+    {
+      dataField: "rankReg",
+      text: "Position Rank",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
+    },
+    {
+      dataField: "rankPpr",
+      text: "Position Rank PPR",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
+    },
+    {
+      dataField: "player.rankReg",
+      text: "Position Rank",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
+    },
+    {
+      dataField: "player.rankPpr",
+      text: "Position Rank PPR",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
     }
   ];
 
