@@ -10,10 +10,7 @@ function Home() {
         <Jumbotron>
           <h1 className="header">Welcome to the Lab</h1>
         </Jumbotron>
-        <div>Home page</div>
-        <Link to={`/owners`}>Owners</Link>
-        <br />
-        <Link to={`/auctions`}>Auctions</Link>
+        <p>click a link above, maybe ill have something cool here someday?</p>
       </Container>
     </div>
   );

@@ -169,6 +169,57 @@ export function StatTable({ title, statData, chosenColumns, history }) {
       filter: numberFilter({
         defaultValue: { number: 0, comparator: Comparator.GT }
       })
+    },
+    {
+      dataField: "id",
+      text: "ID",
+      hidden: true
+    },
+    {
+      dataField: "name",
+      text: "Owner",
+      sort: true,
+      classes: "table-link table-trail",
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          history.push(`/owners/${row.id}`);
+        }
+      }
+    },
+    {
+      dataField: "cumulativeStats.totalPoints",
+      text: "Total Points",
+      sort: true
+    },
+    {
+      dataField: "cumulativeStats.totalGames",
+      text: "Games Played",
+      sort: true
+    },
+    {
+      dataField: "cumulativeStats.totalWins",
+      text: "Total Wins",
+      sort: true
+    },
+    {
+      dataField: "cumulativeStats.pointsPerGame",
+      text: "Points / Game",
+      sort: true
+    },
+    {
+      dataField: "cumulativeStats.totalPlayoffPoints",
+      text: "Total Playoff Points",
+      sort: true
+    },
+    {
+      dataField: "cumulativeStats.totalPlayoffGames",
+      text: "Total Playoff Games",
+      sort: true
+    },
+    {
+      dataField: "cumulativeStats.playoffPointsPerGame",
+      text: "Playoff Points / Game",
+      sort: true
     }
   ];
 

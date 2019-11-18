@@ -41,6 +41,7 @@ function Auctions(props) {
             history={props.history}
             statData={cleanedAuction}
             chosenColumns={[
+              "id",
               "player.id",
               "year",
               "player.name",

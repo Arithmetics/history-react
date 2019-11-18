@@ -37,3 +37,10 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+.navbar-brand {
+  color: #55e093 !important;
+  &:hover {
+    color: #46b576 !important;
+  }
+}
