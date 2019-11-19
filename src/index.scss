@@ -1,7 +1,15 @@
-.owners {
+.owner-body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  margin: 5px;
+
+  &__card {
+    margin: 10px;
+  }
+}
+
+.owner__badge {
   margin: 5px;
 }
 
