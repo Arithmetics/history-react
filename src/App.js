@@ -6,6 +6,7 @@ import Owner from "./components/Owner";
 import Home from "./components/Home";
 import TeamSummary from "./components/TeamSummary";
 import PlayerSummary from "./components/PlayerSummary";
+import AllPlayers from "./components/AllPlayers";
 import Auctions from "./components/Auctions";
 import NavBar from "./components/NavBar";
 
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/owners" component={Owners} />
           <Route exact path="/fantasyTeams/:id" component={TeamSummary} />
           <Route exact path="/players/:id" component={PlayerSummary} />
+          <Route exact path="/players" component={AllPlayers} />
           <Route exact path="/auctions/:id" component={Auctions} />
           <Route exact path="/auctions/" component={Auctions} />
         </Switch>
