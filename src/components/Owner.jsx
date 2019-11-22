@@ -8,6 +8,10 @@ import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import { config } from "../api";
 
+import { GiTrophy } from "react-icons/gi";
+import { GiPodiumSecond } from "react-icons/gi";
+import { GiPodiumThird } from "react-icons/gi";
+
 function Owner(props) {
   const [owner, setOwner] = useState({});
   const [loading, setLoading] = useState(true);
@@ -49,6 +53,9 @@ function Owner(props) {
               {fantasyTeams.map(team => (
                 <Card style={{ width: "30rem" }} className="owner-body__card">
                   <Card.Body>
+                    <div className="trophy">
+                      <Trophy team={team} />
+                    </div>
                     <Card.Title>
                       {team.year} - {team.name}
                     </Card.Title>
@@ -69,6 +76,17 @@ function Owner(props) {
       </Container>
     </div>
   );
+}
+
+function Trophy({ team }) {
+  if (team["wonChampionship?"]) {
+    return <GiTrophy />;
+  } else if (team["madeFinals?"]) {
+    return <GiPodiumSecond />;
+  } else if (team["madePlayoffs?"]) {
+    return <GiPodiumThird />;
+  }
+  return null;
 }
 
 export default Owner;
