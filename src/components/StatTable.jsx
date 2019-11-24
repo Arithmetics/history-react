@@ -220,6 +220,18 @@ export function StatTable({ title, statData, chosenColumns, history }) {
       dataField: "cumulativeStats.playoffPointsPerGame",
       text: "Playoff Points / Game",
       sort: true
+    },
+    {
+      dataField: "wins",
+      text: "Wins"
+    },
+    {
+      dataField: "losses",
+      text: "Losses"
+    },
+    {
+      dataField: "streak",
+      text: "Streak"
     }
   ];
 

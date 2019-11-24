@@ -3,6 +3,7 @@ import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
+import StatTable from "./StatTable";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
@@ -25,10 +26,11 @@ function Owner(props) {
     };
     fetchData();
     console.log(owner);
-  }, []);
+  }, [props.match.params.id]);
 
   const fantasyTeams = owner.fantasyTeams || [];
   const cumulativeStats = owner.cumulativeStats || {};
+  const versusRecords = owner.versusRecords || [];
 
   return (
     <div>
@@ -70,6 +72,14 @@ function Owner(props) {
                   </Card.Body>
                 </Card>
               ))}
+            </div>
+            <div className="owner-body">
+              <StatTable
+                title="Versus Records"
+                history={props.history}
+                statData={versusRecords}
+                chosenColumns={["id", "name", "wins", "losses", "streak"]}
+              />
             </div>
           </>
         )}
