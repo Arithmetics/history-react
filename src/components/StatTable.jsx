@@ -223,15 +223,23 @@ export function StatTable({ title, statData, chosenColumns, history }) {
     },
     {
       dataField: "wins",
-      text: "Wins"
+      text: "Wins",
+      sort: true
     },
     {
       dataField: "losses",
-      text: "Losses"
+      text: "Losses",
+      sort: true
+    },
+    {
+      dataField: "winPct",
+      text: "Win %",
+      sort: true
     },
     {
       dataField: "streak",
-      text: "Streak"
+      text: "Streak  🔥/🧊",
+      sort: true
     }
   ];
 

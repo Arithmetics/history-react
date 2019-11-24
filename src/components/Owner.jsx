@@ -31,6 +31,11 @@ function Owner(props) {
   const fantasyTeams = owner.fantasyTeams || [];
   const cumulativeStats = owner.cumulativeStats || {};
   const versusRecords = owner.versusRecords || [];
+  versusRecords.forEach(
+    record =>
+      (record.winPct =
+        Math.round((record.wins / (record.wins + record.losses)) * 100) / 100)
+  );
 
   return (
     <div>
@@ -78,7 +83,14 @@ function Owner(props) {
                 title="Versus Records"
                 history={props.history}
                 statData={versusRecords}
-                chosenColumns={["id", "name", "wins", "losses", "streak"]}
+                chosenColumns={[
+                  "id",
+                  "name",
+                  "wins",
+                  "losses",
+                  "winPct",
+                  "streak"
+                ]}
               />
             </div>
           </>
