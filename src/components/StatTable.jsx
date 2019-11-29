@@ -35,6 +35,8 @@ export function StatTable({ title, statData, chosenColumns, history }) {
       return o;
     }, {});
 
+    console.log(distinctPositions);
+
     setDistinct({ distinctYears, distinctPositions, distinctOwners });
   }, [statData]);
 
@@ -55,7 +57,6 @@ export function StatTable({ title, statData, chosenColumns, history }) {
         defaultValue: { number: 0, comparator: Comparator.GT }
       })
     },
-    ,
     {
       dataField: "player.id",
       text: "ID",
@@ -240,6 +241,68 @@ export function StatTable({ title, statData, chosenColumns, history }) {
       dataField: "streak",
       text: "Streak  🔥/🧊",
       sort: true
+    },
+    {
+      dataField: "playerName",
+      text: "Name",
+      sort: true,
+      classes: "table-link table-trail",
+      filter: textFilter(),
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          history.push(`/players/${row.id}`);
+        }
+      }
+    },
+    {
+      dataField: "careerStats.position",
+      text: "Position",
+      sort: true,
+      filter: multiSelectFilter({
+        options: { QB: "QB", RB: "RB", WR: "WR", TE: "TE" }
+      })
+    },
+    {
+      dataField: "careerStats.totalPoints",
+      text: "Total Start Points",
+      sort: true
+    },
+    {
+      dataField: "careerStats.totalAuctionMoney",
+      text: "Total Auction $",
+      sort: true
+    },
+    {
+      dataField: "careerStats.highestAuctionMoney",
+      text: "Highest Price",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
+    },
+    {
+      dataField: "careerStats.bestStart",
+      text: "Best Start",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
+    },
+    {
+      dataField: "careerStats.bestRegRank",
+      text: "Best Reg Rank",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
+    },
+    {
+      dataField: "careerStats.bestPprRank",
+      text: "Best PPR Rank",
+      sort: true,
+      filter: numberFilter({
+        defaultValue: { number: 0, comparator: Comparator.GT }
+      })
     }
   ];
 

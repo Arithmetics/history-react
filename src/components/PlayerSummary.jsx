@@ -21,7 +21,6 @@ function PlayerSummary({ match, history }) {
   }, [match.params.id]);
 
   const playerName = player && player.name;
-  const playerID = player && player.ID;
   const fantasyStarts = (player && player.fantasyStarts) || [];
   const auction = (player && player.purchases) || [];
   const seasonStats = (player && player.seasonStats) || [];

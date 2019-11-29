@@ -25,7 +25,6 @@ function Owner(props) {
       setLoading(false);
     };
     fetchData();
-    console.log(owner);
   }, [props.match.params.id]);
 
   const fantasyTeams = owner.fantasyTeams || [];

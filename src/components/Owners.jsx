@@ -17,7 +17,6 @@ function Owners(props) {
       setLoading(false);
     };
     fetchData();
-    console.log(owners);
   }, []);
 
   return (
