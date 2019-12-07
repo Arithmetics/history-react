@@ -268,6 +268,21 @@ export function StatTable({ title, statData, chosenColumns, history }) {
       sort: true
     },
     {
+      dataField: "careerStats.playoffPoints",
+      text: "Playoff Points",
+      sort: true
+    },
+    {
+      dataField: "careerStats.finalsPoints",
+      text: "Finals Points",
+      sort: true
+    },
+    {
+      dataField: "careerStats.championships",
+      text: "Championships",
+      sort: true
+    },
+    {
       dataField: "careerStats.totalAuctionMoney",
       text: "Total Auction $",
       sort: true

@@ -3,6 +3,7 @@ import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
+import { GiTrophy } from "react-icons/gi";
 import { config } from "../api";
 import StatTable from "./StatTable";
 
@@ -24,6 +25,8 @@ function PlayerSummary({ match, history }) {
   const fantasyStarts = (player && player.fantasyStarts) || [];
   const auction = (player && player.purchases) || [];
   const seasonStats = (player && player.seasonStats) || [];
+  const championships =
+    (player && player.careerStats && player.careerStats.championships) || 0;
 
   return (
     <div>
@@ -31,6 +34,11 @@ function PlayerSummary({ match, history }) {
         <Jumbotron>
           <h1 className="header">Player Summary</h1>
           {!loading && <h2>{playerName}</h2>}
+          {[...Array(championships)].map(i => (
+            <span key={i}>
+              <GiTrophy />
+            </span>
+          ))}
         </Jumbotron>
         {loading && <Spinner className="spinner" animation="border" />}
         {!loading && (
