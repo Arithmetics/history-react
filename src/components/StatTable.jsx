@@ -35,8 +35,6 @@ export function StatTable({ title, statData, chosenColumns, history }) {
       return o;
     }, {});
 
-    console.log(distinctPositions);
-
     setDistinct({ distinctYears, distinctPositions, distinctOwners });
   }, [statData]);
 

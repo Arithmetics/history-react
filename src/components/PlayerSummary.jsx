@@ -33,6 +33,9 @@ function PlayerSummary({ match, history }) {
       <Container className="p-3">
         <Jumbotron>
           <h1 className="header">Player Summary</h1>
+          <img
+            src={`https://static.nfl.com/static/content/public/static/img/fantasy/transparent/200x200/${player.pictureId}.png`}
+          />
           {!loading && <h2>{playerName}</h2>}
           {[...Array(championships)].map(i => (
             <span key={i}>
