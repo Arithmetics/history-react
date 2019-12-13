@@ -22,6 +22,7 @@ export default function NavBar() {
           <Nav.Link href="/owners">Owners</Nav.Link>
           <Nav.Link href="/auctions">Auctions</Nav.Link>
           <Nav.Link href="/players">Players</Nav.Link>
+          <Nav.Link href="/podcasts">Podcasts</Nav.Link>
         </Nav>
       </Navbar>
     </>

@@ -9,6 +9,7 @@ import PlayerSummary from "./components/PlayerSummary";
 import AllPlayers from "./components/AllPlayers";
 import Auctions from "./components/Auctions";
 import NavBar from "./components/NavBar";
+import Podcasts from "./components/Podcasts";
 
 function App() {
   console.log(process.env.NODE_ENV);
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/players" component={AllPlayers} />
           <Route exact path="/auctions/:id" component={Auctions} />
           <Route exact path="/auctions/" component={Auctions} />
+          <Route exact path="/podcasts/" component={Podcasts} />
         </Switch>
       </BrowserRouter>
     </div>
