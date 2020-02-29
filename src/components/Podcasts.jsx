@@ -10,6 +10,24 @@ function Podcasts() {
           <h1 className="header">Podcasts</h1>
         </Jumbotron>
         <iframe
+          title="podcast-10"
+          width="50%"
+          height="300"
+          scrolling="no"
+          frameborder="no"
+          allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/767702575&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+        ></iframe>
+        <iframe
+          title="podcast-9"
+          width="50%"
+          height="300"
+          scrolling="no"
+          frameborder="no"
+          allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/731251336&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+        ></iframe>
+        <iframe
           title="podcast-8"
           width="50%"
           height="300"
