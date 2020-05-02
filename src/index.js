@@ -6,6 +6,9 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+import "./fonts/qanelassoft_black.woff2";
+import "./fonts/qanelassoft_medium.woff2";
+
 ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change

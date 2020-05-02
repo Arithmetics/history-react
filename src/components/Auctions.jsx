@@ -20,7 +20,7 @@ function Auctions(props) {
     fetchData();
   }, []);
 
-  const cleanedAuction = auction.map(purchase => {
+  const cleanedAuction = auction.map((purchase) => {
     if (!purchase.player.rankReg) {
       purchase.player.rankReg = 999;
       purchase.player.rankPpr = 999;
@@ -31,9 +31,6 @@ function Auctions(props) {
   return (
     <div>
       <Container className="p-3">
-        <Jumbotron>
-          <h1 className="header">Auctions</h1>
-        </Jumbotron>
         {loading && <Spinner className="spinner" animation="border" />}
         {!loading && (
           <StatTable
@@ -51,7 +48,7 @@ function Auctions(props) {
               "fantasyTeam.name",
               "price",
               "player.rankReg",
-              "player.rankPpr"
+              "player.rankPpr",
             ]}
           />
         )}

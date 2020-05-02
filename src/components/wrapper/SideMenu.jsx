@@ -1,0 +1,111 @@
+import React from "react";
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader";
+
+import HomeIcon from "@material-ui/icons/Home";
+import PeopleIcon from "@material-ui/icons/People";
+import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import GavelIcon from "@material-ui/icons/Gavel";
+import AudiotrackIcon from "@material-ui/icons/Audiotrack";
+
+const sideLinks = [
+  {
+    page: "Home",
+    icon: <HomeIcon />,
+  },
+  {
+    page: "Owners",
+    icon: <PeopleIcon />,
+  },
+  {
+    page: "Auctions",
+    icon: <GavelIcon />,
+  },
+  {
+    page: "Players",
+    icon: <DirectionsRunIcon />,
+  },
+  {
+    page: "Podcasts",
+    icon: <AudiotrackIcon />,
+  },
+];
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+  drawerPaper: {
+    position: "relative",
+    whiteSpace: "nowrap",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: "hidden",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7),
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(9),
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: 0,
+      display: "none",
+    },
+  },
+  toolbarIcon: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
+  },
+}));
+
+export default function SideMenu({ isOpen, handleDrawerClose }) {
+  const classes = useStyles();
+
+  return (
+    <Drawer
+      variant="permanent"
+      classes={{
+        paper: clsx(classes.drawerPaper, !isOpen && classes.drawerPaperClose),
+      }}
+      open={isOpen}
+    >
+      <div className={classes.toolbarIcon}>
+        <IconButton onClick={handleDrawerClose}>
+          <ChevronLeftIcon />
+        </IconButton>
+      </div>
+      <Divider />
+      <List>
+        {sideLinks.map((link) => {
+          return (
+            <ListItem button component="a" href="/cool">
+              <ListItemIcon>{link.icon}</ListItemIcon>
+              <ListItemText primary={link.page} />
+            </ListItem>
+          );
+        })}
+      </List>
+      <Divider />
+      <List></List>
+    </Drawer>
+  );
+}

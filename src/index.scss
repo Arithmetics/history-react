@@ -1,3 +1,15 @@
+@font-face {
+  font-family: "Qanelas Soft";
+  src: local("Qanelas Soft"),
+    url(./fonts/qanelassoft_black.woff2) format("woff2");
+}
+body {
+  font-family: "Qanelass Soft";
+}
+
+*:focus {
+  outline: none !important;
+}
 .owner-body {
   display: flex;
   flex-wrap: wrap;
