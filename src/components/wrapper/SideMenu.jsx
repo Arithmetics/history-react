@@ -97,7 +97,7 @@ export default function SideMenu({ isOpen, handleDrawerClose }) {
       <List>
         {sideLinks.map((link) => {
           return (
-            <ListItem button component="a" href="/cool">
+            <ListItem button component="a" href={`/${link.page}`}>
               <ListItemIcon>{link.icon}</ListItemIcon>
               <ListItemText primary={link.page} />
             </ListItem>

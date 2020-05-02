@@ -13,6 +13,8 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
+    backgroundColor: "black",
+    color: "white",
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -38,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    textAlign: "center",
+  },
+  mainIcon: {
+    maxHeight: 40,
   },
 }));
 
@@ -69,7 +75,7 @@ export default function TopToolBar({ handleDrawerOpen, isOpen }) {
           noWrap
           className={classes.title}
         >
-          the 97062 lab
+          the <img className={classes.mainIcon} src="/main_icon.png" /> lab
         </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
