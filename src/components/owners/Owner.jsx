@@ -3,11 +3,11 @@ import axios from "axios";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
-import StatTable from "./StatTable";
+import StatTable from "../StatTable";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
-import { config } from "../api";
+import { config } from "../../api";
 
 import { GiTrophy } from "react-icons/gi";
 import { GiPodiumSecond } from "react-icons/gi";

@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   mainIcon: {
-    maxHeight: 40,
+    maxHeight: 55,
   },
 }));
 
@@ -75,7 +75,9 @@ export default function TopToolBar({ handleDrawerOpen, isOpen }) {
           noWrap
           className={classes.title}
         >
-          the <img className={classes.mainIcon} src="/main_icon.png" /> lab
+          the
+          <img className={classes.mainIcon} src="/main_icon.png" />
+          lab
         </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">

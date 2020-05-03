@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 
 import theme from "./theme";
-import Owners from "./components/Owners";
-import Owner from "./components/Owner";
+import Owners from "./components/owners/Owners";
+import Owner from "./components/owners/Owner";
 import MainWrapper from "./components/wrapper/MainWrapper";
 import TeamSummary from "./components/TeamSummary";
 import PlayerSummary from "./components/PlayerSummary";
