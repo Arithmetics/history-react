@@ -3,9 +3,6 @@ import axios from "axios";
 
 import Typography from "@material-ui/core/Typography";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Fade from "@material-ui/core/Fade";
-
 import LoadingSpinner from "../LoadingSpinner";
 import StatTable from "../StatTable";
 import { config } from "../../api";
