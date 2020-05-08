@@ -38,6 +38,11 @@ export default function MainWrapper(props) {
 
   return (
     <div className={classes.root}>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      />
+
       <CssBaseline />
 
       <TopToolBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} />

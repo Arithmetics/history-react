@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import MaterialTable from "material-table";
 
 import Typography from "@material-ui/core/Typography";
 
@@ -28,20 +29,55 @@ function Owners(props) {
 
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
-        <StatTable
-          history={props.history}
-          statData={owners}
-          chosenColumns={[
-            "name",
-            "cumulativeStats.totalPoints",
-            "cumulativeStats.totalGames",
-            "cumulativeStats.totalWins",
-            "cumulativeStats.pointsPerGame",
-            "cumulativeStats.totalPlayoffPoints",
-            "cumulativeStats.totalPlayoffGames",
-            "cumulativeStats.playoffPointsPerGame",
-          ]}
-        />
+        <>
+          <MaterialTable
+            columns={[
+              {
+                title: "Name",
+                field: "name",
+                render: (rowData) => (
+                  <a href={`/owners/${rowData.id}`}>{rowData.name}</a>
+                ),
+              },
+              {
+                title: "Regular Season Points",
+                field: "cumulativeStats.totalPoints",
+              },
+              {
+                title: "Regular Season Games",
+                field: "cumulativeStats.totalGames",
+              },
+              {
+                title: "Regular Season Wins",
+                field: "cumulativeStats.totalWins",
+              },
+              {
+                title: "Points / Game",
+                field: "cumulativeStats.pointsPerGame",
+              },
+              {
+                title: "Playoff Points",
+                field: "cumulativeStats.totalPlayoffPoints",
+              },
+              {
+                title: "Playoff Games",
+                field: "cumulativeStats.totalPlayoffGames",
+              },
+              {
+                title: "Playoff Points / Game",
+                field: "cumulativeStats.playoffPointsPerGame",
+              },
+            ]}
+            data={owners}
+            options={{
+              padding: "dense",
+              paging: false,
+              search: false,
+              exportButton: true,
+            }}
+            title="Owners"
+          />
+        </>
       )}
     </div>
   );
