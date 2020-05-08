@@ -1,13 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Container from "react-bootstrap/Container";
-import Spinner from "react-bootstrap/Spinner";
+
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
+
+import LoadingSpinner from "./LoadingSpinner";
+
 import { GiTrophy } from "react-icons/gi";
 import { config } from "../api";
 import StatTable from "./StatTable";
 
+const useStyles = makeStyles({
+  statChip: {
+    margin: 5,
+  },
+  profileImage: {
+    borderRadius: 500,
+    border: "1px solid #0b878c",
+  },
+});
+
 function PlayerSummary({ match, history }) {
+  const classes = useStyles();
   const [player, setPlayer] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -29,73 +44,71 @@ function PlayerSummary({ match, history }) {
     (player && player.careerStats && player.careerStats.championships) || 0;
 
   return (
-    <div>
-      <Container className="p-3">
-        <Jumbotron>
-          <h1 className="header">Player Summary</h1>
+    <>
+      <Typography variant="h3" gutterBottom>
+        Player Summary
+      </Typography>
+
+      {loading && <LoadingSpinner isLoading={loading} />}
+      {!loading && (
+        <div>
           <img
+            className={classes.profileImage}
             src={`https://static.nfl.com/static/content/public/static/img/fantasy/transparent/200x200/${player.pictureId}.png`}
           />
           {!loading && <h2>{playerName}</h2>}
-          {[...Array(championships)].map(i => (
-            <span key={i}>
-              <GiTrophy />
-            </span>
+          {[...Array(championships)].map((i) => (
+            <Chip key={i} className={classes.statChip} label={<GiTrophy />} />
           ))}
-        </Jumbotron>
-        {loading && <Spinner className="spinner" animation="border" />}
-        {!loading && (
-          <div>
-            {auction.length > 0 && (
-              <StatTable
-                title="Auctions"
-                history={history}
-                statData={auction}
-                chosenColumns={[
-                  "year",
-                  "position",
-                  "owner.name",
-                  "fantasyTeam.name",
-                  "fantasyTeam.id",
-                  "price"
-                ]}
-              />
-            )}
-            <hr></hr>
+          {auction.length > 0 && (
             <StatTable
-              title="Season Stats"
+              title="Auctions"
               history={history}
-              statData={seasonStats}
+              statData={auction}
               chosenColumns={[
                 "year",
-                "gamesPlayed",
-                "ageAtSeason",
-                "experienceAtSeason",
-                "fantasyPointsReg",
-                "fantasyPointsPpr",
-                "rankReg",
-                "rankPpr"
-              ]}
-            />
-            <hr></hr>
-            <StatTable
-              title="Fantasy Starts"
-              history={history}
-              statData={fantasyStarts}
-              chosenColumns={[
-                "year",
-                "week",
                 "position",
-                "points",
                 "owner.name",
+                "fantasyTeam.name",
                 "fantasyTeam.id",
-                "fantasyTeam.name"
+                "price",
               ]}
             />
-          </div>
-        )}
-      </Container>
-    </div>
+          )}
+          <hr></hr>
+          <StatTable
+            title="Season Stats"
+            history={history}
+            statData={seasonStats}
+            chosenColumns={[
+              "year",
+              "gamesPlayed",
+              "ageAtSeason",
+              "experienceAtSeason",
+              "fantasyPointsReg",
+              "fantasyPointsPpr",
+              "rankReg",
+              "rankPpr",
+            ]}
+          />
+          <hr></hr>
+          <StatTable
+            title="Fantasy Starts"
+            history={history}
+            statData={fantasyStarts}
+            chosenColumns={[
+              "year",
+              "week",
+              "position",
+              "points",
+              "owner.name",
+              "fantasyTeam.id",
+              "fantasyTeam.name",
+            ]}
+          />
+        </div>
+      )}
+    </>
   );
 }
 

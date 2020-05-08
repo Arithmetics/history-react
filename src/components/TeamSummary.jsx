@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 
-import LoadingSpinner from "./LoadingSpinner";
-
 import Card from "react-bootstrap/Card";
-import Table from "react-bootstrap/Table";
-import { Link } from "react-router-dom";
+
+import LoadingSpinner from "./LoadingSpinner";
 import { config } from "../api";
 import StatTable from "./StatTable";
+import GameTable from "./GameTable";
 
 const useStyles = makeStyles((theme) => ({
   statChip: {
@@ -86,11 +86,13 @@ function TeamSummary({ match, history }) {
 
   return (
     <div>
-      <h1 className="header">Team Summary</h1>
+      <Typography variant="h3" gutterBottom>
+        Team Summary
+      </Typography>
       {!loading && (
         <>
-          <Typography variant="h3" gutterBottom>
-            {ownerName} - {year} - {fantasyTeamName}
+          <Typography variant="h5" gutterBottom>
+            {year}: {fantasyTeamName} ({ownerName})
           </Typography>
 
           <Chip
@@ -110,14 +112,6 @@ function TeamSummary({ match, history }) {
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
         <div>
-          {auction.length > 0 && (
-            <StatTable
-              title="Auctions"
-              statData={auction}
-              history={history}
-              chosenColumns={["player.id", "player.name", "position", "price"]}
-            />
-          )}
           <GameTable
             regularSeason={true}
             fantasyGames={regularSeasonGames}
@@ -128,6 +122,7 @@ function TeamSummary({ match, history }) {
               regularSeason={false}
               fantasyGames={playoffGames}
               fantasyTeamName={fantasyTeamName}
+              fantasyStartWeeks={fantasyStartWeeks}
             />
           )}
           <div className="startWeeks">
@@ -148,6 +143,14 @@ function TeamSummary({ match, history }) {
               </div>
             ))}
           </div>
+          {auction.length > 0 && (
+            <StatTable
+              title="Auction"
+              statData={auction}
+              history={history}
+              chosenColumns={["player.id", "player.name", "position", "price"]}
+            />
+          )}
         </div>
       )}
     </div>
@@ -189,63 +192,3 @@ function weekTotal(startWeek) {
 }
 
 export default TeamSummary;
-
-function GameTable({ regularSeason, fantasyGames, fantasyTeamName }) {
-  return (
-    <>
-      <h3>{regularSeason ? "Regular Season" : "Playoffs"}</h3>
-      <Table striped bordered hover size="sm">
-        <thead>
-          <tr>
-            <th>Week</th>
-            <th>Away Team</th>
-            <th>Away Score</th>
-            <th>Home Score</th>
-            <th>Home Team</th>
-          </tr>
-        </thead>
-        <tbody>
-          {fantasyGames.map((game, i) => (
-            <tr
-              key={i}
-              className={
-                wonGame(fantasyTeamName, game)
-                  ? "table-success"
-                  : "table-danger"
-              }
-            >
-              <td>{game.week}</td>
-              <td>
-                <Link to={`/fantasyTeams/${game.awayTeam && game.awayTeam.id}`}>
-                  {game.awayTeam && game.awayTeam.name}
-                </Link>
-              </td>
-              <td>{game.awayScore}</td>
-              <td>{game.homeScore}</td>
-              <td>
-                <Link to={`/fantasyTeams/${game.homeTeam && game.homeTeam.id}`}>
-                  {game.homeTeam && game.homeTeam.name}
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </>
-  );
-}
-
-function wonGame(teamName, game) {
-  if (teamName === (game.homeTeam && game.homeTeam.name)) {
-    if (game.homeScore > game.awayScore) {
-      return true;
-    }
-    return false;
-  } else if (teamName === (game.awayTeam && game.awayTeam.name)) {
-    if (game.awayScore > game.homeScore) {
-      return true;
-    }
-    return false;
-  }
-  return false;
-}
