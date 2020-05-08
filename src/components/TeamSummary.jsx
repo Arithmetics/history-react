@@ -1,15 +1,65 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Container from "react-bootstrap/Container";
-import Spinner from "react-bootstrap/Spinner";
+
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Chip from "@material-ui/core/Chip";
+
+import LoadingSpinner from "./LoadingSpinner";
+
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 import { config } from "../api";
 import StatTable from "./StatTable";
 
+const useStyles = makeStyles((theme) => ({
+  statChip: {
+    margin: 5,
+  },
+  expansion: {
+    marginTop: 20,
+  },
+  panelTop: {
+    borderBottom: "grey solid 1px",
+  },
+  teamsArea: {
+    padding: 10,
+    display: "block",
+  },
+  teamCard: {
+    width: "98%",
+    backgroundColor: "#4e5563",
+    margin: "10px auto",
+    display: "flex",
+    borderRadius: 15,
+  },
+  teamCardContent: {
+    padding: "10px !important",
+    display: "flex",
+    alignItems: "baseline",
+    width: "100%",
+    flexWrap: "wrap",
+  },
+  teamCardContentItem: {
+    marginRight: 20,
+  },
+  teamName: {
+    width: 230,
+    textOverflow: "ellipsis",
+    flexGrow: 1,
+  },
+  resultIcon: {
+    fontSize: 25,
+    minWidth: 25,
+  },
+  grow: {
+    flexGrow: 3,
+  },
+}));
+
 function TeamSummary({ match, history }) {
+  const classes = useStyles();
   const [fantasyTeam, setTeam] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -31,76 +81,75 @@ function TeamSummary({ match, history }) {
   const auction = (fantasyTeam && fantasyTeam.purchases) || [];
   const fantasyGames = (fantasyTeam && fantasyTeam.fantasyGames) || [];
   const cuumulativeStats = (fantasyTeam && fantasyTeam.cuumulativeStats) || {};
-  const regularSeasonGames = fantasyGames.filter(game => game.week < 14);
-  const playoffGames = fantasyGames.filter(game => game.week > 13);
+  const regularSeasonGames = fantasyGames.filter((game) => game.week < 14);
+  const playoffGames = fantasyGames.filter((game) => game.week > 13);
 
   return (
     <div>
-      <Container className="p-3">
-        <Jumbotron>
-          <h1 className="header">Team Summary</h1>
-          {!loading && (
-            <div>
-              <h2 className="header">
-                {ownerName} - {year} - {fantasyTeamName}
-              </h2>
-              <h3 className="header">
-                Record: ({cuumulativeStats.seasonWins} -{" "}
-                {13 - cuumulativeStats.seasonWins}), Points:
-                {Math.round(cuumulativeStats.seasonPoints)}
-              </h3>
-            </div>
+      <h1 className="header">Team Summary</h1>
+      {!loading && (
+        <>
+          <Typography variant="h3" gutterBottom>
+            {ownerName} - {year} - {fantasyTeamName}
+          </Typography>
+
+          <Chip
+            className={classes.statChip}
+            label={`Record: (${cuumulativeStats.seasonWins} - 
+            ${13 - cuumulativeStats.seasonWins})`}
+          />
+          <Chip
+            className={classes.statChip}
+            label={`Season Points: ${Math.round(
+              cuumulativeStats.seasonPoints
+            )}`}
+          />
+        </>
+      )}
+
+      {loading && <LoadingSpinner isLoading={loading} />}
+      {!loading && (
+        <div>
+          {auction.length > 0 && (
+            <StatTable
+              title="Auctions"
+              statData={auction}
+              history={history}
+              chosenColumns={["player.id", "player.name", "position", "price"]}
+            />
           )}
-        </Jumbotron>
-        {loading && <Spinner className="spinner" animation="border" />}
-        {!loading && (
-          <div>
-            {auction.length > 0 && (
-              <StatTable
-                title="Auctions"
-                statData={auction}
-                history={history}
-                chosenColumns={[
-                  "player.id",
-                  "player.name",
-                  "position",
-                  "price"
-                ]}
-              />
-            )}
+          <GameTable
+            regularSeason={true}
+            fantasyGames={regularSeasonGames}
+            fantasyTeamName={fantasyTeamName}
+          />
+          {playoffGames.length > 0 && (
             <GameTable
-              regularSeason={true}
-              fantasyGames={regularSeasonGames}
+              regularSeason={false}
+              fantasyGames={playoffGames}
               fantasyTeamName={fantasyTeamName}
             />
-            {playoffGames.length > 0 && (
-              <GameTable
-                regularSeason={false}
-                fantasyGames={playoffGames}
-                fantasyTeamName={fantasyTeamName}
-              />
-            )}
-            <div className="startWeeks">
-              {Object.keys(fantasyStartWeeks).map((startWeek, i) => (
-                <div key={startWeek}>
-                  <Card className="startWeeks__card">
-                    <Card.Body>
-                      <Card.Title>
-                        week: {startWeek} -{" "}
-                        {weekTotal(fantasyStartWeeks[startWeek])}
-                      </Card.Title>
-                      <StartWeek
-                        key={i}
-                        startWeek={fantasyStartWeeks[startWeek]}
-                      />
-                    </Card.Body>
-                  </Card>
-                </div>
-              ))}
-            </div>
+          )}
+          <div className="startWeeks">
+            {Object.keys(fantasyStartWeeks).map((startWeek, i) => (
+              <div key={startWeek}>
+                <Card className="startWeeks__card">
+                  <Card.Body>
+                    <Card.Title>
+                      week: {startWeek} -{" "}
+                      {weekTotal(fantasyStartWeeks[startWeek])}
+                    </Card.Title>
+                    <StartWeek
+                      key={i}
+                      startWeek={fantasyStartWeeks[startWeek]}
+                    />
+                  </Card.Body>
+                </Card>
+              </div>
+            ))}
           </div>
-        )}
-      </Container>
+        </div>
+      )}
     </div>
   );
 }
@@ -129,7 +178,7 @@ function Start({ start }) {
 
 function weekTotal(startWeek) {
   let total = 0;
-  startWeek.forEach(start => {
+  startWeek.forEach((start) => {
     if (
       ["QB", "RB", "WR", "TE", "Q/R/W/T", "DEF", "K"].includes(start.position)
     ) {

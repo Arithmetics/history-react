@@ -75,9 +75,7 @@ export default function TopToolBar({ handleDrawerOpen, isOpen }) {
           noWrap
           className={classes.title}
         >
-          the
-          <img className={classes.mainIcon} src="/main_icon.png" />
-          lab
+          <img className={classes.mainIcon} src="/the_lab_logo-white.svg" />
         </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
