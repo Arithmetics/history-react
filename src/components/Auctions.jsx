@@ -1,11 +1,39 @@
 import React, { useState, useEffect } from "react";
-import Jumbotron from "react-bootstrap/Jumbotron";
 import axios from "axios";
+
+import MaterialTable from "material-table";
 
 import Typography from "@material-ui/core/Typography";
 import LoadingSpinner from "./LoadingSpinner";
 import { config } from "../api";
 import StatTable from "./StatTable";
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+const getNestedObject = (nestedObj, pathArr) => {
+  return pathArr.reduce(
+    (obj, key) => (obj && obj[key] !== "undefined" ? obj[key] : undefined),
+    nestedObj
+  );
+};
+
+function createLookup(data, fields) {
+  return data
+    .map((row) => getNestedObject(row, fields))
+    .filter(onlyUnique)
+    .reduce((a, b) => ((a[b] = b), a), {});
+}
+
+function filterBetween(term, rowData, rowDataFields) {
+  const sortingField = getNestedObject(rowData, rowDataFields);
+  const numbers = term.replace(/\s+/g, "").split("-");
+  if (numbers.length != 2) return false;
+  const low = numbers[0];
+  const high = numbers[1];
+  return low <= sortingField && high >= sortingField;
+}
 
 function Auctions(props) {
   const [auction, setAuction] = useState([]);
@@ -36,24 +64,85 @@ function Auctions(props) {
       </Typography>
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
-        <StatTable
-          title="Auctions"
-          history={props.history}
-          statData={cleanedAuction}
-          chosenColumns={[
-            "id",
-            "player.id",
-            "year",
-            "player.name",
-            "position",
-            "owner.name",
-            "fantasyTeam.id",
-            "fantasyTeam.name",
-            "price",
-            "player.rankReg",
-            "player.rankPpr",
-          ]}
-        />
+        <>
+          <MaterialTable
+            columns={[
+              {
+                title: "Player",
+                field: "player.name",
+                filtering: false,
+                render: (rowData) => (
+                  <a href={`/players/${rowData.player.id}`}>
+                    {rowData.player.name}
+                  </a>
+                ),
+              },
+              {
+                title: "Year",
+                field: "year",
+                lookup: createLookup(cleanedAuction, ["year"]),
+              },
+              {
+                title: "Position",
+                field: "position",
+                lookup: createLookup(cleanedAuction, ["position"]),
+              },
+              {
+                title: "Owner",
+                field: "owner.name",
+                lookup: createLookup(cleanedAuction, ["owner", "name"]),
+                render: (rowData) => (
+                  <a href={`/owners/${rowData.owner.id}`}>
+                    {rowData.owner.name}
+                  </a>
+                ),
+              },
+              {
+                title: "Team",
+                field: "fantasyTeam.name",
+                lookup: createLookup(cleanedAuction, ["fantasyTeam", "name"]),
+                render: (rowData) => (
+                  <a href={`/fantasyTeams/${rowData.fantasyTeam.id}`}>
+                    {rowData.fantasyTeam.name}
+                  </a>
+                ),
+              },
+              {
+                title: "Price",
+                field: "price",
+                customFilterAndSearch: (term, rowData) =>
+                  filterBetween(term, rowData, ["price"]),
+              },
+              {
+                title: "Final Season Rank",
+                field: "player.rankReg",
+                customFilterAndSearch: (term, rowData) =>
+                  filterBetween(term, rowData, ["player", "rankReg"]),
+              },
+              {
+                title: "Final Season Rank PPR",
+                field: "player.rankPpr",
+                customFilterAndSearch: (term, rowData) =>
+                  filterBetween(term, rowData, ["player", "rankPpr"]),
+              },
+            ]}
+            data={cleanedAuction}
+            options={{
+              filtering: true,
+              padding: "dense",
+              paging: true,
+              pageSize: 50,
+              pageSizeOptions: [50, 100, cleanedAuction.length],
+              search: true,
+              exportButton: true,
+              emptyRowsWhenPaging: false,
+              exportAllData: true,
+              showTitle: false,
+              emptyRowsWhenPaging: false,
+            }}
+            title="All Aquisitions"
+          />
+        </>
       )}
     </>
   );

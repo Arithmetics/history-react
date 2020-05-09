@@ -5,7 +5,6 @@ import MaterialTable from "material-table";
 import Typography from "@material-ui/core/Typography";
 
 import LoadingSpinner from "../LoadingSpinner";
-import StatTable from "../StatTable";
 import { config } from "../../api";
 
 function Owners(props) {
