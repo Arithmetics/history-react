@@ -14,6 +14,8 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
+import MaterialTable from "material-table";
+
 import { GiTrophy } from "react-icons/gi";
 import { GiPodiumSecond } from "react-icons/gi";
 import { GiPodiumThird } from "react-icons/gi";
@@ -187,17 +189,29 @@ function Owner(props) {
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              <StatTable
+              <MaterialTable
                 title="Versus Records"
-                history={props.history}
-                statData={versusRecords}
-                chosenColumns={[
-                  "id",
-                  "name",
-                  "wins",
-                  "losses",
-                  "winPct",
-                  "streak",
+                data={versusRecords}
+                options={{
+                  padding: "dense",
+                  paging: false,
+                  search: false,
+                  exportButton: true,
+                  exportAllData: true,
+                  showTitle: false,
+                }}
+                columns={[
+                  {
+                    title: "Owner",
+                    field: "name",
+                    render: (rowData) => (
+                      <a href={`/owners/${rowData.id}`}>{rowData.name}</a>
+                    ),
+                  },
+                  { title: "Wins", field: "wins" },
+                  { title: "Losses", field: "losses" },
+                  { title: "Win Percentage", field: "winPct" },
+                  { title: "Current Streak", field: "streak" },
                 ]}
               />
             </ExpansionPanelDetails>

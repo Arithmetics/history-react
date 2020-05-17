@@ -11,6 +11,7 @@ import PlayerSummary from "./components/players/PlayerSummary";
 import AllPlayers from "./components/players/AllPlayers";
 import Auctions from "./components/Auctions";
 import Podcasts from "./components/Podcasts";
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
         <BrowserRouter>
           <MainWrapper>
             <Switch>
-              <Route exact path="/" component={null} />
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/Home" component={HomePage} />
               <Route exact path="/owners/:id" component={Owner} />
               <Route exact path="/owners" component={Owners} />
               <Route exact path="/fantasyTeams/:id" component={TeamSummary} />
