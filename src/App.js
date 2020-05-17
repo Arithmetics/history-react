@@ -7,8 +7,8 @@ import Owners from "./components/owners/Owners";
 import Owner from "./components/owners/Owner";
 import MainWrapper from "./components/wrapper/MainWrapper";
 import TeamSummary from "./components/TeamSummary";
-import PlayerSummary from "./components/PlayerSummary";
-import AllPlayers from "./components/AllPlayers";
+import PlayerSummary from "./components/players/PlayerSummary";
+import AllPlayers from "./components/players/AllPlayers";
 import Auctions from "./components/Auctions";
 import Podcasts from "./components/Podcasts";
 

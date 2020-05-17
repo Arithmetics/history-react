@@ -6,34 +6,8 @@ import MaterialTable from "material-table";
 import Typography from "@material-ui/core/Typography";
 import LoadingSpinner from "./LoadingSpinner";
 import { config } from "../api";
-import StatTable from "./StatTable";
 
-function onlyUnique(value, index, self) {
-  return self.indexOf(value) === index;
-}
-
-const getNestedObject = (nestedObj, pathArr) => {
-  return pathArr.reduce(
-    (obj, key) => (obj && obj[key] !== "undefined" ? obj[key] : undefined),
-    nestedObj
-  );
-};
-
-function createLookup(data, fields) {
-  return data
-    .map((row) => getNestedObject(row, fields))
-    .filter(onlyUnique)
-    .reduce((a, b) => ((a[b] = b), a), {});
-}
-
-function filterBetween(term, rowData, rowDataFields) {
-  const sortingField = getNestedObject(rowData, rowDataFields);
-  const numbers = term.replace(/\s+/g, "").split("-");
-  if (numbers.length != 2) return false;
-  const low = numbers[0];
-  const high = numbers[1];
-  return low <= sortingField && high >= sortingField;
-}
+import { createLookup, filterBetween } from "./materialTableHelpers";
 
 function Auctions(props) {
   const [auction, setAuction] = useState([]);
@@ -66,6 +40,21 @@ function Auctions(props) {
       {!loading && (
         <>
           <MaterialTable
+            title="All Aquisitions"
+            data={cleanedAuction}
+            options={{
+              filtering: true,
+              padding: "dense",
+              paging: true,
+              pageSize: 50,
+              pageSizeOptions: [50, 100, cleanedAuction.length],
+              search: true,
+              exportButton: true,
+              emptyRowsWhenPaging: false,
+              exportAllData: true,
+              showTitle: false,
+              emptyRowsWhenPaging: false,
+            }}
             columns={[
               {
                 title: "Player",
@@ -126,21 +115,6 @@ function Auctions(props) {
                   filterBetween(term, rowData, ["player", "rankPpr"]),
               },
             ]}
-            data={cleanedAuction}
-            options={{
-              filtering: true,
-              padding: "dense",
-              paging: true,
-              pageSize: 50,
-              pageSizeOptions: [50, 100, cleanedAuction.length],
-              search: true,
-              exportButton: true,
-              emptyRowsWhenPaging: false,
-              exportAllData: true,
-              showTitle: false,
-              emptyRowsWhenPaging: false,
-            }}
-            title="All Aquisitions"
           />
         </>
       )}

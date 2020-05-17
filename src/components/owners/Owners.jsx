@@ -30,6 +30,15 @@ function Owners(props) {
       {!loading && (
         <>
           <MaterialTable
+            data={owners}
+            options={{
+              padding: "dense",
+              paging: false,
+              search: false,
+              showTitle: false,
+              exportButton: true,
+            }}
+            title="Owners"
             columns={[
               {
                 title: "Name",
@@ -67,14 +76,6 @@ function Owners(props) {
                 field: "cumulativeStats.playoffPointsPerGame",
               },
             ]}
-            data={owners}
-            options={{
-              padding: "dense",
-              paging: false,
-              search: false,
-              exportButton: true,
-            }}
-            title="Owners"
           />
         </>
       )}
