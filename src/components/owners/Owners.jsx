@@ -72,6 +72,10 @@ function Owners(props) {
                 field: "cumulativeStats.totalPlayoffGames",
               },
               {
+                title: "Playoff Wins",
+                field: "cumulativeStats.totalPlayoffWins",
+              },
+              {
                 title: "Playoff Points / Game",
                 field: "cumulativeStats.playoffPointsPerGame",
               },
