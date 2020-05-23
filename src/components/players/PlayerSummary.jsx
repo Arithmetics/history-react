@@ -10,7 +10,6 @@ import LoadingSpinner from "../LoadingSpinner";
 
 import { GiTrophy } from "react-icons/gi";
 import { config } from "../../api";
-import StatTable from "../StatTable";
 
 import { createLookup, filterBetween } from "../materialTableHelpers";
 

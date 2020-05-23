@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
+import MaterialTable from "material-table";
 
-import Card from "react-bootstrap/Card";
-
-import LoadingSpinner from "./LoadingSpinner";
-import { config } from "../api";
-import StatTable from "./StatTable";
+import LoadingSpinner from "../LoadingSpinner";
+import { config } from "../../api";
 import GameTable from "./GameTable";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TeamSummary({ match, history }) {
+export default function TeamSummary({ match, history }) {
   const classes = useStyles();
   const [fantasyTeam, setTeam] = useState({});
   const [loading, setLoading] = useState(true);
@@ -116,6 +113,7 @@ function TeamSummary({ match, history }) {
             regularSeason={true}
             fantasyGames={regularSeasonGames}
             fantasyTeamName={fantasyTeamName}
+            fantasyStartWeeks={fantasyStartWeeks}
           />
           {playoffGames.length > 0 && (
             <GameTable
@@ -125,30 +123,38 @@ function TeamSummary({ match, history }) {
               fantasyStartWeeks={fantasyStartWeeks}
             />
           )}
-          <div className="startWeeks">
-            {Object.keys(fantasyStartWeeks).map((startWeek, i) => (
-              <div key={startWeek}>
-                <Card className="startWeeks__card">
-                  <Card.Body>
-                    <Card.Title>
-                      week: {startWeek} -{" "}
-                      {weekTotal(fantasyStartWeeks[startWeek])}
-                    </Card.Title>
-                    <StartWeek
-                      key={i}
-                      startWeek={fantasyStartWeeks[startWeek]}
-                    />
-                  </Card.Body>
-                </Card>
-              </div>
-            ))}
-          </div>
           {auction.length > 0 && (
-            <StatTable
+            <MaterialTable
               title="Auction"
-              statData={auction}
-              history={history}
-              chosenColumns={["player.id", "player.name", "position", "price"]}
+              data={auction}
+              options={{
+                filtering: false,
+                padding: "dense",
+                paging: false,
+                search: false,
+                exportButton: true,
+                exportAllData: true,
+                showTitle: true,
+              }}
+              columns={[
+                {
+                  title: "Player",
+                  field: "player.name",
+                  render: (rowData) => (
+                    <a href={`/players/${rowData.player.id}`}>
+                      {rowData.player.name}
+                    </a>
+                  ),
+                },
+                {
+                  title: "Position",
+                  field: "position",
+                },
+                {
+                  title: "Price",
+                  field: "price",
+                },
+              ]}
             />
           )}
         </div>
@@ -156,39 +162,3 @@ function TeamSummary({ match, history }) {
     </div>
   );
 }
-
-function StartWeek({ startWeek }) {
-  return (
-    <div>
-      {startWeek.map((start, index) => (
-        <Start key={index} start={start} />
-      ))}
-    </div>
-  );
-}
-
-function Start({ start }) {
-  return (
-    <div>
-      <strong>{start.position}</strong>:{" "}
-      <Link to={`/players/${start.player && start.player.id}`}>
-        {start.player && start.player.name}
-      </Link>
-      - {start.points}
-    </div>
-  );
-}
-
-function weekTotal(startWeek) {
-  let total = 0;
-  startWeek.forEach((start) => {
-    if (
-      ["QB", "RB", "WR", "TE", "Q/R/W/T", "DEF", "K"].includes(start.position)
-    ) {
-      total += start.points;
-    }
-  });
-  return Math.round(total * 100) / 100;
-}
-
-export default TeamSummary;

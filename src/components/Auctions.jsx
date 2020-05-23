@@ -53,7 +53,6 @@ function Auctions(props) {
               emptyRowsWhenPaging: false,
               exportAllData: true,
               showTitle: false,
-              emptyRowsWhenPaging: false,
             }}
             columns={[
               {

@@ -20,7 +20,6 @@ import { GiTrophy } from "react-icons/gi";
 import { GiPodiumSecond } from "react-icons/gi";
 import { GiPodiumThird } from "react-icons/gi";
 
-import StatTable from "../StatTable";
 import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
 

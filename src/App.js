@@ -6,7 +6,7 @@ import theme from "./theme";
 import Owners from "./components/owners/Owners";
 import Owner from "./components/owners/Owner";
 import MainWrapper from "./components/wrapper/MainWrapper";
-import TeamSummary from "./components/TeamSummary";
+import TeamSummary from "./components/fantasyTeam/TeamSummary";
 import PlayerSummary from "./components/players/PlayerSummary";
 import AllPlayers from "./components/players/AllPlayers";
 import Auctions from "./components/Auctions";
