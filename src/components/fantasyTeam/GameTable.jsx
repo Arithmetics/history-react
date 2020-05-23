@@ -33,7 +33,6 @@ export default function GameTable({
   regularSeason,
   fantasyGames,
   fantasyTeamName,
-  fantasyStartWeeks,
 }) {
   const classes = useStyles();
 
@@ -57,7 +56,12 @@ export default function GameTable({
         detailPanel={(rowData) => {
           return (
             <RostersTable
-              homeRoster={fantasyStartWeeks[rowData.week.toString()]}
+              homeRoster={
+                rowData.homeTeam.fantasyStarts[rowData.week.toString()]
+              }
+              awayRoster={
+                rowData.awayTeam.fantasyStarts[rowData.week.toString()]
+              }
             />
           );
         }}

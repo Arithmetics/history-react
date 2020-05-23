@@ -70,7 +70,7 @@ export default function TeamSummary({ match, history }) {
     fetchData();
   }, [match.params.id]);
 
-  const fantasyStartWeeks = (fantasyTeam && fantasyTeam.fantasyStarts) || {};
+  // const fantasyStartWeeks = (fantasyTeam && fantasyTeam.fantasyStarts) || {};
   const ownerName =
     (fantasyTeam && fantasyTeam.owner && fantasyTeam.owner.name) || "";
   const fantasyTeamName = (fantasyTeam && fantasyTeam.name) || "";
@@ -113,14 +113,14 @@ export default function TeamSummary({ match, history }) {
             regularSeason={true}
             fantasyGames={regularSeasonGames}
             fantasyTeamName={fantasyTeamName}
-            fantasyStartWeeks={fantasyStartWeeks}
+            // fantasyStartWeeks={fantasyStartWeeks}
           />
           {playoffGames.length > 0 && (
             <GameTable
               regularSeason={false}
               fantasyGames={playoffGames}
               fantasyTeamName={fantasyTeamName}
-              fantasyStartWeeks={fantasyStartWeeks}
+              // fantasyStartWeeks={fantasyStartWeeks}
             />
           )}
           {auction.length > 0 && (
