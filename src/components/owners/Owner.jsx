@@ -129,7 +129,7 @@ function Owner(props) {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails className={classes.teamsArea}>
               {fantasyTeams.reverse().map((team) => (
-                <Card className={classes.teamCard}>
+                <Card className={classes.teamCard} key={team.year}>
                   <CardContent className={classes.teamCardContent}>
                     <Typography className={classes.teamCardContentItem}>
                       {team.year}

@@ -16,7 +16,6 @@ function Auctions(props) {
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/purchases.json`);
-      console.log(result);
       setAuction((result && result.data && result.data.purchases) || []);
       setLoading(false);
     };

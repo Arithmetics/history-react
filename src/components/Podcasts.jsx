@@ -25,11 +25,12 @@ function Podcasts() {
       {podLinks.map((podLink, i) => {
         return (
           <iframe
+            key={podLink}
             title={`podcast-${i}`}
             width="50%"
             height="300"
             scrolling="no"
-            frameborder="no"
+            frameBorder="no"
             allow="autoplay"
             src={podLink}
           ></iframe>

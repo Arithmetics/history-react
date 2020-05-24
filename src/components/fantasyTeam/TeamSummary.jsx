@@ -113,14 +113,12 @@ export default function TeamSummary({ match, history }) {
             regularSeason={true}
             fantasyGames={regularSeasonGames}
             fantasyTeamName={fantasyTeamName}
-            // fantasyStartWeeks={fantasyStartWeeks}
           />
           {playoffGames.length > 0 && (
             <GameTable
               regularSeason={false}
               fantasyGames={playoffGames}
               fantasyTeamName={fantasyTeamName}
-              // fantasyStartWeeks={fantasyStartWeeks}
             />
           )}
           {auction.length > 0 && (
