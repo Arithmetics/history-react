@@ -10,7 +10,6 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListSubheader from "@material-ui/core/ListSubheader";
 
 import HomeIcon from "@material-ui/icons/Home";
 import PeopleIcon from "@material-ui/icons/People";
@@ -97,7 +96,12 @@ export default function SideMenu({ isOpen, handleDrawerClose }) {
       <List>
         {sideLinks.map((link) => {
           return (
-            <ListItem button component="a" href={`/${link.page}`}>
+            <ListItem
+              key={link.page}
+              button
+              component="a"
+              href={`/${link.page}`}
+            >
               <ListItemIcon>{link.icon}</ListItemIcon>
               <ListItemText primary={link.page} />
             </ListItem>

@@ -6,6 +6,7 @@ export default function HomePage() {
     <>
       <Typography>Welcome to the lab....</Typography>
       <iframe
+        title="old lotto"
         width="560"
         height="315"
         src="https://www.youtube.com/embed/TVTJwGAjkog"

@@ -8,8 +8,6 @@ import Copyright from "./Copyright";
 import TopToolBar from "./TopToolBar";
 import SideMenu from "./SideMenu";
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",

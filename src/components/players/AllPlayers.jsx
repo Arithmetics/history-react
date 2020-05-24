@@ -46,7 +46,6 @@ function AllPlayers({ match, history }) {
               emptyRowsWhenPaging: false,
               exportAllData: true,
               showTitle: false,
-              emptyRowsWhenPaging: false,
             }}
             columns={[
               {

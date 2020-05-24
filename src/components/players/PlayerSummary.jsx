@@ -60,6 +60,7 @@ function PlayerSummary({ match, history }) {
       {!loading && (
         <div>
           <img
+            alt="player-profile-pic"
             className={classes.profileImage}
             src={`https://static.nfl.com/static/content/public/static/img/fantasy/transparent/200x200/${player.pictureId}.png`}
           />
