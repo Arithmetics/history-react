@@ -133,6 +133,7 @@ function PlayerSummary({ match, history }) {
               search: true,
               exportButton: true,
               exportAllData: true,
+              paging: false,
             }}
             columns={[
               {
