@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import clsx from "clsx";
 
@@ -14,6 +13,7 @@ import { config } from "../api";
 export default function HomePage() {
   const [versusRecords, setVersusRecords] = useState([]);
   const [scheduledGames, setScheduledGames] = useState([]);
+  const [firstStarts, setFirstStarts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +25,7 @@ export default function HomePage() {
       setScheduledGames(
         (result && result.data && result.data.scheduledGames) || []
       );
+      setFirstStarts((result && result.data && result.data.firstStarts) || []);
       setLoading(false);
     };
     fetchData();
@@ -68,6 +69,7 @@ export default function HomePage() {
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
         <>
+          <br></br>
           <MaterialTable
             data={scheduledGames}
             options={{
@@ -152,6 +154,46 @@ export default function HomePage() {
                 render: (rowData) => (
                   <a href={`/owners/${rowData.homeTeam.owner.id}`}>
                     {rowData.homeTeam.owner.name}
+                  </a>
+                ),
+              },
+            ]}
+          />
+          <br></br>
+          <MaterialTable
+            data={firstStarts}
+            options={{
+              paging: false,
+              sorting: false,
+              search: false,
+              showTitle: true,
+              exportButton: false,
+            }}
+            title={`First Time Starters Last Week`}
+            columns={[
+              {
+                title: "Player",
+                field: "player.name",
+                render: (rowData) => (
+                  <a href={`/players/${rowData.player.id}`}>
+                    {rowData.player.name}
+                  </a>
+                ),
+              },
+              {
+                title: "Points",
+                field: "points",
+              },
+              {
+                title: "Week",
+                field: "week",
+              },
+              {
+                title: "Team",
+                field: "fantasyTeam.name",
+                render: (rowData) => (
+                  <a href={`/fantasyTeams/${rowData.fantasyTeam.id}`}>
+                    {rowData.fantasyTeam.name}
                   </a>
                 ),
               },
