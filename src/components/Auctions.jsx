@@ -101,6 +101,12 @@ function Auctions(props) {
                   filterBetween(term, rowData, ["price"]),
               },
               {
+                title: "Preseason Draft Rank",
+                field: "player.preSeasonRank",
+                customFilterAndSearch: (term, rowData) =>
+                  filterBetween(term, rowData, ["player", "preSeasonRank"]),
+              },
+              {
                 title: "Final Season Rank",
                 field: "player.rankReg",
                 customFilterAndSearch: (term, rowData) =>

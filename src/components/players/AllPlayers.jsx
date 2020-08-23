@@ -106,6 +106,15 @@ function AllPlayers({ match, history }) {
                   filterBetween(term, rowData, ["careerStats", "bestStart"]),
               },
               {
+                title: "Best Pre-Season Draft Rank",
+                field: "careerStats.bestPreseasonRank",
+                customFilterAndSearch: (term, rowData) =>
+                  filterBetween(term, rowData, [
+                    "careerStats",
+                    "bestPreseasonRank",
+                  ]),
+              },
+              {
                 title: "Best Final Season Rank Reg",
                 field: "careerStats.bestRegRank",
                 customFilterAndSearch: (term, rowData) =>

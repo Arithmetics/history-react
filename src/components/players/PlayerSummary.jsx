@@ -50,6 +50,8 @@ function PlayerSummary({ match, history }) {
   const championships =
     (player && player.careerStats && player.careerStats.championships) || 0;
 
+  console.log(player);
+
   return (
     <>
       <Typography variant="h3" gutterBottom>
@@ -167,6 +169,11 @@ function PlayerSummary({ match, history }) {
               {
                 title: "Fantasy Points PPR",
                 field: "fantasyPointsPpr",
+                filtering: false,
+              },
+              {
+                title: "Preseason Draft Rank",
+                field: "preseasonRank",
                 filtering: false,
               },
               {
