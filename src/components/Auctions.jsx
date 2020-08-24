@@ -8,6 +8,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import { config } from "../api";
 
 import { createLookup, filterBetween } from "./materialTableHelpers";
+import HeaderCellWithTooltip from "./materialTableElements";
 
 function Auctions(props) {
   const [auction, setAuction] = useState([]);
@@ -65,17 +66,17 @@ function Auctions(props) {
                 ),
               },
               {
-                title: "Year",
+                title: <HeaderCellWithTooltip abbr={"YEAR"} />,
                 field: "year",
                 lookup: createLookup(cleanedAuction, ["year"]),
               },
               {
-                title: "Position",
+                title: <HeaderCellWithTooltip abbr={"POS"} />,
                 field: "position",
                 lookup: createLookup(cleanedAuction, ["position"]),
               },
               {
-                title: "Owner",
+                title: <HeaderCellWithTooltip abbr={"OWN"} />,
                 field: "owner.name",
                 lookup: createLookup(cleanedAuction, ["owner", "name"]),
                 render: (rowData) => (
@@ -85,7 +86,7 @@ function Auctions(props) {
                 ),
               },
               {
-                title: "Team",
+                title: <HeaderCellWithTooltip abbr={"TEAM"} />,
                 field: "fantasyTeam.name",
                 lookup: createLookup(cleanedAuction, ["fantasyTeam", "name"]),
                 render: (rowData) => (
@@ -95,25 +96,25 @@ function Auctions(props) {
                 ),
               },
               {
-                title: "Price",
+                title: <HeaderCellWithTooltip abbr={"PRC"} />,
                 field: "price",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["price"]),
               },
               {
-                title: "Preseason Draft Rank",
+                title: <HeaderCellWithTooltip abbr={"PDR"} />,
                 field: "player.preSeasonRank",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["player", "preSeasonRank"]),
               },
               {
-                title: "Final Season Rank",
+                title: <HeaderCellWithTooltip abbr={"FSR"} />,
                 field: "player.rankReg",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["player", "rankReg"]),
               },
               {
-                title: "Final Season Rank PPR",
+                title: <HeaderCellWithTooltip abbr={"FSRP"} />,
                 field: "player.rankPpr",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["player", "rankPpr"]),
