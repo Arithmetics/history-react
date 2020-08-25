@@ -56,7 +56,7 @@ function Auctions(props) {
             }}
             columns={[
               {
-                title: "Player",
+                title: <HeaderCellWithTooltip abbr={"PN"} />,
                 field: "player.name",
                 filtering: false,
                 render: (rowData) => (

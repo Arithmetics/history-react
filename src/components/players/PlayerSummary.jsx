@@ -13,6 +13,8 @@ import { config } from "../../api";
 
 import { createLookup, filterBetween } from "../materialTableHelpers";
 
+import HeaderCellWithTooltip from "../materialTableElements";
+
 const useStyles = makeStyles({
   statChip: {
     margin: 5,
@@ -85,17 +87,17 @@ function PlayerSummary({ match, history }) {
                 }}
                 columns={[
                   {
-                    title: "Year",
+                    title: <HeaderCellWithTooltip abbr={"YEAR"} />,
                     field: "year",
                     lookup: createLookup(auction, ["year"]),
                   },
                   {
-                    title: "Position",
+                    title: <HeaderCellWithTooltip abbr={"POS"} />,
                     field: "position",
                     lookup: createLookup(auction, ["position"]),
                   },
                   {
-                    title: "Owner",
+                    title: <HeaderCellWithTooltip abbr={"OWN"} />,
                     field: "owner.name",
                     lookup: createLookup(auction, ["owner", "name"]),
                     render: (rowData) => (
@@ -105,7 +107,7 @@ function PlayerSummary({ match, history }) {
                     ),
                   },
                   {
-                    title: "Team",
+                    title: <HeaderCellWithTooltip abbr={"TEAM"} />,
                     field: "fantasyTeam.name",
                     lookup: createLookup(auction, ["fantasyTeam", "name"]),
                     render: (rowData) => (
@@ -115,7 +117,7 @@ function PlayerSummary({ match, history }) {
                     ),
                   },
                   {
-                    title: "Price",
+                    title: <HeaderCellWithTooltip abbr={"PRC"} />,
                     field: "price",
                     customFilterAndSearch: (term, rowData) =>
                       filterBetween(term, rowData, ["price"]),
@@ -139,50 +141,50 @@ function PlayerSummary({ match, history }) {
             }}
             columns={[
               {
-                title: "Year",
+                title: <HeaderCellWithTooltip abbr={"YEAR"} />,
                 field: "year",
                 lookup: createLookup(seasonStats, ["year"]),
               },
               {
-                title: "Games Played",
+                title: <HeaderCellWithTooltip abbr={"GP"} />,
                 field: "gamesPlayed",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["gamesPlayed"]),
               },
               {
-                title: "Age",
+                title: <HeaderCellWithTooltip abbr={"AGE"} />,
                 field: "ageAtSeason",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["ageAtSeason"]),
               },
               {
-                title: "Experience",
+                title: <HeaderCellWithTooltip abbr={"EXP"} />,
                 field: "experienceAtSeason",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["experienceAtSeason"]),
               },
               {
-                title: "Fantasy Points Regular",
+                title: <HeaderCellWithTooltip abbr={"FPR"} />,
                 field: "fantasyPointsReg",
                 filtering: false,
               },
               {
-                title: "Fantasy Points PPR",
+                title: <HeaderCellWithTooltip abbr={"FPR"} />,
                 field: "fantasyPointsPpr",
                 filtering: false,
               },
               {
-                title: "Preseason Draft Rank",
+                title: <HeaderCellWithTooltip abbr={"PDR"} />,
                 field: "preseasonRank",
                 filtering: false,
               },
               {
-                title: "Rank Regular",
+                title: <HeaderCellWithTooltip abbr={"FSR"} />,
                 field: "rankReg",
                 filtering: false,
               },
               {
-                title: "Rank PPR",
+                title: <HeaderCellWithTooltip abbr={"FSRP"} />,
                 field: "rankPpr",
                 filtering: false,
               },
@@ -206,28 +208,28 @@ function PlayerSummary({ match, history }) {
             }}
             columns={[
               {
-                title: "Year",
+                title: <HeaderCellWithTooltip abbr={"YEAR"} />,
                 field: "year",
                 lookup: createLookup(fantasyStarts, ["year"]),
               },
               {
-                title: "Week",
+                title: <HeaderCellWithTooltip abbr={"WEEK"} />,
                 field: "week",
                 lookup: createLookup(fantasyStarts, ["week"]),
               },
               {
-                title: "Position",
+                title: <HeaderCellWithTooltip abbr={"POS"} />,
                 field: "position",
                 lookup: createLookup(fantasyStarts, ["position"]),
               },
               {
-                title: "Points",
+                title: <HeaderCellWithTooltip abbr={"PTS"} />,
                 field: "points",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["points"]),
               },
               {
-                title: "Owner",
+                title: <HeaderCellWithTooltip abbr={"OWN"} />,
                 field: "owner.name",
                 lookup: createLookup(auction, ["owner", "name"]),
                 render: (rowData) => (
@@ -237,7 +239,7 @@ function PlayerSummary({ match, history }) {
                 ),
               },
               {
-                title: "Team",
+                title: <HeaderCellWithTooltip abbr={"TEAM"} />,
                 field: "fantasyTeam.name",
                 lookup: createLookup(auction, ["fantasyTeam", "name"]),
                 render: (rowData) => (

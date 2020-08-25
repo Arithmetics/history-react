@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import LoadingSpinner from "../LoadingSpinner";
 
 import { createLookup, filterBetween } from "../materialTableHelpers";
+import HeaderCellWithTooltip from "../materialTableElements";
 
 import { config } from "../../api";
 
@@ -49,7 +50,7 @@ function AllPlayers({ match, history }) {
             }}
             columns={[
               {
-                title: "Player",
+                title: <HeaderCellWithTooltip abbr={"PN"} />,
                 field: "playerName",
                 filtering: false,
                 render: (rowData) => (
@@ -57,41 +58,41 @@ function AllPlayers({ match, history }) {
                 ),
               },
               {
-                title: "Position",
+                title: <HeaderCellWithTooltip abbr={"POS"} />,
                 field: "careerStats.position",
                 lookup: createLookup(players, ["careerStats", "position"]),
               },
               {
-                title: "Total Starts",
+                title: <HeaderCellWithTooltip abbr={"TS"} />,
                 field: "careerStats.totalStarts",
               },
               {
-                title: "Regular Season Points",
+                title: <HeaderCellWithTooltip abbr={"RSP"} />,
                 field: "careerStats.totalPoints",
                 filtering: false,
               },
               {
-                title: "Playoff Points",
+                title: <HeaderCellWithTooltip abbr={"PP"} />,
                 field: "careerStats.playoffPoints",
                 filtering: false,
               },
               {
-                title: "Finals Points",
+                title: <HeaderCellWithTooltip abbr={"FP"} />,
                 field: "careerStats.finalsPoints",
                 filtering: false,
               },
               {
-                title: "Rings",
+                title: <HeaderCellWithTooltip abbr={"CMP"} />,
                 field: "careerStats.championships",
                 filtering: false,
               },
               {
-                title: "Total Auction $",
+                title: <HeaderCellWithTooltip abbr={"TAD"} />,
                 field: "careerStats.totalAuctionMoney",
                 filtering: false,
               },
               {
-                title: "Highest Auction Money",
+                title: <HeaderCellWithTooltip abbr={"MAP"} />,
                 field: "careerStats.highestAuctionMoney",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, [
@@ -100,13 +101,13 @@ function AllPlayers({ match, history }) {
                   ]),
               },
               {
-                title: "Best Start",
+                title: <HeaderCellWithTooltip abbr={"BSP"} />,
                 field: "careerStats.bestStart",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["careerStats", "bestStart"]),
               },
               {
-                title: "Best Pre-Season Draft Rank",
+                title: <HeaderCellWithTooltip abbr={"BPDR"} />,
                 field: "careerStats.bestPreseasonRank",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, [
@@ -115,13 +116,13 @@ function AllPlayers({ match, history }) {
                   ]),
               },
               {
-                title: "Best Final Season Rank Reg",
+                title: <HeaderCellWithTooltip abbr={"BFR"} />,
                 field: "careerStats.bestRegRank",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["careerStats", "bestRegRank"]),
               },
               {
-                title: "Best Final Season Rank PPR",
+                title: <HeaderCellWithTooltip abbr={"BFRP"} />,
                 field: "careerStats.bestPprRank",
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, ["careerStats", "bestPprRank"]),

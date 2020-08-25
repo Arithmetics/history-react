@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
 
+import HeaderCellWithTooltip from "../materialTableElements";
+
 function Owners(props) {
   const [owners, setOwners] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,42 +43,42 @@ function Owners(props) {
             title="Owners"
             columns={[
               {
-                title: "Name",
+                title: <HeaderCellWithTooltip abbr={"OWN"} />,
                 field: "name",
                 render: (rowData) => (
                   <a href={`/owners/${rowData.id}`}>{rowData.name}</a>
                 ),
               },
               {
-                title: "Regular Season Points",
+                title: <HeaderCellWithTooltip abbr={"RSP"} />,
                 field: "cumulativeStats.totalPoints",
               },
               {
-                title: "Regular Season Games",
+                title: <HeaderCellWithTooltip abbr={"RSG"} />,
                 field: "cumulativeStats.totalGames",
               },
               {
-                title: "Regular Season Wins",
+                title: <HeaderCellWithTooltip abbr={"RSW"} />,
                 field: "cumulativeStats.totalWins",
               },
               {
-                title: "Points / Game",
+                title: <HeaderCellWithTooltip abbr={"PPG"} />,
                 field: "cumulativeStats.pointsPerGame",
               },
               {
-                title: "Playoff Points",
+                title: <HeaderCellWithTooltip abbr={"PP"} />,
                 field: "cumulativeStats.totalPlayoffPoints",
               },
               {
-                title: "Playoff Games",
+                title: <HeaderCellWithTooltip abbr={"PG"} />,
                 field: "cumulativeStats.totalPlayoffGames",
               },
               {
-                title: "Playoff Wins",
+                title: <HeaderCellWithTooltip abbr={"PW"} />,
                 field: "cumulativeStats.totalPlayoffWins",
               },
               {
-                title: "Playoff Points / Game",
+                title: <HeaderCellWithTooltip abbr={"PPPG"} />,
                 field: "cumulativeStats.playoffPointsPerGame",
               },
             ]}
