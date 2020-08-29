@@ -8,7 +8,10 @@ import LoadingSpinner from "./LoadingSpinner";
 import { config } from "../api";
 
 import { createLookup, filterBetween } from "./materialTableHelpers";
-import HeaderCellWithTooltip from "./materialTableElements";
+import {
+  PlayerAvatarLink,
+  HeaderCellWithTooltip,
+} from "./materialTableElements";
 
 function Auctions(props) {
   const [auction, setAuction] = useState([]);
@@ -60,9 +63,11 @@ function Auctions(props) {
                 field: "player.name",
                 filtering: false,
                 render: (rowData) => (
-                  <a href={`/players/${rowData.player.id}`}>
-                    {rowData.player.name}
-                  </a>
+                  <PlayerAvatarLink
+                    id={rowData.player.id}
+                    playerName={rowData.player.name}
+                    pictureId={rowData.player.pictureId}
+                  />
                 ),
               },
               {

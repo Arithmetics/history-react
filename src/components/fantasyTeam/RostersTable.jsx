@@ -2,6 +2,8 @@ import React from "react";
 import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/core/styles";
 
+import { PlayerAvatarLink } from "../materialTableElements";
+
 const useStyles = makeStyles({
   root: {
     margin: "1rem",
@@ -51,9 +53,11 @@ export default function RostersTable({ homeRoster, awayRoster }) {
               if (!rowData.awayRoster || !rowData.awayRoster.player)
                 return null;
               return (
-                <a href={`/players/${rowData.awayRoster.player.id}`}>
-                  {rowData.awayRoster.player.name}
-                </a>
+                <PlayerAvatarLink
+                  id={rowData.awayRoster.player.id}
+                  playerName={rowData.awayRoster.player.name}
+                  pictureId={rowData.awayRoster.player.pictureId}
+                />
               );
             },
           },
@@ -77,9 +81,11 @@ export default function RostersTable({ homeRoster, awayRoster }) {
               if (!rowData.homeRoster || !rowData.homeRoster.player)
                 return null;
               return (
-                <a href={`/players/${rowData.homeRoster.player.id}`}>
-                  {rowData.homeRoster.player.name}
-                </a>
+                <PlayerAvatarLink
+                  id={rowData.homeRoster.player.id}
+                  playerName={rowData.homeRoster.player.name}
+                  pictureId={rowData.homeRoster.player.pictureId}
+                />
               );
             },
           },

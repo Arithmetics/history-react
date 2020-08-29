@@ -7,7 +7,10 @@ import Typography from "@material-ui/core/Typography";
 import LoadingSpinner from "../LoadingSpinner";
 
 import { createLookup, filterBetween } from "../materialTableHelpers";
-import HeaderCellWithTooltip from "../materialTableElements";
+import {
+  PlayerAvatarLink,
+  HeaderCellWithTooltip,
+} from "../materialTableElements";
 
 import { config } from "../../api";
 
@@ -24,6 +27,8 @@ function AllPlayers({ match, history }) {
     };
     fetchData();
   }, []);
+
+  console.log(players);
 
   return (
     <>
@@ -54,7 +59,11 @@ function AllPlayers({ match, history }) {
                 field: "playerName",
                 filtering: false,
                 render: (rowData) => (
-                  <a href={`/players/${rowData.id}`}>{rowData.playerName}</a>
+                  <PlayerAvatarLink
+                    id={rowData.id}
+                    playerName={rowData.playerName}
+                    pictureId={rowData.pictureId}
+                  />
                 ),
               },
               {

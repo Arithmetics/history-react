@@ -40,14 +40,41 @@ const titleRowLookup = {
 
 const useStyles = makeStyles({
   cell: { border: "none" },
+  avatarContainer: {
+    display: "flex",
+  },
+  avatarLink: {
+    whiteSpace: "nowrap",
+  },
+  avatarPic: {
+    width: 40,
+    borderRadius: "50%",
+  },
 });
 
-export default function HeaderCellWithTooltip(props) {
+export function HeaderCellWithTooltip(props) {
   const classes = useStyles();
   const { abbr } = props;
   return (
     <Tooltip title={titleRowLookup[abbr]} placement="top">
       <TableCell className={classes.cell}>{abbr}</TableCell>
     </Tooltip>
+  );
+}
+
+export function PlayerAvatarLink(props) {
+  const classes = useStyles();
+  const { id, playerName, pictureId } = props;
+  return (
+    <div className={classes.avatarContainer}>
+      <img
+        src={`https://static.www.nfl.com/image/private/t_player_profile_landscape_2x/f_auto/league/${pictureId}`}
+        className={classes.avatarPic}
+        alt="player-img"
+      />
+      <a className={classes.avatarLink} href={`/players/${id}`}>
+        {playerName}
+      </a>
+    </div>
   );
 }

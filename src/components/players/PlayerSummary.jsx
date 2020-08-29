@@ -12,8 +12,7 @@ import { GiTrophy } from "react-icons/gi";
 import { config } from "../../api";
 
 import { createLookup, filterBetween } from "../materialTableHelpers";
-
-import HeaderCellWithTooltip from "../materialTableElements";
+import { HeaderCellWithTooltip } from "../materialTableElements";
 
 const useStyles = makeStyles({
   statChip: {
@@ -24,6 +23,7 @@ const useStyles = makeStyles({
     margin: "0 auto",
     display: "block",
     border: "1px solid #0b878c",
+    maxHeight: 200,
   },
   playerName: {
     textAlign: "center",
@@ -66,7 +66,7 @@ function PlayerSummary({ match, history }) {
           <img
             alt="player-profile-pic"
             className={classes.profileImage}
-            src={`https://static.nfl.com/static/content/public/static/img/fantasy/transparent/200x200/${player.pictureId}.png`}
+            src={`https://static.www.nfl.com/image/private/t_player_profile_landscape_2x/f_auto/league/${player.pictureId}`}
           />
           {!loading && <h2 className={classes.playerName}>{playerName}</h2>}
           {[...Array(championships)].map((i) => (

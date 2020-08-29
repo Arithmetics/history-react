@@ -7,7 +7,10 @@ import Typography from "@material-ui/core/Typography";
 import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
 
-import HeaderCellWithTooltip from "../materialTableElements";
+import {
+  PlayerAvatarLink,
+  HeaderCellWithTooltip,
+} from "../materialTableElements";
 
 function Owners(props) {
   const [owners, setOwners] = useState([]);

@@ -10,6 +10,8 @@ import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
 import GameTable from "./GameTable";
 
+import { PlayerAvatarLink } from "../materialTableElements";
+
 const useStyles = makeStyles((theme) => ({
   statChip: {
     margin: 5,
@@ -139,9 +141,11 @@ export default function TeamSummary({ match, history }) {
                   title: "Player",
                   field: "player.name",
                   render: (rowData) => (
-                    <a href={`/players/${rowData.player.id}`}>
-                      {rowData.player.name}
-                    </a>
+                    <PlayerAvatarLink
+                      id={rowData.player.id}
+                      playerName={rowData.player.name}
+                      pictureId={rowData.player.pictureId}
+                    />
                   ),
                 },
                 {
