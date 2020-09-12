@@ -23,6 +23,19 @@ import { GiPodiumThird } from "react-icons/gi";
 import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
 
+export function streakEmoji(streak) {
+  let final = "";
+  let emoji = "🧊";
+  if (streak > 0) {
+    emoji = "🔥";
+  }
+  const times = Math.abs(streak);
+  for (let i = 0; i < times; i++) {
+    final += emoji;
+  }
+  return final;
+}
+
 const useStyles = makeStyles((theme) => ({
   statChip: {
     margin: 5,
@@ -210,7 +223,12 @@ function Owner(props) {
                   { title: "Wins", field: "wins" },
                   { title: "Losses", field: "losses" },
                   { title: "Win Percentage", field: "winPct" },
-                  { title: "Current Streak", field: "streak" },
+                  {
+                    title: "Current Streak",
+                    field: "streak",
+                    render: (rowData) =>
+                      streakEmoji(parseInt(rowData.streak, 10)),
+                  },
                 ]}
               />
             </ExpansionPanelDetails>

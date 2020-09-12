@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import MaterialTable from "material-table";
 import LoadingSpinner from "./LoadingSpinner";
 import { config } from "../api";
+import { streakEmoji } from "./owners/Owner";
 
 export default function HomePage() {
   const [versusRecords, setVersusRecords] = useState([]);
@@ -48,19 +49,6 @@ export default function HomePage() {
       (record) => record.id === owner2ID
     );
     return recordFinal && recordFinal[0] ? recordFinal[0].streak : 0;
-  };
-
-  const streakEmoji = (streak) => {
-    let final = "";
-    let emoji = "🧊";
-    if (streak > 0) {
-      emoji = "🔥";
-    }
-    const times = Math.abs(streak);
-    for (let i = 0; i < times; i++) {
-      final += emoji;
-    }
-    return final;
   };
 
   return (
