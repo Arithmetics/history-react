@@ -97,7 +97,7 @@ export default function TeamSummary({ match, history }) {
           <Chip
             className={classes.statChip}
             label={`Record: (${cuumulativeStats.seasonWins} - 
-            ${13 - cuumulativeStats.seasonWins})`}
+            ${cuumulativeStats.seasonLosses})`}
           />
           <Chip
             className={classes.statChip}

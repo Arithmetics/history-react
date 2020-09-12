@@ -166,7 +166,7 @@ function Owner(props) {
                     </Typography>
 
                     <Typography className={classes.teamCardContentItem}>
-                      ({team.seasonWins} - {13 - team.seasonWins})
+                      ({team.seasonWins} - {team.seasonLosses})
                     </Typography>
                     <Typography
                       className={clsx(
