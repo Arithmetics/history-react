@@ -48,7 +48,7 @@ const useStyles = makeStyles({
   },
   avatarPic: {
     width: 40,
-    height: 40,
+    height: 28,
     borderRadius: "50%",
   },
 });
