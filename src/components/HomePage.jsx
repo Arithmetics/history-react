@@ -6,6 +6,7 @@ import MaterialTable from "material-table";
 import LoadingSpinner from "./LoadingSpinner";
 import { config } from "../api";
 import { streakEmoji } from "./owners/Owner";
+import { PlayerAvatarLink } from "./materialTableElements";
 
 export default function HomePage() {
   const [versusRecords, setVersusRecords] = useState([]);
@@ -163,9 +164,11 @@ export default function HomePage() {
                 title: "Player",
                 field: "player.name",
                 render: (rowData) => (
-                  <a href={`/players/${rowData.player.id}`}>
-                    {rowData.player.name}
-                  </a>
+                  <PlayerAvatarLink
+                    id={rowData.player.id}
+                    playerName={rowData.player.name}
+                    pictureId={rowData.player.pictureId}
+                  />
                 ),
               },
               {
