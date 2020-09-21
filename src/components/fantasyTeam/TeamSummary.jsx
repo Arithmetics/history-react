@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   statChip: {
     margin: 5,
   },
+  teamHeader: {
+    marginBottom: 20,
+  },
   expansion: {
     marginTop: 20,
   },
@@ -89,7 +92,7 @@ export default function TeamSummary({ match, history }) {
         Team Summary
       </Typography>
       {!loading && (
-        <>
+        <div class={classes.teamHeader}>
           <Typography variant="h5" gutterBottom>
             {year}: {fantasyTeamName} ({ownerName})
           </Typography>
@@ -105,13 +108,13 @@ export default function TeamSummary({ match, history }) {
               cuumulativeStats.seasonPoints
             )}`}
           />
-        </>
+        </div>
       )}
 
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
         <TabContainer
-          tabNames={["Teams", "Versus Records"]}
+          tabNames={["Games", "Auction"]}
           tabs={[
             <TeamGameTable
               regularSeasonGames={regularSeasonGames}
