@@ -5,20 +5,18 @@ import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import MaterialTable from "material-table";
 
 import { GiTrophy } from "react-icons/gi";
 import { GiPodiumSecond } from "react-icons/gi";
 import { GiPodiumThird } from "react-icons/gi";
+
+import TabContainer from "../TabContainer";
+import OwnerHeader from "./OwnerHeader";
 
 import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
@@ -40,14 +38,10 @@ const useStyles = makeStyles((theme) => ({
   statChip: {
     margin: 5,
   },
-  expansion: {
-    marginTop: 20,
-  },
   panelTop: {
     borderBottom: "grey solid 1px",
   },
   teamsArea: {
-    padding: 10,
     display: "block",
   },
   teamCard: {
@@ -82,8 +76,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Owner(props) {
-  const classes = useStyles();
-
   const [owner, setOwner] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -111,128 +103,15 @@ function Owner(props) {
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
         <>
-          <Typography variant="h3" gutterBottom>
-            {owner.name}
-          </Typography>
+          <OwnerHeader owner={owner} cumulativeStats={cumulativeStats} />
 
-          <Chip
-            className={classes.statChip}
-            label={`Record: ${cumulativeStats.totalWins} - ${
-              cumulativeStats.totalGames - cumulativeStats.totalWins
-            }`}
+          <TabContainer
+            tabNames={["Teams", "Versus Records"]}
+            tabs={[
+              <TeamsTable fantasyTeams={fantasyTeams} />,
+              <VersusTable versusRecords={versusRecords} />,
+            ]}
           />
-          <Chip
-            className={classes.statChip}
-            label={`Total Points: ${cumulativeStats.totalPoints}`}
-          />
-          <Chip
-            className={classes.statChip}
-            label={`Playoff Wins: ${cumulativeStats.totalPlayoffWins}`}
-          />
-
-          <ExpansionPanel defaultExpanded className={classes.expansion}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              id="panel1a-header"
-              className={classes.panelTop}
-            >
-              <Typography className={classes.heading}>
-                Team Summaries
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails className={classes.teamsArea}>
-              {fantasyTeams.reverse().map((team) => (
-                <Card className={classes.teamCard} key={team.year}>
-                  <CardContent className={classes.teamCardContent}>
-                    <Typography className={classes.teamCardContentItem}>
-                      {team.year}
-                    </Typography>
-                    <Typography
-                      // color="primary"
-                      className={clsx(
-                        classes.teamCardContentItem,
-                        classes.teamName
-                      )}
-                    >
-                      {team.name}
-                    </Typography>
-                    <Typography
-                      className={clsx(
-                        classes.teamCardContentItem,
-                        classes.resultIcon
-                      )}
-                    >
-                      <Trophy team={team} />
-                    </Typography>
-
-                    <Typography className={classes.teamCardContentItem}>
-                      ({team.seasonWins} - {team.seasonLosses})
-                    </Typography>
-                    <Typography
-                      className={clsx(
-                        classes.teamCardContentItem,
-                        classes.grow
-                      )}
-                    >
-                      {Math.round(team.seasonPoints)} points
-                    </Typography>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      component={Link}
-                      to={`/fantasyTeams/${team.id}`}
-                    >
-                      Go To Team
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-
-          <ExpansionPanel defaultExpanded className={classes.expansion}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              id="panel2a-header"
-              className={classes.panelTop}
-            >
-              <Typography className={classes.heading}>
-                Versus Records
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <MaterialTable
-                title="Versus Records"
-                data={versusRecords}
-                options={{
-                  padding: "dense",
-                  paging: false,
-                  search: false,
-                  exportButton: true,
-                  exportAllData: true,
-                  showTitle: false,
-                }}
-                columns={[
-                  {
-                    title: "Owner",
-                    field: "name",
-                    render: (rowData) => (
-                      <a href={`/owners/${rowData.id}`}>{rowData.name}</a>
-                    ),
-                  },
-                  { title: "Wins", field: "wins" },
-                  { title: "Losses", field: "losses" },
-                  { title: "Win Percentage", field: "winPct" },
-                  {
-                    title: "Current Streak",
-                    field: "streak",
-                    render: (rowData) =>
-                      streakEmoji(parseInt(rowData.streak, 10)),
-                  },
-                ]}
-              />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
         </>
       )}
     </div>
@@ -248,6 +127,92 @@ function Trophy({ team }) {
     return <GiPodiumThird />;
   }
   return null;
+}
+
+function TeamsTable(props) {
+  const classes = useStyles();
+
+  const { fantasyTeams } = props;
+
+  return (
+    <div className={classes.teamsArea}>
+      {fantasyTeams.reverse().map((team) => (
+        <Card className={classes.teamCard} key={team.year}>
+          <CardContent className={classes.teamCardContent}>
+            <Typography className={classes.teamCardContentItem}>
+              {team.year}
+            </Typography>
+            <Typography
+              // color="primary"
+              className={clsx(classes.teamCardContentItem, classes.teamName)}
+            >
+              {team.name}
+            </Typography>
+            <Typography
+              className={clsx(classes.teamCardContentItem, classes.resultIcon)}
+            >
+              <Trophy team={team} />
+            </Typography>
+
+            <Typography className={classes.teamCardContentItem}>
+              ({team.seasonWins} - {team.seasonLosses})
+            </Typography>
+            <Typography
+              className={clsx(classes.teamCardContentItem, classes.grow)}
+            >
+              {Math.round(team.seasonPoints)} points
+            </Typography>
+            <Button
+              color="primary"
+              variant="contained"
+              component={Link}
+              to={`/fantasyTeams/${team.id}`}
+            >
+              Go To Team
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function VersusTable(props) {
+  const { versusRecords } = props;
+
+  return (
+    <div>
+      <MaterialTable
+        title="Versus Records"
+        data={versusRecords}
+        options={{
+          padding: "dense",
+          paging: false,
+          search: false,
+          exportButton: true,
+          exportAllData: true,
+          showTitle: false,
+        }}
+        columns={[
+          {
+            title: "Owner",
+            field: "name",
+            render: (rowData) => (
+              <a href={`/owners/${rowData.id}`}>{rowData.name}</a>
+            ),
+          },
+          { title: "Wins", field: "wins" },
+          { title: "Losses", field: "losses" },
+          { title: "Win Percentage", field: "winPct" },
+          {
+            title: "Current Streak",
+            field: "streak",
+            render: (rowData) => streakEmoji(parseInt(rowData.streak, 10)),
+          },
+        ]}
+      />
+    </div>
+  );
 }
 
 export default Owner;

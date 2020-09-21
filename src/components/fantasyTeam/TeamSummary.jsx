@@ -9,7 +9,7 @@ import MaterialTable from "material-table";
 import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
 import GameTable from "./GameTable";
-
+import TabContainer from "../TabContainer";
 import { PlayerAvatarLink } from "../materialTableElements";
 
 const useStyles = makeStyles((theme) => ({
@@ -110,57 +110,84 @@ export default function TeamSummary({ match, history }) {
 
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
-        <div>
-          <GameTable
-            regularSeason={true}
-            fantasyGames={regularSeasonGames}
-            fantasyTeamName={fantasyTeamName}
-          />
-          {playoffGames.length > 0 && (
-            <GameTable
-              regularSeason={false}
-              fantasyGames={playoffGames}
+        <TabContainer
+          tabNames={["Teams", "Versus Records"]}
+          tabs={[
+            <TeamGameTable
+              regularSeasonGames={regularSeasonGames}
+              playoffGames={playoffGames}
               fantasyTeamName={fantasyTeamName}
-            />
-          )}
-          {auction.length > 0 && (
-            <MaterialTable
-              title="Auction"
-              data={auction}
-              options={{
-                filtering: false,
-                padding: "dense",
-                paging: false,
-                search: false,
-                exportButton: true,
-                exportAllData: true,
-                showTitle: true,
-              }}
-              columns={[
-                {
-                  title: "Player",
-                  field: "player.name",
-                  render: (rowData) => (
-                    <PlayerAvatarLink
-                      id={rowData.player.id}
-                      playerName={rowData.player.name}
-                      pictureId={rowData.player.pictureId}
-                    />
-                  ),
-                },
-                {
-                  title: "Position",
-                  field: "position",
-                },
-                {
-                  title: "Price",
-                  field: "price",
-                },
-              ]}
-            />
-          )}
-        </div>
+            />,
+            <AuctionTable auction={auction} />,
+          ]}
+        />
       )}
     </div>
+  );
+}
+
+function TeamGameTable(props) {
+  const { regularSeasonGames, playoffGames, fantasyTeamName } = props;
+  return (
+    <>
+      <GameTable
+        regularSeason={true}
+        fantasyGames={regularSeasonGames}
+        fantasyTeamName={fantasyTeamName}
+      />
+      {playoffGames.length > 0 && (
+        <GameTable
+          regularSeason={false}
+          fantasyGames={playoffGames}
+          fantasyTeamName={fantasyTeamName}
+        />
+      )}
+    </>
+  );
+}
+
+function AuctionTable(props) {
+  const { auction } = props;
+  if (auction.length > 0) {
+    return;
+  }
+
+  return (
+    <>
+      <MaterialTable
+        title="Auction"
+        data={auction}
+        options={{
+          filtering: false,
+          padding: "dense",
+          paging: false,
+          search: false,
+          exportButton: true,
+          exportAllData: true,
+          showTitle: true,
+        }}
+        columns={[
+          {
+            title: "Player",
+            field: "player.name",
+            render: (rowData) => (
+              <PlayerAvatarLink
+                id={rowData.player.id}
+                playerName={rowData.player.name}
+                pictureId={rowData.player.pictureId}
+              />
+            ),
+          },
+          {
+            title: "Position",
+            field: "position",
+          },
+          {
+            title: "Price",
+            field: "price",
+          },
+        ]}
+      />
+    </>
   );
 }
