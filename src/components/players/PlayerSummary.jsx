@@ -14,7 +14,11 @@ import { GiTrophy } from "react-icons/gi";
 import { config } from "../../api";
 
 import { createLookup, filterBetween } from "../materialTableHelpers";
-import { HeaderCellWithTooltip } from "../materialTableElements";
+import {
+  HeaderCellWithTooltip,
+  TeamAvatarLink,
+  OwnerAvatarLink,
+} from "../materialTableElements";
 import TabContainer from "../TabContainer";
 
 const useStyles = makeStyles({
@@ -126,9 +130,10 @@ function Auctions(props) {
           field: "owner.name",
           lookup: createLookup(auction, ["owner", "name"]),
           render: (rowData) => (
-            <Link component={RouterLink} to={`/owners/${rowData.owner.id}`}>
-              {rowData.owner.name}
-            </Link>
+            <OwnerAvatarLink
+              id={rowData.owner.id}
+              ownerName={rowData.owner.name}
+            />
           ),
         },
         {
@@ -136,12 +141,11 @@ function Auctions(props) {
           field: "fantasyTeam.name",
           lookup: createLookup(auction, ["fantasyTeam", "name"]),
           render: (rowData) => (
-            <Link
-              component={RouterLink}
-              to={`/fantasyTeams/${rowData.fantasyTeam.id}`}
-            >
-              {rowData.fantasyTeam.name}
-            </Link>
+            <TeamAvatarLink
+              id={rowData.fantasyTeam.id}
+              teamName={rowData.fantasyTeam.name}
+              pictureUrl={rowData.fantasyTeam.pictureUrl}
+            />
           ),
         },
         {
@@ -269,9 +273,10 @@ function FantasyStarts(props) {
           field: "owner.name",
           lookup: createLookup(auction, ["owner", "name"]),
           render: (rowData) => (
-            <Link component={RouterLink} to={`/owners/${rowData.owner.id}`}>
-              {rowData.owner.name}
-            </Link>
+            <OwnerAvatarLink
+              id={rowData.owner.id}
+              ownerName={rowData.owner.name}
+            />
           ),
         },
         {
@@ -279,12 +284,11 @@ function FantasyStarts(props) {
           field: "fantasyTeam.name",
           lookup: createLookup(auction, ["fantasyTeam", "name"]),
           render: (rowData) => (
-            <Link
-              component={RouterLink}
-              to={`/fantasyTeams/${rowData.fantasyTeam.id}`}
-            >
-              {rowData.fantasyTeam.name}
-            </Link>
+            <TeamAvatarLink
+              id={rowData.fantasyTeam.id}
+              teamName={rowData.fantasyTeam.name}
+              pictureUrl={rowData.fantasyTeam.pictureUrl}
+            />
           ),
         },
       ]}

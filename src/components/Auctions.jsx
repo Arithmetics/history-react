@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
 import MaterialTable from "material-table";
 
 import Typography from "@material-ui/core/Typography";
@@ -11,7 +9,9 @@ import { config } from "../api";
 import { createLookup, filterBetween } from "./materialTableHelpers";
 import {
   PlayerAvatarLink,
+  TeamAvatarLink,
   HeaderCellWithTooltip,
+  OwnerAvatarLink,
 } from "./materialTableElements";
 
 function Auctions(props) {
@@ -86,12 +86,10 @@ function Auctions(props) {
                 field: "owner.name",
                 lookup: createLookup(cleanedAuction, ["owner", "name"]),
                 render: (rowData) => (
-                  <Link
-                    component={RouterLink}
-                    to={`/owners/${rowData.owner.id}`}
-                  >
-                    {rowData.owner.name}
-                  </Link>
+                  <OwnerAvatarLink
+                    id={rowData.owner.id}
+                    ownerName={rowData.owner.name}
+                  />
                 ),
               },
               {
@@ -99,12 +97,11 @@ function Auctions(props) {
                 field: "fantasyTeam.name",
                 lookup: createLookup(cleanedAuction, ["fantasyTeam", "name"]),
                 render: (rowData) => (
-                  <Link
-                    component={RouterLink}
-                    to={`/fantasyTeams/${rowData.fantasyTeam.id}`}
-                  >
-                    {rowData.fantasyTeam.name}
-                  </Link>
+                  <TeamAvatarLink
+                    id={rowData.fantasyTeam.id}
+                    teamName={rowData.fantasyTeam.name}
+                    pictureUrl={rowData.fantasyTeam.pictureUrl}
+                  />
                 ),
               },
               {

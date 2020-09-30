@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MaterialTable from "material-table";
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
 
 import Typography from "@material-ui/core/Typography";
 
 import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
 
-import { HeaderCellWithTooltip } from "../materialTableElements";
+import {
+  HeaderCellWithTooltip,
+  OwnerAvatarLink,
+} from "../materialTableElements";
 
 function Owners(props) {
   const [owners, setOwners] = useState([]);
@@ -48,9 +49,7 @@ function Owners(props) {
                 title: <HeaderCellWithTooltip abbr={"OWN"} />,
                 field: "name",
                 render: (rowData) => (
-                  <Link component={RouterLink} to={`/owners/${rowData.id}`}>
-                    {rowData.name}
-                  </Link>
+                  <OwnerAvatarLink id={rowData.id} ownerName={rowData.name} />
                 ),
               },
               {

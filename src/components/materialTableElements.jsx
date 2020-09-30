@@ -44,6 +44,7 @@ const useStyles = makeStyles({
   cell: { border: "none" },
   avatarContainer: {
     display: "flex",
+    alignItems: "center",
   },
   avatarLink: {
     whiteSpace: "nowrap",
@@ -52,6 +53,12 @@ const useStyles = makeStyles({
     width: 40,
     height: 28,
     borderRadius: "50%",
+  },
+  teamAvatarPic: {
+    borderRadius: "50%",
+    marginRight: 5,
+    width: 30,
+    height: 30,
   },
 });
 
@@ -82,6 +89,46 @@ export function PlayerAvatarLink(props) {
         to={`/players/${id}`}
       >
         {playerName}
+      </Link>
+    </div>
+  );
+}
+
+export function TeamAvatarLink(props) {
+  const classes = useStyles();
+  const { id, teamName, pictureUrl } = props;
+  return (
+    <div className={classes.avatarContainer}>
+      <img src={pictureUrl} className={classes.teamAvatarPic} alt="team-img" />
+
+      <Link
+        className={classes.avatarLink}
+        component={RouterLink}
+        to={`/fantasyTeams/${id}`}
+      >
+        {teamName}
+      </Link>
+    </div>
+  );
+}
+
+export function OwnerAvatarLink(props) {
+  const classes = useStyles();
+  const { id, ownerName } = props;
+  return (
+    <div className={classes.avatarContainer}>
+      <img
+        src={`/ownerAvatars/${id}.png`}
+        className={classes.teamAvatarPic}
+        alt="owner-img"
+      />
+
+      <Link
+        className={classes.avatarLink}
+        component={RouterLink}
+        to={`/fantasyTeams/${id}`}
+      >
+        {ownerName}
       </Link>
     </div>
   );

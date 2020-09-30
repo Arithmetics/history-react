@@ -2,14 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { firstBy } from "thenby";
 import Typography from "@material-ui/core/Typography";
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
 
 import MaterialTable from "material-table";
 import LoadingSpinner from "./LoadingSpinner";
 import { config } from "../api";
 import { streakEmoji } from "./owners/Owner";
-import { PlayerAvatarLink } from "./materialTableElements";
+import {
+  PlayerAvatarLink,
+  TeamAvatarLink,
+  OwnerAvatarLink,
+} from "./materialTableElements";
 import TabContainer from "./TabContainer";
 
 export default function HomePage() {
@@ -105,28 +107,25 @@ function UpcomingGames(props) {
           title: "Away Owner",
           field: "awayTeam.owner.name",
           render: (rowData) => (
-            <Link
-              component={RouterLink}
-              to={`/owners/${rowData.awayTeam.owner.id}`}
-            >
-              {rowData.awayTeam.owner.name}
-            </Link>
+            <OwnerAvatarLink
+              id={rowData.awayTeam.owner.id}
+              ownerName={rowData.awayTeam.owner.name}
+            />
           ),
         },
         {
           title: "Away Team",
           field: "awayTeam.name",
           render: (rowData) => (
-            <Link
-              component={RouterLink}
-              to={`/fantasyTeams/${rowData.awayTeam.id}`}
-            >
-              {rowData.awayTeam.name}
-            </Link>
+            <TeamAvatarLink
+              id={rowData.awayTeam.id}
+              teamName={rowData.awayTeam.name}
+              pictureUrl={rowData.awayTeam.pictureUrl}
+            />
           ),
         },
         {
-          title: "Current Vs Streak",
+          title: "Vs Streak",
           field: undefined,
           render: (rowData) =>
             streakEmoji(
@@ -163,24 +162,21 @@ function UpcomingGames(props) {
           title: "Home Team",
           field: "homeTeam.name",
           render: (rowData) => (
-            <Link
-              component={RouterLink}
-              to={`/fantasyTeams/${rowData.homeTeam.id}`}
-            >
-              {rowData.homeTeam.name}
-            </Link>
+            <TeamAvatarLink
+              id={rowData.homeTeam.id}
+              teamName={rowData.homeTeam.name}
+              pictureUrl={rowData.homeTeam.pictureUrl}
+            />
           ),
         },
         {
           title: "Home Owner",
           field: "homeTeam.owner.name",
           render: (rowData) => (
-            <Link
-              component={RouterLink}
-              to={`/owners/${rowData.homeTeam.owner.id}`}
-            >
-              {rowData.homeTeam.owner.name}
-            </Link>
+            <OwnerAvatarLink
+              id={rowData.homeTeam.owner.id}
+              ownerName={rowData.homeTeam.owner.name}
+            />
           ),
         },
       ]}
@@ -225,12 +221,11 @@ function NewPlayers(props) {
           title: "Team",
           field: "fantasyTeam.name",
           render: (rowData) => (
-            <Link
-              component={RouterLink}
-              to={`/fantasyTeams/${rowData.fantasyTeam.id}`}
-            >
-              {rowData.fantasyTeam.name}
-            </Link>
+            <TeamAvatarLink
+              id={rowData.fantasyTeam.id}
+              teamName={rowData.fantasyTeam.name}
+              pictureUrl={rowData.fantasyTeam.pictureUrl}
+            />
           ),
         },
       ]}
@@ -256,9 +251,11 @@ function Standings(props) {
           title: "Team",
           field: "name",
           render: (rowData) => (
-            <Link component={RouterLink} to={`/fantasyTeams/${rowData.id}`}>
-              {rowData.name}
-            </Link>
+            <TeamAvatarLink
+              id={rowData.id}
+              teamName={rowData.name}
+              pictureUrl={rowData.pictureUrl}
+            />
           ),
         },
         {
