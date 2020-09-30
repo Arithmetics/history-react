@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { firstBy } from "thenby";
 import Typography from "@material-ui/core/Typography";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 
 import MaterialTable from "material-table";
 import LoadingSpinner from "./LoadingSpinner";
@@ -13,6 +16,7 @@ export default function HomePage() {
   const [versusRecords, setVersusRecords] = useState([]);
   const [scheduledGames, setScheduledGames] = useState([]);
   const [firstStarts, setFirstStarts] = useState([]);
+  const [standings, setStandings] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +29,8 @@ export default function HomePage() {
         (result && result.data && result.data.scheduledGames) || []
       );
       setFirstStarts((result && result.data && result.data.firstStarts) || []);
+
+      setStandings((result && result.data && result.data.standings) || []);
       setLoading(false);
     };
     fetchData();
@@ -44,6 +50,7 @@ export default function HomePage() {
           tabNames={[
             `Week ${currentWeek} Preview`,
             `Week ${currentWeek - 1} New Players`,
+            `Standings`,
           ]}
           tabs={[
             <UpcomingGames
@@ -52,6 +59,7 @@ export default function HomePage() {
               versusRecords={versusRecords}
             />,
             <NewPlayers firstStarts={firstStarts} />,
+            <Standings standings={standings} />,
           ]}
         />
       )}
@@ -97,18 +105,24 @@ function UpcomingGames(props) {
           title: "Away Owner",
           field: "awayTeam.owner.name",
           render: (rowData) => (
-            <a href={`/owners/${rowData.awayTeam.owner.id}`}>
+            <Link
+              component={RouterLink}
+              to={`/owners/${rowData.awayTeam.owner.id}`}
+            >
               {rowData.awayTeam.owner.name}
-            </a>
+            </Link>
           ),
         },
         {
           title: "Away Team",
           field: "awayTeam.name",
           render: (rowData) => (
-            <a href={`/fantasyTeams/${rowData.awayTeam.id}`}>
+            <Link
+              component={RouterLink}
+              to={`/fantasyTeams/${rowData.awayTeam.id}`}
+            >
               {rowData.awayTeam.name}
-            </a>
+            </Link>
           ),
         },
         {
@@ -149,18 +163,24 @@ function UpcomingGames(props) {
           title: "Home Team",
           field: "homeTeam.name",
           render: (rowData) => (
-            <a href={`/fantasyTeams/${rowData.homeTeam.id}`}>
+            <Link
+              component={RouterLink}
+              to={`/fantasyTeams/${rowData.homeTeam.id}`}
+            >
               {rowData.homeTeam.name}
-            </a>
+            </Link>
           ),
         },
         {
           title: "Home Owner",
           field: "homeTeam.owner.name",
           render: (rowData) => (
-            <a href={`/owners/${rowData.homeTeam.owner.id}`}>
+            <Link
+              component={RouterLink}
+              to={`/owners/${rowData.homeTeam.owner.id}`}
+            >
               {rowData.homeTeam.owner.name}
-            </a>
+            </Link>
           ),
         },
       ]}
@@ -205,10 +225,58 @@ function NewPlayers(props) {
           title: "Team",
           field: "fantasyTeam.name",
           render: (rowData) => (
-            <a href={`/fantasyTeams/${rowData.fantasyTeam.id}`}>
+            <Link
+              component={RouterLink}
+              to={`/fantasyTeams/${rowData.fantasyTeam.id}`}
+            >
               {rowData.fantasyTeam.name}
-            </a>
+            </Link>
           ),
+        },
+      ]}
+    />
+  );
+}
+
+function Standings(props) {
+  const { standings } = props;
+  return (
+    <MaterialTable
+      data={standings.sort(firstBy("wins").thenBy("points")).reverse()}
+      options={{
+        paging: false,
+        sorting: true,
+        search: false,
+        showTitle: true,
+        exportButton: false,
+      }}
+      title={`Current Standings`}
+      columns={[
+        {
+          title: "Team",
+          field: "name",
+          render: (rowData) => (
+            <Link component={RouterLink} to={`/fantasyTeams/${rowData.id}`}>
+              {rowData.name}
+            </Link>
+          ),
+        },
+        {
+          title: "Wins",
+          field: "wins",
+        },
+        {
+          title: "Losses",
+          field: "losses",
+        },
+        {
+          title: "Points",
+          field: "points",
+          render: (rowData) => Math.round(rowData.points, 2),
+        },
+        {
+          title: "Deserved Wins",
+          field: "topSixFinshes",
         },
       ]}
     />

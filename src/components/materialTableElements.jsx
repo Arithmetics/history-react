@@ -1,4 +1,6 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
 import TableCell from "@material-ui/core/TableCell";
@@ -73,9 +75,14 @@ export function PlayerAvatarLink(props) {
         className={classes.avatarPic}
         alt="player-img"
       />
-      <a className={classes.avatarLink} href={`/players/${id}`}>
+
+      <Link
+        className={classes.avatarLink}
+        component={RouterLink}
+        to={`/players/${id}`}
+      >
         {playerName}
-      </a>
+      </Link>
     </div>
   );
 }
