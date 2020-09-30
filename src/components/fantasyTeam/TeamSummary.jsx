@@ -151,46 +151,44 @@ function TeamGameTable(props) {
 
 function AuctionTable(props) {
   const { auction } = props;
-  if (auction.length > 0) {
-    return;
-  }
+  // if (auction.length > 0) {
+  //   return;
+  // }
 
   return (
-    <>
-      <MaterialTable
-        title="Auction"
-        data={auction}
-        options={{
-          filtering: false,
-          padding: "dense",
-          paging: false,
-          search: false,
-          exportButton: true,
-          exportAllData: true,
-          showTitle: true,
-        }}
-        columns={[
-          {
-            title: "Player",
-            field: "player.name",
-            render: (rowData) => (
-              <PlayerAvatarLink
-                id={rowData.player.id}
-                playerName={rowData.player.name}
-                pictureId={rowData.player.pictureId}
-              />
-            ),
-          },
-          {
-            title: "Position",
-            field: "position",
-          },
-          {
-            title: "Price",
-            field: "price",
-          },
-        ]}
-      />
-    </>
+    <MaterialTable
+      title="Auction"
+      data={auction}
+      options={{
+        filtering: false,
+        padding: "dense",
+        paging: false,
+        search: false,
+        exportButton: true,
+        exportAllData: true,
+        showTitle: true,
+      }}
+      columns={[
+        {
+          title: "Player",
+          field: "player.name",
+          render: (rowData) => (
+            <PlayerAvatarLink
+              id={rowData.player.id}
+              playerName={rowData.player.name}
+              pictureId={rowData.player.pictureId}
+            />
+          ),
+        },
+        {
+          title: "Position",
+          field: "position",
+        },
+        {
+          title: "Price",
+          field: "price",
+        },
+      ]}
+    />
   );
 }
