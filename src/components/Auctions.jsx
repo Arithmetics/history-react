@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 import MaterialTable from "material-table";
 
 import Typography from "@material-ui/core/Typography";
@@ -85,9 +86,12 @@ function Auctions(props) {
                 field: "owner.name",
                 lookup: createLookup(cleanedAuction, ["owner", "name"]),
                 render: (rowData) => (
-                  <a href={`/owners/${rowData.owner.id}`}>
+                  <Link
+                    component={RouterLink}
+                    to={`/owners/${rowData.owner.id}`}
+                  >
                     {rowData.owner.name}
-                  </a>
+                  </Link>
                 ),
               },
               {
@@ -95,9 +99,12 @@ function Auctions(props) {
                 field: "fantasyTeam.name",
                 lookup: createLookup(cleanedAuction, ["fantasyTeam", "name"]),
                 render: (rowData) => (
-                  <a href={`/fantasyTeams/${rowData.fantasyTeam.id}`}>
+                  <Link
+                    component={RouterLink}
+                    to={`/fantasyTeams/${rowData.fantasyTeam.id}`}
+                  >
                     {rowData.fantasyTeam.name}
-                  </a>
+                  </Link>
                 ),
               },
               {

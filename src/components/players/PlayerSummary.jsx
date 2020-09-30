@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MaterialTable from "material-table";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -13,6 +15,7 @@ import { config } from "../../api";
 
 import { createLookup, filterBetween } from "../materialTableHelpers";
 import { HeaderCellWithTooltip } from "../materialTableElements";
+import TabContainer from "../TabContainer";
 
 const useStyles = makeStyles({
   statChip: {
@@ -72,187 +75,220 @@ function PlayerSummary({ match, history }) {
           {[...Array(championships)].map((i) => (
             <Chip key={i} className={classes.statChip} label={<GiTrophy />} />
           ))}
-          {auction.length > 0 && (
-            <>
-              <MaterialTable
-                title="Auctions"
-                data={auction}
-                options={{
-                  filtering: true,
-                  paging: false,
-                  padding: "dense",
-                  search: true,
-                  exportButton: true,
-                  exportAllData: true,
-                }}
-                columns={[
-                  {
-                    title: <HeaderCellWithTooltip abbr={"YEAR"} />,
-                    field: "year",
-                    lookup: createLookup(auction, ["year"]),
-                  },
-                  {
-                    title: <HeaderCellWithTooltip abbr={"POS"} />,
-                    field: "position",
-                    lookup: createLookup(auction, ["position"]),
-                  },
-                  {
-                    title: <HeaderCellWithTooltip abbr={"OWN"} />,
-                    field: "owner.name",
-                    lookup: createLookup(auction, ["owner", "name"]),
-                    render: (rowData) => (
-                      <a href={`/owners/${rowData.owner.id}`}>
-                        {rowData.owner.name}
-                      </a>
-                    ),
-                  },
-                  {
-                    title: <HeaderCellWithTooltip abbr={"TEAM"} />,
-                    field: "fantasyTeam.name",
-                    lookup: createLookup(auction, ["fantasyTeam", "name"]),
-                    render: (rowData) => (
-                      <a href={`/fantasyTeams/${rowData.fantasyTeam.id}`}>
-                        {rowData.fantasyTeam.name}
-                      </a>
-                    ),
-                  },
-                  {
-                    title: <HeaderCellWithTooltip abbr={"PRC"} />,
-                    field: "price",
-                    customFilterAndSearch: (term, rowData) =>
-                      filterBetween(term, rowData, ["price"]),
-                  },
-                ]}
-              />
-            </>
+          {!loading && (
+            <TabContainer
+              tabNames={[`Auctions`, `Seasons`, `Fantasy Starts`]}
+              tabs={[
+                <Auctions auction={auction} />,
+                <SeasonStats seasonStats={seasonStats} />,
+                <FantasyStarts
+                  fantasyStarts={fantasyStarts}
+                  auction={auction}
+                  seasonStats={seasonStats}
+                />,
+              ]}
+            />
           )}
-          <hr></hr>
-
-          <MaterialTable
-            title="Season Statistics"
-            data={seasonStats}
-            options={{
-              filtering: true,
-              padding: "dense",
-              search: true,
-              exportButton: true,
-              exportAllData: true,
-              paging: false,
-            }}
-            columns={[
-              {
-                title: <HeaderCellWithTooltip abbr={"YEAR"} />,
-                field: "year",
-                lookup: createLookup(seasonStats, ["year"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"GP"} />,
-                field: "gamesPlayed",
-                customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["gamesPlayed"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"AGE"} />,
-                field: "ageAtSeason",
-                customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["ageAtSeason"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"EXP"} />,
-                field: "experienceAtSeason",
-                customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["experienceAtSeason"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"FPR"} />,
-                field: "fantasyPointsReg",
-                filtering: false,
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"FPR"} />,
-                field: "fantasyPointsPpr",
-                filtering: false,
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"PDR"} />,
-                field: "preseasonRank",
-                filtering: false,
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"FSR"} />,
-                field: "rankReg",
-                filtering: false,
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"FSRP"} />,
-                field: "rankPpr",
-                filtering: false,
-              },
-            ]}
-          />
-          <hr></hr>
-
-          <MaterialTable
-            title="Fantasy Starts"
-            data={fantasyStarts}
-            options={{
-              filtering: true,
-              paging: true,
-              pageSize: 25,
-              emptyRowsWhenPaging: false,
-              pageSizeOptions: [25, 100, seasonStats.length],
-              padding: "dense",
-              search: true,
-              exportButton: true,
-              exportAllData: true,
-            }}
-            columns={[
-              {
-                title: <HeaderCellWithTooltip abbr={"YEAR"} />,
-                field: "year",
-                lookup: createLookup(fantasyStarts, ["year"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"WEEK"} />,
-                field: "week",
-                lookup: createLookup(fantasyStarts, ["week"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"POS"} />,
-                field: "position",
-                lookup: createLookup(fantasyStarts, ["position"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"PTS"} />,
-                field: "points",
-                customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["points"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"OWN"} />,
-                field: "owner.name",
-                lookup: createLookup(auction, ["owner", "name"]),
-                render: (rowData) => (
-                  <a href={`/owners/${rowData.owner.id}`}>
-                    {rowData.owner.name}
-                  </a>
-                ),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"TEAM"} />,
-                field: "fantasyTeam.name",
-                lookup: createLookup(auction, ["fantasyTeam", "name"]),
-                render: (rowData) => (
-                  <a href={`/fantasyTeams/${rowData.fantasyTeam.id}`}>
-                    {rowData.fantasyTeam.name}
-                  </a>
-                ),
-              },
-            ]}
-          />
         </div>
       )}
     </>
+  );
+}
+
+function Auctions(props) {
+  const { auction } = props;
+
+  return (
+    <MaterialTable
+      title="Auctions"
+      data={auction}
+      options={{
+        filtering: true,
+        paging: false,
+        padding: "dense",
+        search: true,
+        exportButton: true,
+        exportAllData: true,
+      }}
+      columns={[
+        {
+          title: <HeaderCellWithTooltip abbr={"YEAR"} />,
+          field: "year",
+          lookup: createLookup(auction, ["year"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"POS"} />,
+          field: "position",
+          lookup: createLookup(auction, ["position"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"OWN"} />,
+          field: "owner.name",
+          lookup: createLookup(auction, ["owner", "name"]),
+          render: (rowData) => (
+            <Link component={RouterLink} to={`/owners/${rowData.owner.id}`}>
+              {rowData.owner.name}
+            </Link>
+          ),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"TEAM"} />,
+          field: "fantasyTeam.name",
+          lookup: createLookup(auction, ["fantasyTeam", "name"]),
+          render: (rowData) => (
+            <Link
+              component={RouterLink}
+              to={`/fantasyTeams/${rowData.fantasyTeam.id}`}
+            >
+              {rowData.fantasyTeam.name}
+            </Link>
+          ),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"PRC"} />,
+          field: "price",
+          customFilterAndSearch: (term, rowData) =>
+            filterBetween(term, rowData, ["price"]),
+        },
+      ]}
+    />
+  );
+}
+
+function SeasonStats(props) {
+  const { seasonStats } = props;
+
+  return (
+    <MaterialTable
+      title="Season Statistics"
+      data={seasonStats}
+      options={{
+        filtering: true,
+        padding: "dense",
+        search: true,
+        exportButton: true,
+        exportAllData: true,
+        paging: false,
+      }}
+      columns={[
+        {
+          title: <HeaderCellWithTooltip abbr={"YEAR"} />,
+          field: "year",
+          lookup: createLookup(seasonStats, ["year"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"GP"} />,
+          field: "gamesPlayed",
+          customFilterAndSearch: (term, rowData) =>
+            filterBetween(term, rowData, ["gamesPlayed"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"AGE"} />,
+          field: "ageAtSeason",
+          customFilterAndSearch: (term, rowData) =>
+            filterBetween(term, rowData, ["ageAtSeason"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"EXP"} />,
+          field: "experienceAtSeason",
+          customFilterAndSearch: (term, rowData) =>
+            filterBetween(term, rowData, ["experienceAtSeason"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"FPR"} />,
+          field: "fantasyPointsReg",
+          filtering: false,
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"FPR"} />,
+          field: "fantasyPointsPpr",
+          filtering: false,
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"PDR"} />,
+          field: "preseasonRank",
+          filtering: false,
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"FSR"} />,
+          field: "rankReg",
+          filtering: false,
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"FSRP"} />,
+          field: "rankPpr",
+          filtering: false,
+        },
+      ]}
+    />
+  );
+}
+
+function FantasyStarts(props) {
+  const { fantasyStarts, auction, seasonStats } = props;
+
+  return (
+    <MaterialTable
+      title="Fantasy Starts"
+      data={fantasyStarts}
+      options={{
+        filtering: true,
+        paging: true,
+        pageSize: 25,
+        emptyRowsWhenPaging: false,
+        pageSizeOptions: [25, 100, seasonStats.length],
+        padding: "dense",
+        search: true,
+        exportButton: true,
+        exportAllData: true,
+      }}
+      columns={[
+        {
+          title: <HeaderCellWithTooltip abbr={"YEAR"} />,
+          field: "year",
+          lookup: createLookup(fantasyStarts, ["year"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"WEEK"} />,
+          field: "week",
+          lookup: createLookup(fantasyStarts, ["week"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"POS"} />,
+          field: "position",
+          lookup: createLookup(fantasyStarts, ["position"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"PTS"} />,
+          field: "points",
+          customFilterAndSearch: (term, rowData) =>
+            filterBetween(term, rowData, ["points"]),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"OWN"} />,
+          field: "owner.name",
+          lookup: createLookup(auction, ["owner", "name"]),
+          render: (rowData) => (
+            <Link component={RouterLink} to={`/owners/${rowData.owner.id}`}>
+              {rowData.owner.name}
+            </Link>
+          ),
+        },
+        {
+          title: <HeaderCellWithTooltip abbr={"TEAM"} />,
+          field: "fantasyTeam.name",
+          lookup: createLookup(auction, ["fantasyTeam", "name"]),
+          render: (rowData) => (
+            <Link
+              component={RouterLink}
+              to={`/fantasyTeams/${rowData.fantasyTeam.id}`}
+            >
+              {rowData.fantasyTeam.name}
+            </Link>
+          ),
+        },
+      ]}
+    />
   );
 }
 

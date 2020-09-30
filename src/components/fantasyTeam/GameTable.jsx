@@ -1,6 +1,8 @@
 import React from "react";
 import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 
 import RostersTable from "./RostersTable";
 import theme from "../../theme.js";
@@ -74,12 +76,12 @@ export default function GameTable({
             title: "Away Team",
             field: "awayTeam.name",
             render: (rowData) => (
-              <a
-                className={classes.tableLink}
-                href={`/fantasyTeams/${rowData.awayTeam.id}`}
+              <Link
+                component={RouterLink}
+                to={`/fantasyTeams/${rowData.awayTeam.id}`}
               >
                 {rowData.awayTeam.name}
-              </a>
+              </Link>
             ),
           },
           {
@@ -94,12 +96,12 @@ export default function GameTable({
             title: "Home Team",
             field: "homeTeam.name",
             render: (rowData) => (
-              <a
-                className={classes.tableLink}
-                href={`/fantasyTeams/${rowData.homeTeam.id}`}
+              <Link
+                component={RouterLink}
+                to={`/fantasyTeams/${rowData.homeTeam.id}`}
               >
                 {rowData.homeTeam.name}
-              </a>
+              </Link>
             ),
           },
         ]}

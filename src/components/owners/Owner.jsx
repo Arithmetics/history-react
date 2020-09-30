@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import clsx from "clsx";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -165,7 +166,7 @@ function TeamsTable(props) {
             <Button
               color="primary"
               variant="contained"
-              component={Link}
+              component={RouterLink}
               to={`/fantasyTeams/${team.id}`}
             >
               Go To Team
@@ -198,7 +199,9 @@ function VersusTable(props) {
             title: "Owner",
             field: "name",
             render: (rowData) => (
-              <a href={`/owners/${rowData.id}`}>{rowData.name}</a>
+              <Link component={RouterLink} to={`/owners/${rowData.id}`}>
+                {rowData.name}
+              </Link>
             ),
           },
           { title: "Wins", field: "wins" },
