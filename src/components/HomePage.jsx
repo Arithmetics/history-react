@@ -125,7 +125,7 @@ function UpcomingGames(props) {
           ),
         },
         {
-          title: "Vs Streak",
+          title: "Streak",
           field: undefined,
           render: (rowData) =>
             streakEmoji(
@@ -148,7 +148,7 @@ function UpcomingGames(props) {
           },
         },
         {
-          title: "Current Vs Streak",
+          title: "Streak",
           field: undefined,
           render: (rowData) =>
             streakEmoji(
