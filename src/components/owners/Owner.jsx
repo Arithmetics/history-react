@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import clsx from "clsx";
 import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -21,6 +20,7 @@ import OwnerHeader from "./OwnerHeader";
 
 import LoadingSpinner from "../LoadingSpinner";
 import { config } from "../../api";
+import { OwnerAvatarLink } from "../materialTableElements";
 
 export function streakEmoji(streak) {
   let final = "";
@@ -199,9 +199,7 @@ function VersusTable(props) {
             title: "Owner",
             field: "name",
             render: (rowData) => (
-              <Link component={RouterLink} to={`/owners/${rowData.id}`}>
-                {rowData.name}
-              </Link>
+              <OwnerAvatarLink id={rowData.id} ownerName={rowData.name} />
             ),
           },
           { title: "Wins", field: "wins" },

@@ -118,7 +118,7 @@ export function OwnerAvatarLink(props) {
   return (
     <div className={classes.avatarContainer}>
       <img
-        src={`/ownerAvatars/${id}.png`}
+        src={`/ownerAvatars/50_x_50/${id}.png`}
         className={classes.teamAvatarPic}
         alt="owner-img"
       />
@@ -126,7 +126,7 @@ export function OwnerAvatarLink(props) {
       <Link
         className={classes.avatarLink}
         component={RouterLink}
-        to={`/fantasyTeams/${id}`}
+        to={`/owners/${id}`}
       >
         {ownerName}
       </Link>

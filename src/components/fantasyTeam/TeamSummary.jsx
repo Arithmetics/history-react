@@ -85,7 +85,6 @@ export default function TeamSummary({ match, history }) {
   const cuumulativeStats = (fantasyTeam && fantasyTeam.cuumulativeStats) || {};
   const regularSeasonGames = fantasyGames.filter((game) => game.week < 14);
   const playoffGames = fantasyGames.filter((game) => game.week > 13);
-
   return (
     <div>
       <Typography variant="h3" gutterBottom>

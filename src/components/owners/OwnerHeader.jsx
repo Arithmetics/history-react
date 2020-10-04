@@ -11,6 +11,13 @@ const useStyles = makeStyles({
   statChip: {
     margin: 5,
   },
+  profileImage: {
+    borderRadius: 500,
+    margin: "0 auto",
+    display: "block",
+    border: "1px solid #0b878c",
+    maxHeight: 200,
+  },
 });
 
 function OwnerHeader(props) {
@@ -22,7 +29,11 @@ function OwnerHeader(props) {
       <Typography variant="h3" gutterBottom>
         {owner.name}
       </Typography>
-
+      <img
+        alt="player-profile-pic"
+        className={classes.profileImage}
+        src={`/ownerAvatars/${owner.id}.png`}
+      />
       <Chip
         className={classes.statChip}
         label={`Record: ${cumulativeStats.totalWins} - ${
