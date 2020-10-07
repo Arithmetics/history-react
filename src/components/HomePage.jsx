@@ -19,11 +19,13 @@ export default function HomePage() {
   const [scheduledGames, setScheduledGames] = useState([]);
   const [firstStarts, setFirstStarts] = useState([]);
   const [standings, setStandings] = useState([]);
+  const [playoffOdds, setPlayoffOdds] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/home/show.json`);
+      console.log(result);
       setVersusRecords(
         (result && result.data && result.data.versusRecords) || []
       );
@@ -33,6 +35,7 @@ export default function HomePage() {
       setFirstStarts((result && result.data && result.data.firstStarts) || []);
 
       setStandings((result && result.data && result.data.standings) || []);
+      setPlayoffOdds((result && result.data && result.data.playoffOdds) || []);
       setLoading(false);
     };
     fetchData();
@@ -61,7 +64,7 @@ export default function HomePage() {
               versusRecords={versusRecords}
             />,
             <NewPlayers firstStarts={firstStarts} />,
-            <Standings standings={standings} />,
+            <Standings standings={standings} playoffOdds={playoffOdds} />,
           ]}
         />
       )}
@@ -234,7 +237,7 @@ function NewPlayers(props) {
 }
 
 function Standings(props) {
-  const { standings } = props;
+  const { standings, playoffOdds } = props;
   return (
     <MaterialTable
       data={standings.sort(firstBy("wins").thenBy("points")).reverse()}
@@ -274,6 +277,47 @@ function Standings(props) {
         {
           title: "Deserved Wins",
           field: "topSixFinshes",
+        },
+        {
+          title: "Playoff Odds",
+          field: "playoffOdds",
+          render: (rowData) =>
+            `${
+              Math.round(
+                playoffOdds.filter(
+                  (o) =>
+                    o.category === "make_playoffs" &&
+                    o.fantasyTeam.id === rowData.id
+                )[0].odds * 1000
+              ) / 10
+            }%`,
+        },
+        {
+          title: "Bye Odds",
+          field: "playoffOdds",
+          render: (rowData) =>
+            `${
+              Math.round(
+                playoffOdds.filter(
+                  (o) =>
+                    o.category === "get_bye" && o.fantasyTeam.id === rowData.id
+                )[0].odds * 1000
+              ) / 10
+            }%`,
+        },
+        {
+          title: "Championship Odds",
+          field: "playoffOdds",
+          render: (rowData) =>
+            `${
+              Math.round(
+                playoffOdds.filter(
+                  (o) =>
+                    o.category === "win_championship" &&
+                    o.fantasyTeam.id === rowData.id
+                )[0].odds * 1000
+              ) / 10
+            }%`,
         },
       ]}
     />
