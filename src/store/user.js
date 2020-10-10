@@ -43,8 +43,9 @@ const { loginSuccess, logoutSuccess, loginLoading, loginError } = slice.actions;
 export const login = ({ email, password }) => async (dispatch) => {
   dispatch(loginLoading());
   try {
-    await api.post("/login", { user: { email, password } });
-    dispatch(loginSuccess({ email }));
+    const response = await api.post("/login", { user: { email, password } });
+    const { admin } = response.data;
+    dispatch(loginSuccess({ email, isAdmin: admin }));
   } catch (e) {
     dispatch(loginError());
     return console.error(e.message);

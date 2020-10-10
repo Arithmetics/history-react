@@ -15,6 +15,7 @@ import Auctions from "./components/Auctions";
 import Podcasts from "./components/Podcasts";
 import HomePage from "./components/HomePage";
 import Login from "./components/users/Login";
+import Admin from "./components/admin/Admin";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                 <Route exact path="/auctions/:id" component={Auctions} />
                 <Route exact path="/auctions/" component={Auctions} />
                 <Route exact path="/podcasts/" component={Podcasts} />
+                <Route exact path="/admins/" component={Admin} />
               </Switch>
             </MainWrapper>
           </BrowserRouter>

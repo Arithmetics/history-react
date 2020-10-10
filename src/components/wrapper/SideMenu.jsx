@@ -1,16 +1,17 @@
 import React from "react";
 import clsx from "clsx";
+import { useDispatch, useSelector } from "react-redux";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-
+import BuildIcon from "@material-ui/icons/Build";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-
 import HomeIcon from "@material-ui/icons/Home";
 import PeopleIcon from "@material-ui/icons/People";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
@@ -37,6 +38,11 @@ const sideLinks = [
   {
     page: "Podcasts",
     icon: <AudiotrackIcon />,
+  },
+  {
+    page: "Admin",
+    icon: <BuildIcon />,
+    adminOnly: true,
   },
 ];
 
@@ -79,6 +85,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SideMenu({ isOpen, handleDrawerClose }) {
   const classes = useStyles();
 
+  const { user } = useSelector((state) => state.user);
+
   return (
     <Drawer
       variant="permanent"
@@ -95,6 +103,9 @@ export default function SideMenu({ isOpen, handleDrawerClose }) {
       <Divider />
       <List>
         {sideLinks.map((link) => {
+          if (link.adminOnly && (!user || !user.isAdmin)) {
+            return undefined;
+          }
           return (
             <ListItem
               key={link.page}
