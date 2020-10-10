@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { api } from "../api";
 
 const initialUser = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
+
 // Slice
 const slice = createSlice({
   name: "user",
@@ -21,12 +23,14 @@ const slice = createSlice({
   },
 });
 export default slice.reducer;
+
 // Actions
 const { loginSuccess, logoutSuccess } = slice.actions;
-export const login = ({ username, password }) => async (dispatch) => {
+export const login = ({ email, password }) => async (dispatch) => {
   try {
-    // const res = await api.post('/api/auth/login/', { username, password })
-    dispatch(loginSuccess({ username }));
+    const res = await api.post("/login", { user: { email, password } });
+    console.log(res);
+    dispatch(loginSuccess({ email }));
   } catch (e) {
     return console.error(e.message);
   }

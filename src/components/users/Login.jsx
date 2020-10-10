@@ -1,4 +1,7 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -10,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import { useForm } from "react-hook-form";
+import { login, logout } from "../../store/user";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,8 +34,23 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+
   const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    dispatch(login(data));
+  };
+
+  if (user) {
+    return (
+      <div>
+        Hi, {user.username}!
+        <button onClick={() => dispatch(logout())}>Logout</button>
+      </div>
+    );
+  }
 
   return (
     <Container component="main" maxWidth="xs">
