@@ -1,12 +1,18 @@
 import React from "react";
 import clsx from "clsx";
+import { useSelector, useDispatch } from "react-redux";
+import { Link as RouterLink } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import Button from "@material-ui/core/Button";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+
+import { logout } from "../../store/user";
 
 const drawerWidth = 240;
 
@@ -49,6 +55,13 @@ const useStyles = makeStyles((theme) => ({
 export default function TopToolBar({ handleDrawerOpen, isOpen }) {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <AppBar
       position="absolute"
@@ -80,9 +93,18 @@ export default function TopToolBar({ handleDrawerOpen, isOpen }) {
             alt="site-logo"
           />
         </Typography>
-        <IconButton color="inherit">
-          <AccountCircle />
-        </IconButton>
+        {user ? (
+          <Button color="primary" onClick={handleLogout}>
+            Logout
+          </Button>
+        ) : (
+          // <IconButton color="inherit">
+          //   <AccountCircle />
+          // </IconButton>
+          <Button color="primary" component={RouterLink} to="/login">
+            Login
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );

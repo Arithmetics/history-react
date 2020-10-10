@@ -10,36 +10,52 @@ const slice = createSlice({
   name: "user",
   initialState: {
     user: initialUser,
+    loginLoading: false,
+    loginError: false,
   },
   reducers: {
+    loginLoading: (state, _action) => {
+      state.loginLoading = true;
+      state.loginError = false;
+    },
     loginSuccess: (state, action) => {
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
+      state.loginError = false;
+      state.loginLoading = false;
     },
-    logoutSuccess: (state, action) => {
+    logoutSuccess: (state, _action) => {
       state.user = null;
       localStorage.removeItem("user");
+      state.loginError = false;
+      state.loginLoading = false;
+    },
+    loginError: (state, _action) => {
+      state.loginError = true;
+      state.loginLoading = false;
     },
   },
 });
 export default slice.reducer;
 
 // Actions
-const { loginSuccess, logoutSuccess } = slice.actions;
+const { loginSuccess, logoutSuccess, loginLoading, loginError } = slice.actions;
 export const login = ({ email, password }) => async (dispatch) => {
+  dispatch(loginLoading());
   try {
-    const res = await api.post("/login", { user: { email, password } });
-    console.log(res);
+    await api.post("/login", { user: { email, password } });
     dispatch(loginSuccess({ email }));
   } catch (e) {
+    dispatch(loginError());
     return console.error(e.message);
   }
 };
 export const logout = () => async (dispatch) => {
   try {
-    // const res = await api.post('/api/auth/logout/')
+    await api.post("/logout");
     return dispatch(logoutSuccess());
   } catch (e) {
-    return console.error(e.message);
+    console.error(e.message);
+    return dispatch(logoutSuccess());
   }
 };
