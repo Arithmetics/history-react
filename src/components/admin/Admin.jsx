@@ -1,8 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { Redirect } from "react-router-dom";
 
+import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -13,53 +14,151 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { login } from "../../store/user";
+import { DatePicker } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
   form: {
     width: "100%",
-    marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  dateCell: {
+    marginTop: 16,
+    width: "100%",
   },
-  buttonProgress: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-  },
-  failure: {
-    color: theme.palette.secondary.light,
+  paperPad: {
+    padding: 16,
   },
 }));
 
 export default function Admin() {
   const classes = useStyles();
 
-  const dispatch = useDispatch();
-  const { user, loginLoading, loginError } = useSelector((state) => state.user);
-
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => {
-    dispatch(login(data));
-  };
-
-  if (user) {
-    return <Redirect to={"/home"} />;
-  }
-
   return (
     <>
       <Typography variant="h3" gutterBottom>
         Admin
       </Typography>
+      <NewPlayerForm />
     </>
+  );
+}
+
+function NewPlayerForm() {
+  const { register, handleSubmit, errors, control } = useForm();
+  const dispatch = useDispatch();
+  const classes = useStyles();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  const newPlayerLoading = false;
+  const newPlayerError = false;
+
+  return (
+    <Paper className={classes.paperPad}>
+      <Typography variant="h5" gutterBottom>
+        Create Player
+      </Typography>
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={2}>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              id="name"
+              label="Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+              inputRef={register({ required: "Enter name" })}
+              error={errors.name ? true : false}
+              helperText={errors.name?.message}
+              disabled={newPlayerLoading}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              name="profileId"
+              label="Profile ID"
+              id="profileId"
+              inputRef={register({ required: "Enter profile id" })}
+              error={errors.profileId ? true : false}
+              helperText={errors.profileId?.message}
+              disabled={newPlayerLoading}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <Controller
+              as={
+                <DatePicker
+                  className={classes.dateCell}
+                  clearable
+                  autoOk
+                  label="Date of birth"
+                  format="MM/DD/YYYY"
+                  views={["year", "month", "date"]}
+                  inputVariant="outlined"
+                  InputAdornmentProps={{ position: "start" }}
+                  error={errors.birthdate ? true : false}
+                />
+              }
+              name="birthdate"
+              defaultValue="01/01/1990"
+              rules={{ required: "Field Required" }}
+              control={control}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              name="nflURLName"
+              label="NFL URL Name"
+              id="nflURLName"
+              inputRef={register({ required: "Enter NFL URL Name" })}
+              error={errors.nflURLName ? true : false}
+              helperText={errors.nflURLName?.message}
+              disabled={newPlayerLoading}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              name="pictureId"
+              label="Picture ID"
+              id="pictureId"
+              inputRef={register({ required: "Enter Picture ID" })}
+              error={errors.pictureId ? true : false}
+              helperText={errors.pictureId?.message}
+              disabled={newPlayerLoading}
+              fullWidth
+            />
+          </Grid>
+          {newPlayerError && (
+            <Typography variant="p" className={classes.failure}>
+              New player error
+            </Typography>
+          )}
+        </Grid>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          disabled={newPlayerLoading}
+        >
+          Submit
+        </Button>
+        {newPlayerLoading && (
+          <CircularProgress size={24} className={classes.buttonProgress} />
+        )}
+      </form>
+    </Paper>
   );
 }

@@ -3,6 +3,10 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+// pick a date util library
+import MomentUtils from "@date-io/moment";
+
 import store from "./store/store";
 import theme from "./theme";
 import Owners from "./components/owners/Owners";
@@ -21,26 +25,32 @@ function App() {
   return (
     <Provider store={store}>
       <MuiThemeProvider theme={theme}>
-        <div>
-          <BrowserRouter>
-            <MainWrapper>
-              <Switch>
-                <Route exact path="/" component={HomePage} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/home" component={HomePage} />
-                <Route exact path="/owners/:id" component={Owner} />
-                <Route exact path="/owners" component={Owners} />
-                <Route exact path="/fantasyTeams/:id" component={TeamSummary} />
-                <Route exact path="/players/:id" component={PlayerSummary} />
-                <Route exact path="/players" component={AllPlayers} />
-                <Route exact path="/auctions/:id" component={Auctions} />
-                <Route exact path="/auctions/" component={Auctions} />
-                <Route exact path="/podcasts/" component={Podcasts} />
-                <Route exact path="/admins/" component={Admin} />
-              </Switch>
-            </MainWrapper>
-          </BrowserRouter>
-        </div>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <div>
+            <BrowserRouter>
+              <MainWrapper>
+                <Switch>
+                  <Route exact path="/" component={HomePage} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/home" component={HomePage} />
+                  <Route exact path="/owners/:id" component={Owner} />
+                  <Route exact path="/owners" component={Owners} />
+                  <Route
+                    exact
+                    path="/fantasyTeams/:id"
+                    component={TeamSummary}
+                  />
+                  <Route exact path="/players/:id" component={PlayerSummary} />
+                  <Route exact path="/players" component={AllPlayers} />
+                  <Route exact path="/auctions/:id" component={Auctions} />
+                  <Route exact path="/auctions/" component={Auctions} />
+                  <Route exact path="/podcasts/" component={Podcasts} />
+                  <Route exact path="/admin/" component={Admin} />
+                </Switch>
+              </MainWrapper>
+            </BrowserRouter>
+          </div>
+        </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     </Provider>
   );
