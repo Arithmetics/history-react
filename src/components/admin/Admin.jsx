@@ -5,16 +5,15 @@ import { Redirect } from "react-router-dom";
 
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { DatePicker } from "@material-ui/pickers";
+
+import { newPlayer } from "../../store/player";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -43,16 +42,18 @@ export default function Admin() {
 }
 
 function NewPlayerForm() {
-  const { register, handleSubmit, errors, control } = useForm();
-  const dispatch = useDispatch();
   const classes = useStyles();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const dispatch = useDispatch();
+  const { newPlayerLoading, newPlayerError, newPlayerSuccess } = useSelector(
+    (state) => state.player
+  );
 
-  const newPlayerLoading = false;
-  const newPlayerError = false;
+  const { register, control, handleSubmit, errors } = useForm();
+
+  const onSubmit = (data) => {
+    dispatch(newPlayer(data));
+  };
 
   return (
     <Paper className={classes.paperPad}>

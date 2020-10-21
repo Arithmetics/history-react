@@ -20,13 +20,16 @@ const slice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.user = action.payload;
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("token", JSON.stringify(action.payload.token));
       state.loginError = false;
       state.loginLoading = false;
     },
     logoutSuccess: (state, _action) => {
       state.user = null;
       localStorage.removeItem("user");
+      localStorage.removeItem("token");
+
       state.loginError = false;
       state.loginLoading = false;
     },
@@ -44,8 +47,12 @@ export const login = ({ email, password }) => async (dispatch) => {
   dispatch(loginLoading());
   try {
     const response = await api.post("/login", { user: { email, password } });
+    console.log(response);
     const { admin } = response.data;
-    dispatch(loginSuccess({ email, isAdmin: admin }));
+    const { authorization } = response.headers;
+    dispatch(
+      loginSuccess({ user: { email, isAdmin: admin }, token: authorization })
+    );
   } catch (e) {
     dispatch(loginError());
     return console.error(e.message);

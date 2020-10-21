@@ -47,6 +47,7 @@ export default function SignIn() {
   const { user, loginLoading, loginError } = useSelector((state) => state.user);
 
   const { register, handleSubmit, errors } = useForm();
+
   const onSubmit = (data) => {
     dispatch(login(data));
   };
