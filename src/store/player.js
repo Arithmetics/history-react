@@ -13,14 +13,17 @@ const slice = createSlice({
     newPlayerLoading: (state, _action) => {
       state.newPlayerLoading = true;
       state.newPlayerError = false;
+      state.newPlayerSuccess = false;
     },
     newPlayerSuccess: (state, _action) => {
       state.newPlayerLoading = false;
       state.newPlayerError = false;
+      state.newPlayerSuccess = true;
     },
     newPlayerError: (state, _action) => {
       state.newPlayerLoading = false;
       state.newPlayerError = true;
+      state.newPlayerSuccess = false;
     },
   },
 });

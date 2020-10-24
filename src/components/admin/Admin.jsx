@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import { Redirect } from "react-router-dom";
@@ -49,7 +49,12 @@ function NewPlayerForm() {
     (state) => state.player
   );
 
-  const { register, control, handleSubmit, errors } = useForm();
+  const { register, control, handleSubmit, reset, errors } = useForm();
+
+  useEffect(() => (newPlayerSuccess ? reset() : undefined), [
+    newPlayerSuccess,
+    reset,
+  ]);
 
   const onSubmit = (data) => {
     dispatch(newPlayer(data));
@@ -144,6 +149,11 @@ function NewPlayerForm() {
           {newPlayerError && (
             <Typography variant="p" className={classes.failure}>
               New player error
+            </Typography>
+          )}
+          {newPlayerSuccess && (
+            <Typography variant="p" className={classes.success}>
+              New player added!
             </Typography>
           )}
         </Grid>
