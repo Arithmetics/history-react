@@ -21,7 +21,7 @@ const slice = createSlice({
     loginSuccess: (state, action) => {
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      localStorage.setItem("token", action.payload.token);
       state.loginError = false;
       state.loginLoading = false;
     },
