@@ -15,6 +15,16 @@ import { DatePicker } from "@material-ui/pickers";
 
 import { newPlayer } from "../../store/player";
 
+import MaterialTable from "material-table";
+
+import LoadingSpinner from "../LoadingSpinner";
+
+import { createLookup, filterBetween } from "../materialTableHelpers";
+import {
+  PlayerAvatarLink,
+  HeaderCellWithTooltip,
+} from "../materialTableElements";
+
 const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%",
@@ -25,6 +35,14 @@ const useStyles = makeStyles((theme) => ({
   },
   paperPad: {
     padding: 16,
+  },
+  failure: {
+    color: theme.palette.secondary.light,
+    margin: 16,
+  },
+  success: {
+    color: theme.palette.success.main,
+    margin: 16,
   },
 }));
 
@@ -37,8 +55,20 @@ export default function Admin() {
         Admin
       </Typography>
       <NewPlayerForm />
+      <PlayerDeleteTable />
     </>
   );
+}
+
+function PlayerDeleteTable() {
+  const classes = useStyles();
+
+  const dispatch = useDispatch();
+  const { newPlayerLoading, newPlayerError, newPlayerSuccess } = useSelector(
+    (state) => state.player
+  );
+
+  return <p>table here</p>;
 }
 
 function NewPlayerForm() {
@@ -146,16 +176,6 @@ function NewPlayerForm() {
               fullWidth
             />
           </Grid>
-          {newPlayerError && (
-            <Typography variant="p" className={classes.failure}>
-              New player error
-            </Typography>
-          )}
-          {newPlayerSuccess && (
-            <Typography variant="p" className={classes.success}>
-              New player added!
-            </Typography>
-          )}
         </Grid>
         <Button
           type="submit"
@@ -170,6 +190,17 @@ function NewPlayerForm() {
           <CircularProgress size={24} className={classes.buttonProgress} />
         )}
       </form>
+      <br></br>
+      {newPlayerError && (
+        <Typography variant="body" className={classes.failure}>
+          New player error
+        </Typography>
+      )}
+      {newPlayerSuccess && (
+        <Typography variant="body" className={classes.success}>
+          New player added!
+        </Typography>
+      )}
     </Paper>
   );
 }
