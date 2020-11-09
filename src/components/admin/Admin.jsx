@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
@@ -11,13 +11,14 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import LoadingSpinner from "../LoadingSpinner";
+
 import { DatePicker } from "@material-ui/pickers";
 
-import { newPlayer } from "../../store/player";
+import { newPlayer, getAllPlayers } from "../../store/player";
 
 import MaterialTable from "material-table";
 
-import LoadingSpinner from "../LoadingSpinner";
 
 import { createLookup, filterBetween } from "../materialTableHelpers";
 import {
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Admin() {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <>
@@ -64,11 +65,90 @@ function PlayerDeleteTable() {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const { newPlayerLoading, newPlayerError, newPlayerSuccess } = useSelector(
+  const { allPlayersLoading, allPlayers, allPlayersSuccess, allPlayersError } = useSelector(
     (state) => state.player
   );
 
-  return <p>table here</p>;
+  useEffect(() => (dispatch(getAllPlayers())), [dispatch])
+
+  if (allPlayersLoading) {
+    return <LoadingSpinner isLoading={allPlayersLoading} />
+  }
+
+  if (allPlayersError) {
+    return <p>There was an error fetching the player data</p>
+  }
+
+
+
+  if (allPlayersSuccess) {
+    const unfrozenData = allPlayers.map((p) => {
+      const {name, birthdate, id, createdAt, nflUrlName, pictureId} = p
+      return {name, birthdate, id, createdAt, nflUrlName, pictureId}
+    })
+    return  <MaterialTable
+    title="All Players"
+    data={unfrozenData}
+    options={{
+      filtering: false,
+      padding: "dense",
+      paging: true,
+      pageSize: 10,
+      pageSizeOptions: [10, 20, 50],
+      search: true,
+      exportButton: false,
+      emptyRowsWhenPaging: false,
+      showTitle: false,
+      actionsColumnIndex: -1,
+    }}
+    actions={[
+      {
+        icon: 'delete',
+        tooltip: 'Delete player',
+        onClick: (event, rowData) => alert("You deleted " + rowData.name)
+      },
+    ]}
+    columns={[
+      {
+      title: "Name",
+      field: "name",
+      filtering: false,
+      render: (rowData) => (
+        <PlayerAvatarLink
+          id={rowData.id}
+          playerName={rowData.name}
+          pictureId={rowData.pictureId}
+        />
+      ),
+    },
+    {
+      title: "Profile ID",
+      field: "id",
+    }, 
+    {
+      title: "Picture ID",
+      field: "pictureId"
+    },
+    { 
+      title: "NFL URL", 
+      field: "nflUrlName"
+    },
+    {
+      title: "Birthdate",
+      field: "birthdate"
+    },
+    { 
+      title: "Created At", 
+      field: "createdAt",
+      defaultSort: "desc",
+    }
+  ]}
+    />
+  }
+
+  return null;
+
+ 
 }
 
 function NewPlayerForm() {
