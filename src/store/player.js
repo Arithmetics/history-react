@@ -13,8 +13,13 @@ const slice = createSlice({
     allPlayersLoading: false,
     allPlayersError: false,
     allPlayersSuccess: false,
+    // delete player
+    deletePlayerLoading: false,
+    deletePlayerError: false,
+    deletePlayerSuccess: false,
   },
   reducers: {
+    // new player
     newPlayerLoading: (state, _action) => {
       state.newPlayerLoading = true;
       state.newPlayerError = false;
@@ -31,7 +36,7 @@ const slice = createSlice({
       state.newPlayerError = true;
       state.newPlayerSuccess = false;
     },
-
+    // all players
     allPlayersLoading: (state, _action) => {
       state.allPlayersLoading = true;
       state.allPlayersError = false;
@@ -48,12 +53,29 @@ const slice = createSlice({
       state.allPlayersError = true;
       state.allPlayersSuccess = false;
     },
+    // delete player
+    deletePlayerLoading: (state, _action) => {
+      state.deletePlayerLoading = true;
+      state.deletePlayerError = false;
+      state.deletePlayerSuccess = false;
+    },
+    deletePlayerSuccess: (state, action) => {
+      state.deletePlayerLoading = false;
+      state.deletePlayerError = false;
+      state.deletePlayerSuccess = true;
+      state.allPlayers = state.allPlayers.filter(p => p.id !== action.payload)
+    },
+    deletePlayerError: (state, _action) => {
+      state.deletePlayerLoading = false;
+      state.deletePlayerError = true;
+      state.deletePlayerSuccess = false;
+    },
   },
 });
 export default slice.reducer;
 
 // Actions
-const { newPlayerLoading, newPlayerSuccess, newPlayerError, allPlayersLoading, allPlayersSuccess, allPlayersError } = slice.actions;
+const { newPlayerLoading, newPlayerSuccess, newPlayerError, allPlayersLoading, allPlayersSuccess, allPlayersError, deletePlayerLoading, deletePlayerSuccess, deletePlayerError } = slice.actions;
 
 export const newPlayer = ({
   name,
@@ -63,7 +85,6 @@ export const newPlayer = ({
   birthdate,
 }) => async (dispatch) => {
   dispatch(newPlayerLoading());
-  console.log(name, profileId, pictureId, nflURLName, birthdate);
   try {
     const response = await api.post("/players.json", {
       player: {
@@ -81,15 +102,25 @@ export const newPlayer = ({
   }
 };
 
-export const getAllPlayers =() => async (dispatch) => {
-  console.log("get all players")
+export const getAllPlayers = () => async (dispatch) => {
   dispatch(allPlayersLoading());
   try {
     const response = await api.get("/players.json");
-    console.log(response)
     dispatch(allPlayersSuccess(response.data.players))
   } catch (e) {
     dispatch(allPlayersError());
     return console.error(e.message)
   }
 }
+
+export const deletePlayer = (playerId) => async (dispatch) => {
+  console.log(playerId)
+  dispatch(deletePlayerLoading());
+  try {
+    await api.delete(`players/${playerId}.json`);
+    dispatch(deletePlayerSuccess(playerId));
+  } catch (e) {
+    dispatch(deletePlayerError());
+    return console.error(e.message);
+  }
+} 

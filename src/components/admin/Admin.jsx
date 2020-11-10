@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-// import { Redirect } from "react-router-dom";
-
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -10,20 +8,22 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import LoadingSpinner from "../LoadingSpinner";
 
 import { DatePicker } from "@material-ui/pickers";
 
-import { newPlayer, getAllPlayers } from "../../store/player";
+import { newPlayer, getAllPlayers, deletePlayer } from "../../store/player";
 
 import MaterialTable from "material-table";
 
-
-import { createLookup, filterBetween } from "../materialTableHelpers";
 import {
   PlayerAvatarLink,
-  HeaderCellWithTooltip,
 } from "../materialTableElements";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,21 +48,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Admin() {
-  // const classes = useStyles();
-
   return (
     <>
       <Typography variant="h3" gutterBottom>
         Admin
       </Typography>
       <NewPlayerForm />
+      <br></br>
       <PlayerDeleteTable />
     </>
   );
 }
 
 function PlayerDeleteTable() {
-  const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+  const [playerToDelete, setPlayerToDelete] = useState(undefined);
+
+  const handleClickOpen = (player) => {
+    setOpen(true);
+    setPlayerToDelete(player);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setPlayerToDelete(undefined);
+  };
 
   const dispatch = useDispatch();
   const { allPlayersLoading, allPlayers, allPlayersSuccess, allPlayersError } = useSelector(
@@ -79,15 +90,18 @@ function PlayerDeleteTable() {
     return <p>There was an error fetching the player data</p>
   }
 
-
+  
 
   if (allPlayersSuccess) {
     const unfrozenData = allPlayers.map((p) => {
       const {name, birthdate, id, createdAt, nflUrlName, pictureId} = p
       return {name, birthdate, id, createdAt, nflUrlName, pictureId}
     })
-    return  <MaterialTable
-    title="All Players"
+    return  (
+    <>
+    <DeletePlayerConfirm handleClose={handleClose} open={open} player={playerToDelete} />
+    <MaterialTable
+    title="Manage Players"
     data={unfrozenData}
     options={{
       filtering: false,
@@ -98,14 +112,14 @@ function PlayerDeleteTable() {
       search: true,
       exportButton: false,
       emptyRowsWhenPaging: false,
-      showTitle: false,
+      showTitle: true,
       actionsColumnIndex: -1,
     }}
     actions={[
       {
         icon: 'delete',
         tooltip: 'Delete player',
-        onClick: (event, rowData) => alert("You deleted " + rowData.name)
+        onClick: (event, rowData) => handleClickOpen(rowData)
       },
     ]}
     columns={[
@@ -144,6 +158,7 @@ function PlayerDeleteTable() {
     }
   ]}
     />
+    </>)
   }
 
   return null;
@@ -283,4 +298,48 @@ function NewPlayerForm() {
       )}
     </Paper>
   );
+}
+
+function DeletePlayerConfirm({ player, open, handleClose}) {
+
+  const { deletePlayerLoading, deletePlayerSuccess, deletePlayerError } = useSelector(
+    (state) => state.player
+  );
+
+  const dispatch = useDispatch();
+
+  const submitDeletePlayer = () => {
+    console.log(player.id)
+    dispatch(deletePlayer(player.id))
+  }
+
+  useEffect(() => {
+    if (deletePlayerSuccess) {
+      handleClose()
+    }
+  }, [handleClose, deletePlayerSuccess])
+
+  return (
+    <Dialog
+    open={open}
+    onClose={handleClose}
+    aria-labelledby="alert-dialog-title"
+    aria-describedby="alert-dialog-description"
+  >
+    <DialogTitle id="alert-dialog-title">Delete {player && player.name}?</DialogTitle>
+    <DialogContent>
+      <DialogContentText id="alert-dialog-description">
+        This will delete the player permanently {JSON.stringify(player)}
+        {deletePlayerError ? 'There was an error' : undefined}
+      </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={handleClose} color="primary">
+        Cancel
+      </Button>
+      <Button disabled={deletePlayerLoading} onClick={submitDeletePlayer} color="primary" autoFocus>
+        Delete
+      </Button>
+    </DialogActions>
+  </Dialog>)
 }
