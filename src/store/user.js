@@ -19,7 +19,7 @@ const slice = createSlice({
       state.loginError = false;
     },
     loginSuccess: (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload.user;
       localStorage.setItem("user", JSON.stringify(action.payload.user));
       localStorage.setItem("token", action.payload.token);
       state.loginError = false;

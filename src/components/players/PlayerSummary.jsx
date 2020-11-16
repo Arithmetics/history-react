@@ -19,6 +19,8 @@ import {
 } from "../materialTableElements";
 import TabContainer from "../TabContainer";
 
+import { NFL_IMAGE_URL } from "../../constants";
+
 const useStyles = makeStyles({
   statChip: {
     margin: 5,
@@ -71,7 +73,7 @@ function PlayerSummary({ match, history }) {
           <img
             alt="player-profile-pic"
             className={classes.profileImage}
-            src={`https://static.www.nfl.com/image/private/t_player_profile_landscape_2x/f_auto/league/${player.pictureId}`}
+            src={`${NFL_IMAGE_URL}/${player.pictureId}`}
           />
           {!loading && <h2 className={classes.playerName}>{playerName}</h2>}
           {[...Array(championships)].map((i) => (

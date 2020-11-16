@@ -5,6 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
 import TableCell from "@material-ui/core/TableCell";
 
+import { NFL_IMAGE_URL } from '../constants';
+
 const titleRowLookup = {
   YEAR: "Year",
   POS: "Position",
@@ -78,7 +80,7 @@ export function PlayerAvatarLink(props) {
   return (
     <div className={classes.avatarContainer}>
       <img
-        src={`https://static.www.nfl.com/image/private/t_player_profile_landscape_2x/f_auto/league/${pictureId}`}
+        src={`${NFL_IMAGE_URL}/${pictureId}`}
         className={classes.avatarPic}
         alt="player-img"
       />

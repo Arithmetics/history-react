@@ -86,7 +86,7 @@ export default function SideMenu({ isOpen, handleDrawerClose }) {
   const classes = useStyles();
 
   const { user } = useSelector((state) => state.user);
-
+  console.log('rendered',user)
   return (
     <Drawer
       variant="permanent"

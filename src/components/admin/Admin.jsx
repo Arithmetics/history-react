@@ -13,15 +13,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 import LoadingSpinner from "../LoadingSpinner";
-
 import { DatePicker } from "@material-ui/pickers";
-
 import { newPlayer, getAllPlayers, deletePlayer } from "../../store/player";
-
 import MaterialTable from "material-table";
-
+import { NFL_PLAYER_PAGE, NFL_IMAGE_URL } from '../../constants';
 import {
   PlayerAvatarLink,
 } from "../materialTableElements";
@@ -45,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.success.main,
     margin: 16,
   },
+  link: {
+    color: theme.palette.primary.main,
+  }
 }));
 
 export default function Admin() {
@@ -61,6 +60,7 @@ export default function Admin() {
 }
 
 function PlayerDeleteTable() {
+  const classes = useStyles();
 
   const [open, setOpen] = useState(false);
   const [playerToDelete, setPlayerToDelete] = useState(undefined);
@@ -141,11 +141,27 @@ function PlayerDeleteTable() {
     }, 
     {
       title: "Picture ID",
-      field: "pictureId"
+      field: "pictureId",
+      render: (rowData) => (
+        <a
+          href={`${NFL_IMAGE_URL}/${rowData.pictureId}`}
+          rel="noopener noreferrer"
+          target="_blank"
+          className={classes.link}
+        >{rowData.pictureId}</a>
+      ),
     },
     { 
       title: "NFL URL", 
-      field: "nflUrlName"
+      field: "nflUrlName",
+      render: (rowData) => (
+        <a
+          href={`${NFL_PLAYER_PAGE}/${rowData.nflUrlName}`}
+          rel="noopener noreferrer"
+          target="_blank"
+          className={classes.link}
+        >{rowData.nflUrlName}</a>
+      ),
     },
     {
       title: "Birthdate",
