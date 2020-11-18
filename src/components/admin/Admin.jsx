@@ -325,7 +325,6 @@ function DeletePlayerConfirm({ player, open, handleClose}) {
   const dispatch = useDispatch();
 
   const submitDeletePlayer = () => {
-    console.log(player.id)
     dispatch(deletePlayer(player.id))
   }
 

@@ -47,7 +47,6 @@ export const login = ({ email, password }) => async (dispatch) => {
   dispatch(loginLoading());
   try {
     const response = await api.post("/login", { user: { email, password } });
-    console.log(response);
     const { admin } = response.data;
     const { authorization } = response.headers;
     dispatch(

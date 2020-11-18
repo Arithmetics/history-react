@@ -22,13 +22,10 @@ function AllPlayers({ match, history }) {
     const fetchData = async () => {
       const result = await axios(`${config}/players.json`);
       setPlayers(result && result.data && result.data.players);
-      console.log(result.data.players);
       setLoading(false);
     };
     fetchData();
   }, []);
-
-  console.log(players);
 
   return (
     <>

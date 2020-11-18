@@ -13,6 +13,7 @@ import {
   OwnerAvatarLink,
 } from "./materialTableElements";
 import TabContainer from "./TabContainer";
+import Leverage from "./homePage/Leverage";
 
 export default function HomePage() {
   const [versusRecords, setVersusRecords] = useState([]);
@@ -25,7 +26,6 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/home/show.json`);
-      console.log(result);
       setVersusRecords(
         (result && result.data && result.data.versusRecords) || []
       );
@@ -55,6 +55,7 @@ export default function HomePage() {
           tabNames={[
             `Week ${currentWeek} Preview`,
             `Week ${currentWeek - 1} New Players`,
+            `Week ${currentWeek} Leverage`,
             `Standings`,
           ]}
           tabs={[
@@ -64,6 +65,7 @@ export default function HomePage() {
               versusRecords={versusRecords}
             />,
             <NewPlayers firstStarts={firstStarts} />,
+            <Leverage playoffOdds={playoffOdds} />,
             <Standings standings={standings} playoffOdds={playoffOdds} />,
           ]}
         />

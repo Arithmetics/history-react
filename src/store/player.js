@@ -114,7 +114,6 @@ export const getAllPlayers = () => async (dispatch) => {
 }
 
 export const deletePlayer = (playerId) => async (dispatch) => {
-  console.log(playerId)
   dispatch(deletePlayerLoading());
   try {
     await api.delete(`players/${playerId}.json`);

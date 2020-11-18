@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -86,7 +86,6 @@ export default function SideMenu({ isOpen, handleDrawerClose }) {
   const classes = useStyles();
 
   const { user } = useSelector((state) => state.user);
-  console.log('rendered',user)
   return (
     <Drawer
       variant="permanent"
