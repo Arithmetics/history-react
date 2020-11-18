@@ -44,15 +44,15 @@ function MyResponsiveBullet({ data }) {
     <ResponsiveBullet
         data={data}
         theme={lineGraphSettings.theme}
-        margin={{ top: 50, right: 90, bottom: 50, left: 90 }}
+        margin={{ top: 50, right: 40, bottom: 50, left: 40 }}
         spacing={60}
         titleAlign="start"
-        titleOffsetX={-20}
         measureSize={0.2}
         markerSize={2}
         rangeColors={["#d1cfcf",theme.palette.primary.main,"#d1cfcf"]}
         markerColors={[theme.palette.secondary.main]}
-        titleOffsetY={-20}
+        titleOffsetX={-20}
+        titleOffsetY={-25}
     />
   )
 }
@@ -69,7 +69,6 @@ export default function Leverage(props) {
   return (
   <div className={classes.graph}>
     <MyResponsiveBullet data={graphData}/>
-    {/* <p>{JSON.stringify(playoffOdds)}</p> */}
   </div>
   )
 }
