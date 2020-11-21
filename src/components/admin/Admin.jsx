@@ -86,7 +86,7 @@ function PlayerDeleteTable() {
   const [playerToDelete, setPlayerToDelete] = useState(undefined);
 
   useEffect(() => {
-    return () => dispatch(getAllPlayers());
+    dispatch(getAllPlayers());
   }, [dispatch]);
 
   const handleClickOpen = (player) => {
@@ -195,7 +195,6 @@ function PlayerDeleteTable() {
   }
 
   return null;
-
  
 }
 
