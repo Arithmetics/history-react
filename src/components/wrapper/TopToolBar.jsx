@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { useSelector, useDispatch } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -53,12 +53,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TopToolBar({ handleDrawerOpen, isOpen }) {
   const classes = useStyles();
-
+  let history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
   const handleLogout = () => {
     dispatch(logout());
+    history.push("/home");
   };
 
   return (

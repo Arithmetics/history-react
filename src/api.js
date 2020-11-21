@@ -1,7 +1,6 @@
 import axios from "axios";
 
-// export const config = "https://brocktillotson.pagekite.me";
-export const config = "http://localhost:8080";
+export const config = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:8080" : "https://brocktillotson.pagekite.me"
 
 export const api = axios.create({
   baseURL: config,

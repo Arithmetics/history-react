@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import MaterialTable from "material-table";
+
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -15,8 +18,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import LoadingSpinner from "../LoadingSpinner";
 import { DatePicker } from "@material-ui/pickers";
+
 import { newPlayer, getAllPlayers, deletePlayer } from "../../store/player";
-import MaterialTable from "material-table";
 import { NFL_PLAYER_PAGE, NFL_IMAGE_URL } from '../../constants';
 import {
   PlayerAvatarLink,
@@ -50,6 +53,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Admin() {
+  let history = useHistory();
+
+  const { user } = useSelector((state) => state.user);
+
+  if (!user || !user.isAdmin) {
+    history.push("/home");
+    return null;
+  }
+  
   return (
     <>
       <Typography variant="h3" gutterBottom>
@@ -64,9 +76,18 @@ export default function Admin() {
 
 function PlayerDeleteTable() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const { allPlayersLoading, allPlayers, allPlayersSuccess, allPlayersError } = useSelector(
+    (state) => state.player
+  );
 
   const [open, setOpen] = useState(false);
   const [playerToDelete, setPlayerToDelete] = useState(undefined);
+
+  useEffect(() => {
+    return () => dispatch(getAllPlayers());
+  }, [dispatch]);
 
   const handleClickOpen = (player) => {
     setOpen(true);
@@ -77,13 +98,6 @@ function PlayerDeleteTable() {
     setOpen(false);
     setPlayerToDelete(undefined);
   };
-
-  const dispatch = useDispatch();
-  const { allPlayersLoading, allPlayers, allPlayersSuccess, allPlayersError } = useSelector(
-    (state) => state.player
-  );
-
-  useEffect(() => (dispatch(getAllPlayers())), [dispatch])
 
   if (allPlayersLoading) {
     return <LoadingSpinner isLoading={allPlayersLoading} />
