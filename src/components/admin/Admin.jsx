@@ -43,7 +43,10 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.primary.main,
-  }
+  },
+  buttonProgress: {
+    color: theme.palette.primary.light,
+  },
 }));
 
 export default function Admin() {
@@ -287,19 +290,22 @@ function NewPlayerForm() {
               fullWidth
             />
           </Grid>
+          <Grid item xs={12}>
+            <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            disabled={newPlayerLoading}
+          >
+              {newPlayerLoading ? (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            ) : "Submit"}
+            </Button>
+          </Grid>
         </Grid>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          disabled={newPlayerLoading}
-        >
-          Submit
-        </Button>
-        {newPlayerLoading && (
-          <CircularProgress size={24} className={classes.buttonProgress} />
-        )}
+        
+        
       </form>
       <br></br>
       {newPlayerError && (

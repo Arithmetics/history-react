@@ -30,10 +30,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   buttonProgress: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
+    color: theme.palette.primary.light,
   },
   failure: {
     color: theme.palette.secondary.light,
@@ -105,11 +102,11 @@ export default function SignIn() {
             className={classes.submit}
             disabled={loginLoading}
           >
-            Sign In
-          </Button>
-          {loginLoading && (
+            {loginLoading ? (
             <CircularProgress size={24} className={classes.buttonProgress} />
-          )}
+          ): 'Sign In'}
+          </Button>
+          
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
