@@ -4,6 +4,7 @@ import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
 import TableCell from "@material-ui/core/TableCell";
+import Avatar from '@material-ui/core/Avatar';
 
 import { NFL_IMAGE_URL } from '../constants';
 
@@ -61,6 +62,16 @@ const useStyles = makeStyles({
     marginRight: 5,
     width: 30,
     height: 30,
+  },
+  scoredAvatar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  scoredAvatarGrade: {
+    height: 22,
+    width: 22,
+    fontSize: 12,
   },
 });
 
@@ -134,4 +145,18 @@ export function OwnerAvatarLink(props) {
       </Link>
     </div>
   );
+}
+
+
+export function GradedScore(props) {
+  const classes = useStyles();
+  const {score, grade} = props;
+
+  return (
+
+    <div className={classes.scoredAvatar}>
+      {score} 
+      <Avatar className={classes.scoredAvatarGrade}>{grade}</Avatar>
+    </div>
+  )
 }

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Typography from "@material-ui/core/Typography";
-import LoadingSpinner from "./LoadingSpinner";
-import { config } from "../api";
-import TabContainer from "./TabContainer";
-import UpcomingGames from "./homePage/UpcomingGames";
-import NewPlayers from "./homePage/NewPlayers";
-import Leverage from "./homePage/Leverage";
-import Standings from "./homePage/Standings";
+import LoadingSpinner from "../LoadingSpinner";
+import { config } from "../../api";
+import TabContainer from "../TabContainer";
+import UpcomingGames from "./UpcomingGames";
+import NewPlayers from "./NewPlayers";
+import Leverage from "./Leverage";
+import Standings from "./Standings";
+import LastWeeksGames from './LastWeeksGames';
 
 export default function HomePage() {
   const [versusRecords, setVersusRecords] = useState([]);
   const [scheduledGames, setScheduledGames] = useState([]);
+  const [lastWeeksGames, setLastWeeksGames] = useState([]);
   const [firstStarts, setFirstStarts] = useState([]);
   const [standings, setStandings] = useState([]);
   const [playoffOdds, setPlayoffOdds] = useState([]);
@@ -20,11 +22,15 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/home/show.json`);
+      // console.log(result)
       setVersusRecords(
         (result && result.data && result.data.versusRecords) || []
       );
       setScheduledGames(
         (result && result.data && result.data.scheduledGames) || []
+      );
+      setLastWeeksGames(
+        (result && result.data && result.data.lastWeeksGames) || []
       );
       setFirstStarts((result && result.data && result.data.firstStarts) || []);
 
@@ -49,6 +55,7 @@ export default function HomePage() {
           tabNames={[
             `Week ${currentWeek} Preview`,
             `Week ${currentWeek} Leverage`,
+            `Week ${currentWeek - 1} Games`,
             `Week ${currentWeek - 1} New Players`,
             `Standings`,
           ]}
@@ -59,6 +66,7 @@ export default function HomePage() {
               versusRecords={versusRecords}
             />,
             <Leverage playoffOdds={playoffOdds} />,
+            <LastWeeksGames lastWeeksGames={lastWeeksGames} lastWeek={currentWeek - 1}/>,
             <NewPlayers firstStarts={firstStarts} />,
             <Standings standings={standings} playoffOdds={playoffOdds} />,
           ]}

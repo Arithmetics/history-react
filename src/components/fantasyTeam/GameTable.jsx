@@ -1,8 +1,10 @@
 import React from "react";
 import MaterialTable from "material-table";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
+import {
+  TeamAvatarLink,
+  GradedScore
+} from "../materialTableElements";
 
 import RostersTable from "./RostersTable";
 import theme from "../../theme.js";
@@ -37,7 +39,6 @@ export default function GameTable({
   fantasyTeamName,
 }) {
   const classes = useStyles();
-
   return (
     <div className={classes.root}>
       <MaterialTable
@@ -76,32 +77,36 @@ export default function GameTable({
             title: "Away Team",
             field: "awayTeam.name",
             render: (rowData) => (
-              <Link
-                component={RouterLink}
-                to={`/fantasyTeams/${rowData.awayTeam.id}`}
-              >
-                {rowData.awayTeam.name}
-              </Link>
+              <TeamAvatarLink
+                id={rowData.awayTeam.id}
+                teamName={rowData.awayTeam.name}
+                pictureUrl={rowData.awayTeam.pictureUrl}
+              />
             ),
           },
           {
             title: "Away Score",
             field: "awayScore",
+            render: (rowData) => (
+              <GradedScore score={rowData.awayScore} grade={rowData.awayGrade} />
+            ),
           },
           {
             title: "Home Score",
             field: "homeScore",
+            render: (rowData) => (
+              <GradedScore score={rowData.homeScore} grade={rowData.homeGrade} />
+            ),
           },
           {
             title: "Home Team",
             field: "homeTeam.name",
             render: (rowData) => (
-              <Link
-                component={RouterLink}
-                to={`/fantasyTeams/${rowData.homeTeam.id}`}
-              >
-                {rowData.homeTeam.name}
-              </Link>
+              <TeamAvatarLink
+                id={rowData.homeTeam.id}
+                teamName={rowData.homeTeam.name}
+                pictureUrl={rowData.homeTeam.pictureUrl}
+              />
             ),
           },
         ]}

@@ -17,7 +17,7 @@ import PlayerSummary from "./components/players/PlayerSummary";
 import AllPlayers from "./components/players/AllPlayers";
 import Auctions from "./components/Auctions";
 import Podcasts from "./components/Podcasts";
-import HomePage from "./components/HomePage";
+import HomePage from "./components/homePage/HomePage";
 import Login from "./components/users/Login";
 import Admin from "./components/admin/Admin";
 
