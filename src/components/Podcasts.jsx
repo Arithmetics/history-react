@@ -2,6 +2,10 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
 const podLinks = [
+  'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/950486572&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true',
+  'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/944780236&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true',
+  'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/941125048&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true',
+  'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/923062666&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true',
   'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/898560145&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true',
   'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/894634978&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true',
   'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/894004897&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true',
