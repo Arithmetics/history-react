@@ -1,64 +1,64 @@
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
-import { makeStyles } from "@material-ui/core/styles";
-import Tooltip from "@material-ui/core/Tooltip";
-import TableCell from "@material-ui/core/TableCell";
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
+import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 
 import { NFL_IMAGE_URL } from '../constants';
 
 const titleRowLookup = {
-  YEAR: "Year",
-  POS: "Position",
-  OWN: "Owner",
-  TEAM: "Team",
-  PRC: "Price",
-  PDR: "Preseason Draft Rank",
-  FSR: "Final Season Rank",
-  FSRP: "Final Season Rank PPR",
-  RSP: "Regular Season Points",
-  RSG: "Regular Season Games",
-  RSW: "Regular Season Wins",
-  PPG: "Points per Game",
-  PP: "Playoff Points",
-  PG: "Playoff Games",
-  PW: "Playoff Wins",
-  PPPG: "Playoff Points per Game",
-  TS: "Total Starts",
-  FP: "Finals Points",
-  CMP: "Championships",
-  TAD: "Total Auction Dollars",
-  MAP: "Max Auction Price",
-  BSP: "Best Start Points",
-  BPDR: "Best Preseason Draft Rank",
-  BFR: "Best Final Rank",
-  BFRP: "Best Final Rank PPR",
-  PN: "Player Name",
-  GP: "Games Played",
-  AGE: "Age",
-  EXP: "Experience",
-  FPR: "Fantasy Points Regular",
-  FPP: "Fantasy Points PPR",
-  PTS: "Fantasy Points",
+  YEAR: 'Year',
+  POS: 'Position',
+  OWN: 'Owner',
+  TEAM: 'Team',
+  PRC: 'Price',
+  PDR: 'Preseason Draft Rank',
+  FSR: 'Final Season Rank',
+  FSRP: 'Final Season Rank PPR',
+  RSP: 'Regular Season Points',
+  RSG: 'Regular Season Games',
+  RSW: 'Regular Season Wins',
+  PPG: 'Points per Game',
+  PP: 'Playoff Points',
+  PG: 'Playoff Games',
+  PW: 'Playoff Wins',
+  PPPG: 'Playoff Points per Game',
+  TS: 'Total Starts',
+  FP: 'Finals Points',
+  CMP: 'Championships',
+  TAD: 'Total Auction Dollars',
+  MAP: 'Max Auction Price',
+  BSP: 'Best Start Points',
+  BPDR: 'Best Preseason Draft Rank',
+  BFR: 'Best Final Rank',
+  BFRP: 'Best Final Rank PPR',
+  PN: 'Player Name',
+  GP: 'Games Played',
+  AGE: 'Age',
+  EXP: 'Experience',
+  FPR: 'Fantasy Points Regular',
+  FPP: 'Fantasy Points PPR',
+  PTS: 'Fantasy Points',
 };
 
 const useStyles = makeStyles({
-  cell: { border: "none" },
+  cell: { border: 'none' },
   avatarContainer: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   avatarLink: {
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
   },
   avatarPic: {
     width: 40,
     height: 28,
-    borderRadius: "50%",
+    borderRadius: '50%',
   },
   teamAvatarPic: {
-    borderRadius: "50%",
+    borderRadius: '50%',
     marginRight: 5,
     width: 30,
     height: 30,
@@ -79,9 +79,11 @@ export function HeaderCellWithTooltip(props) {
   const classes = useStyles();
   const { abbr } = props;
   return (
-    <Tooltip title={titleRowLookup[abbr]} placement="top">
-      <TableCell className={classes.cell}>{abbr}</TableCell>
-    </Tooltip>
+    <div>
+      <Tooltip title={titleRowLookup[abbr]} placement="top">
+        <TableCell className={classes.cell}>{abbr}</TableCell>
+      </Tooltip>
+    </div>
   );
 }
 
@@ -112,7 +114,11 @@ export function TeamAvatarLink(props) {
   const { id, teamName, pictureUrl } = props;
   return (
     <div className={classes.avatarContainer}>
-      <img src={pictureUrl} className={classes.teamAvatarPic} alt="team-img" />
+      <img
+        src={pictureUrl}
+        className={classes.teamAvatarPic}
+        alt="team-img"
+      />
 
       <Link
         className={classes.avatarLink}
@@ -147,16 +153,14 @@ export function OwnerAvatarLink(props) {
   );
 }
 
-
 export function GradedScore(props) {
   const classes = useStyles();
-  const {score, grade} = props;
+  const { score, grade } = props;
 
   return (
-
     <div className={classes.scoredAvatar}>
-      {score} 
+      {score}
       <Avatar className={classes.scoredAvatarGrade}>{grade}</Avatar>
     </div>
-  )
+  );
 }

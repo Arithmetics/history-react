@@ -1,70 +1,72 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import clsx from "clsx";
-import { Link as RouterLink } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import clsx from 'clsx';
+import { Link as RouterLink } from 'react-router-dom';
 
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+import {
+  GiTrophy,
+  GiPodiumSecond,
+  GiPodiumThird,
+} from 'react-icons/gi';
 
-import MaterialTable from "material-table";
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
 
-import { GiTrophy } from "react-icons/gi";
-import { GiPodiumSecond } from "react-icons/gi";
-import { GiPodiumThird } from "react-icons/gi";
+import MaterialTable from 'material-table';
 
-import TabContainer from "../TabContainer";
-import OwnerHeader from "./OwnerHeader";
+import TabContainer from '../TabContainer';
+import OwnerHeader from './OwnerHeader';
 
-import LoadingSpinner from "../LoadingSpinner";
-import { config } from "../../api";
-import { OwnerAvatarLink } from "../materialTableElements";
+import LoadingSpinner from '../LoadingSpinner';
+import { config } from '../../api';
+import { OwnerAvatarLink } from '../materialTableElements';
 
 export function streakEmoji(streak) {
-  let final = "";
-  let emoji = "🧊";
+  let final = '';
+  let emoji = '🧊';
   if (streak > 0) {
-    emoji = "🔥";
+    emoji = '🔥';
   }
   const times = Math.abs(streak);
-  for (let i = 0; i < times; i++) {
+  for (let i = 0; i < times; i += 1) {
     final += emoji;
   }
   return final;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   statChip: {
     margin: 5,
   },
   panelTop: {
-    borderBottom: "grey solid 1px",
+    borderBottom: 'grey solid 1px',
   },
   teamsArea: {
-    display: "block",
+    display: 'block',
   },
   teamCard: {
-    width: "98%",
-    backgroundColor: "#4e5563",
-    margin: "10px auto",
-    display: "flex",
+    width: '98%',
+    backgroundColor: '#4e5563',
+    margin: '10px auto',
+    display: 'flex',
     borderRadius: 15,
   },
   teamCardContent: {
-    padding: "10px !important",
-    display: "flex",
-    alignItems: "baseline",
-    width: "100%",
-    flexWrap: "wrap",
+    padding: '10px !important',
+    display: 'flex',
+    alignItems: 'baseline',
+    width: '100%',
+    flexWrap: 'wrap',
   },
   teamCardContentItem: {
     marginRight: 20,
   },
   teamName: {
     width: 230,
-    textOverflow: "ellipsis",
+    textOverflow: 'ellipsis',
     flexGrow: 1,
   },
   resultIcon: {
@@ -76,27 +78,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Owner(props) {
+function Owner({ match }) {
   const [owner, setOwner] = useState({});
   const [loading, setLoading] = useState(true);
+  const { params } = match.params.id;
+  const { id } = params;
 
   useEffect(() => {
-    const ownerID = props.match.params.id;
     const fetchData = async () => {
-      const result = await axios(`${config}/owners/${ownerID}.json`);
+      const result = await axios(`${config}/owners/${id}.json`);
       setOwner((result && result.data && result.data.owner) || {});
       setLoading(false);
     };
     fetchData();
-  }, [props.match.params.id]);
+  }, [id]);
 
   const fantasyTeams = owner.fantasyTeams || [];
   const cumulativeStats = owner.cumulativeStats || {};
-  const versusRecords = owner.versusRecords || [];
-  versusRecords.forEach(
+
+  const cleanedVersusRecords = (owner.versusRecords || []).map(
     (record) =>
-      (record.winPct =
-        Math.round((record.wins / (record.wins + record.losses)) * 100) / 100)
+      Math.round(
+        (record.wins / (record.wins + record.losses)) * 100,
+      ) / 100,
   );
 
   return (
@@ -104,13 +108,16 @@ function Owner(props) {
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
         <>
-          <OwnerHeader owner={owner} cumulativeStats={cumulativeStats} />
+          <OwnerHeader
+            owner={owner}
+            cumulativeStats={cumulativeStats}
+          />
 
           <TabContainer
-            tabNames={["Teams", "Versus Records"]}
+            tabNames={['Teams', 'Versus Records']}
             tabs={[
               <TeamsTable fantasyTeams={fantasyTeams} />,
-              <VersusTable versusRecords={versusRecords} />,
+              <VersusTable versusRecords={cleanedVersusRecords} />,
             ]}
           />
         </>
@@ -120,11 +127,13 @@ function Owner(props) {
 }
 
 function Trophy({ team }) {
-  if (team["wonChampionship?"]) {
+  if (team['wonChampionship?']) {
     return <GiTrophy />;
-  } else if (team["madeFinals?"]) {
+  }
+  if (team['madeFinals?']) {
     return <GiPodiumSecond />;
-  } else if (team["madePlayoffs?"]) {
+  }
+  if (team['madePlayoffs?']) {
     return <GiPodiumThird />;
   }
   return null;
@@ -145,12 +154,18 @@ function TeamsTable(props) {
             </Typography>
             <Typography
               // color="primary"
-              className={clsx(classes.teamCardContentItem, classes.teamName)}
+              className={clsx(
+                classes.teamCardContentItem,
+                classes.teamName,
+              )}
             >
               {team.name}
             </Typography>
             <Typography
-              className={clsx(classes.teamCardContentItem, classes.resultIcon)}
+              className={clsx(
+                classes.teamCardContentItem,
+                classes.resultIcon,
+              )}
             >
               <Trophy team={team} />
             </Typography>
@@ -159,7 +174,10 @@ function TeamsTable(props) {
               ({team.seasonWins} - {team.seasonLosses})
             </Typography>
             <Typography
-              className={clsx(classes.teamCardContentItem, classes.grow)}
+              className={clsx(
+                classes.teamCardContentItem,
+                classes.grow,
+              )}
             >
               {Math.round(team.seasonPoints)} points
             </Typography>
@@ -187,7 +205,7 @@ function VersusTable(props) {
         title="Versus Records"
         data={versusRecords}
         options={{
-          padding: "dense",
+          padding: 'dense',
           paging: false,
           search: false,
           exportButton: true,
@@ -196,19 +214,23 @@ function VersusTable(props) {
         }}
         columns={[
           {
-            title: "Owner",
-            field: "name",
+            title: 'Owner',
+            field: 'name',
             render: (rowData) => (
-              <OwnerAvatarLink id={rowData.id} ownerName={rowData.name} />
+              <OwnerAvatarLink
+                id={rowData.id}
+                ownerName={rowData.name}
+              />
             ),
           },
-          { title: "Wins", field: "wins" },
-          { title: "Losses", field: "losses" },
-          { title: "Win Percentage", field: "winPct" },
+          { title: 'Wins', field: 'wins' },
+          { title: 'Losses', field: 'losses' },
+          { title: 'Win Percentage', field: 'winPct' },
           {
-            title: "Current Streak",
-            field: "streak",
-            render: (rowData) => streakEmoji(parseInt(rowData.streak, 10)),
+            title: 'Current Streak',
+            field: 'streak',
+            render: (rowData) =>
+              streakEmoji(parseInt(rowData.streak, 10)),
           },
         ]}
       />

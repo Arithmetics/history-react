@@ -23,6 +23,7 @@ import Admin from './components/admin/Admin';
 
 function App() {
   return (
+    // eslint-disable-next-line react/jsx-filename-extension
     <Provider store={store}>
       <MuiThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>

@@ -4,8 +4,9 @@ export function onlyUnique(value, index, self) {
 
 export function getNestedObject(nestedObj, pathArr) {
   return pathArr.reduce(
-    (obj, key) => (obj && obj[key] !== "undefined" ? obj[key] : undefined),
-    nestedObj
+    (obj, key) =>
+      obj && obj[key] !== 'undefined' ? obj[key] : undefined,
+    nestedObj,
   );
 }
 
@@ -21,7 +22,7 @@ export function createLookup(data, fields) {
 
 export function filterBetween(term, rowData, rowDataFields) {
   const sortingField = getNestedObject(rowData, rowDataFields);
-  const numbers = term.replace(/\s+/g, "").split("-");
+  const numbers = term.replace(/\s+/g, '').split('-');
   if (numbers.length !== 2) return false;
   const low = numbers[0];
   const high = numbers[1];
