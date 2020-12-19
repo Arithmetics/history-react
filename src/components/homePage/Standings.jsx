@@ -58,8 +58,8 @@ export default function Standings(props) {
                   (o) =>
                     o.category === 'make_playoffs' &&
                     o.fantasyTeam.id === rowData.id,
-                )[0].odds * 1000,
-              ) / 10
+                )[0]?.odds * 1000,
+              ) / 10 || '-'
             }%`,
         },
         {
@@ -72,8 +72,8 @@ export default function Standings(props) {
                   (o) =>
                     o.category === 'get_bye' &&
                     o.fantasyTeam.id === rowData.id,
-                )[0].odds * 1000,
-              ) / 10
+                )[0]?.odds * 1000,
+              ) / 10 || '-'
             }%`,
         },
         {
@@ -86,8 +86,8 @@ export default function Standings(props) {
                   (o) =>
                     o.category === 'win_championship' &&
                     o.fantasyTeam.id === rowData.id,
-                )[0].odds * 1000,
-              ) / 10
+                )[0]?.odds * 1000,
+              ) / 10 || '-'
             }%`,
         },
       ]}
