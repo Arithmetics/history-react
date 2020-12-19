@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import MaterialTable from "material-table";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import MaterialTable from 'material-table';
 
-import Typography from "@material-ui/core/Typography";
+import Typography from '@material-ui/core/Typography';
 
-import LoadingSpinner from "../LoadingSpinner";
-import { config } from "../../api";
+import LoadingSpinner from '../LoadingSpinner';
+import { config } from '../../api';
 
 import {
   HeaderCellWithTooltip,
   OwnerAvatarLink,
-} from "../materialTableElements";
+} from '../materialTableElements';
 
-function Owners(props) {
+function Owners() {
   const [owners, setOwners] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +37,7 @@ function Owners(props) {
           <MaterialTable
             data={owners}
             options={{
-              padding: "dense",
+              padding: 'dense',
               paging: false,
               search: false,
               showTitle: false,
@@ -46,43 +46,46 @@ function Owners(props) {
             title="Owners"
             columns={[
               {
-                title: <HeaderCellWithTooltip abbr={"OWN"} />,
-                field: "name",
+                title: <HeaderCellWithTooltip abbr="OWN" />,
+                field: 'name',
                 render: (rowData) => (
-                  <OwnerAvatarLink id={rowData.id} ownerName={rowData.name} />
+                  <OwnerAvatarLink
+                    id={rowData.id}
+                    ownerName={rowData.name}
+                  />
                 ),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"RSP"} />,
-                field: "cumulativeStats.totalPoints",
+                title: <HeaderCellWithTooltip abbr="RSP" />,
+                field: 'cumulativeStats.totalPoints',
               },
               {
-                title: <HeaderCellWithTooltip abbr={"RSG"} />,
-                field: "cumulativeStats.totalGames",
+                title: <HeaderCellWithTooltip abbr="RSG" />,
+                field: 'cumulativeStats.totalGames',
               },
               {
-                title: <HeaderCellWithTooltip abbr={"RSW"} />,
-                field: "cumulativeStats.totalWins",
+                title: <HeaderCellWithTooltip abbr="RSW" />,
+                field: 'cumulativeStats.totalWins',
               },
               {
-                title: <HeaderCellWithTooltip abbr={"PPG"} />,
-                field: "cumulativeStats.pointsPerGame",
+                title: <HeaderCellWithTooltip abbr="PPG" />,
+                field: 'cumulativeStats.pointsPerGame',
               },
               {
-                title: <HeaderCellWithTooltip abbr={"PP"} />,
-                field: "cumulativeStats.totalPlayoffPoints",
+                title: <HeaderCellWithTooltip abbr="PP" />,
+                field: 'cumulativeStats.totalPlayoffPoints',
               },
               {
-                title: <HeaderCellWithTooltip abbr={"PG"} />,
-                field: "cumulativeStats.totalPlayoffGames",
+                title: <HeaderCellWithTooltip abbr="PG" />,
+                field: 'cumulativeStats.totalPlayoffGames',
               },
               {
-                title: <HeaderCellWithTooltip abbr={"PW"} />,
-                field: "cumulativeStats.totalPlayoffWins",
+                title: <HeaderCellWithTooltip abbr="PW" />,
+                field: 'cumulativeStats.totalPlayoffWins',
               },
               {
-                title: <HeaderCellWithTooltip abbr={"PPPG"} />,
-                field: "cumulativeStats.playoffPointsPerGame",
+                title: <HeaderCellWithTooltip abbr="PPPG" />,
+                field: 'cumulativeStats.playoffPointsPerGame',
               },
             ]}
           />

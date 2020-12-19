@@ -1,13 +1,13 @@
-import React from "react";
-import MaterialTable from "material-table";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import MaterialTable from 'material-table';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   TeamAvatarLink,
-  GradedScore
-} from "../materialTableElements";
+  GradedScore,
+} from '../materialTableElements';
 
-import RostersTable from "./RostersTable";
-import theme from "../../theme.js";
+import RostersTable from './RostersTable';
+import theme from '../../theme';
 
 function wonGame(teamName, game) {
   if (teamName === (game.homeTeam && game.homeTeam.name)) {
@@ -15,7 +15,8 @@ function wonGame(teamName, game) {
       return true;
     }
     return false;
-  } else if (teamName === (game.awayTeam && game.awayTeam.name)) {
+  }
+  if (teamName === (game.awayTeam && game.awayTeam.name)) {
     if (game.awayScore > game.homeScore) {
       return true;
     }
@@ -25,11 +26,11 @@ function wonGame(teamName, game) {
 }
 const useStyles = makeStyles({
   root: {
-    marginTop: "1rem",
-    marginBottom: "1rem",
+    marginTop: '1rem',
+    marginBottom: '1rem',
   },
   tableLink: {
-    color: "white",
+    color: 'white',
   },
 });
 
@@ -42,40 +43,38 @@ export default function GameTable({
   return (
     <div className={classes.root}>
       <MaterialTable
-        title={regularSeason ? "Regular Season" : "Playoffs"}
+        title={regularSeason ? 'Regular Season' : 'Playoffs'}
         data={fantasyGames}
         options={{
-          padding: "dense",
+          padding: 'dense',
           showTitle: true,
           paging: false,
           search: false,
           rowStyle: (rowData) => ({
             backgroundColor: wonGame(fantasyTeamName, rowData)
               ? theme.palette.success.darkest
-              : "inherit",
+              : 'inherit',
           }),
         }}
         onRowClick={(event, rowData, togglePanel) => togglePanel()}
-        detailPanel={(rowData) => {
-          return (
-            <RostersTable
-              homeRoster={
-                rowData.homeTeam.fantasyStarts[rowData.week.toString()]
-              }
-              awayRoster={
-                rowData.awayTeam.fantasyStarts[rowData.week.toString()]
-              }
-            />
-          );
-        }}
+        detailPanel={(rowData) => (
+          <RostersTable
+            homeRoster={
+              rowData.homeTeam.fantasyStarts[rowData.week.toString()]
+            }
+            awayRoster={
+              rowData.awayTeam.fantasyStarts[rowData.week.toString()]
+            }
+          />
+        )}
         columns={[
           {
-            title: "Week",
-            field: "week",
+            title: 'Week',
+            field: 'week',
           },
           {
-            title: "Away Team",
-            field: "awayTeam.name",
+            title: 'Away Team',
+            field: 'awayTeam.name',
             render: (rowData) => (
               <TeamAvatarLink
                 id={rowData.awayTeam.id}
@@ -85,22 +84,28 @@ export default function GameTable({
             ),
           },
           {
-            title: "Away Score",
-            field: "awayScore",
+            title: 'Away Score',
+            field: 'awayScore',
             render: (rowData) => (
-              <GradedScore score={rowData.awayScore} grade={rowData.awayGrade} />
+              <GradedScore
+                score={rowData.awayScore}
+                grade={rowData.awayGrade}
+              />
             ),
           },
           {
-            title: "Home Score",
-            field: "homeScore",
+            title: 'Home Score',
+            field: 'homeScore',
             render: (rowData) => (
-              <GradedScore score={rowData.homeScore} grade={rowData.homeGrade} />
+              <GradedScore
+                score={rowData.homeScore}
+                grade={rowData.homeGrade}
+              />
             ),
           },
           {
-            title: "Home Team",
-            field: "homeTeam.name",
+            title: 'Home Team',
+            field: 'homeTeam.name',
             render: (rowData) => (
               <TeamAvatarLink
                 id={rowData.homeTeam.id}

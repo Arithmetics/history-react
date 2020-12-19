@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles({
   root: {
@@ -13,9 +13,9 @@ const useStyles = makeStyles({
   },
   profileImage: {
     borderRadius: 500,
-    margin: "0 auto",
-    display: "block",
-    border: "1px solid #0b878c",
+    margin: '0 auto',
+    display: 'block',
+    border: '1px solid #0b878c',
     maxHeight: 200,
   },
 });

@@ -1,38 +1,41 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import MaterialTable from "material-table";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import MaterialTable from 'material-table';
 
-import Typography from "@material-ui/core/Typography";
-import LoadingSpinner from "./LoadingSpinner";
-import { config } from "../api";
+import Typography from '@material-ui/core/Typography';
+import LoadingSpinner from './LoadingSpinner';
+import { config } from '../api';
 
-import { createLookup, filterBetween } from "./materialTableHelpers";
+import { createLookup, filterBetween } from './materialTableHelpers';
 import {
   PlayerAvatarLink,
   TeamAvatarLink,
   HeaderCellWithTooltip,
   OwnerAvatarLink,
-} from "./materialTableElements";
+} from './materialTableElements';
 
-function Auctions(props) {
+function Auctions() {
   const [auction, setAuction] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/purchases.json`);
-      setAuction((result && result.data && result.data.purchases) || []);
+      setAuction(
+        (result && result.data && result.data.purchases) || [],
+      );
       setLoading(false);
     };
     fetchData();
   }, []);
 
   const cleanedAuction = auction.map((purchase) => {
+    const cleanedPurchase = { ...purchase };
     if (!purchase.player.rankReg) {
-      purchase.player.rankReg = 999;
-      purchase.player.rankPpr = 999;
+      cleanedPurchase.player.rankReg = 999;
+      cleanedPurchase.player.rankPpr = 999;
     }
-    return purchase;
+    return cleanedPurchase;
   });
 
   return (
@@ -48,7 +51,7 @@ function Auctions(props) {
             data={cleanedAuction}
             options={{
               filtering: true,
-              padding: "dense",
+              padding: 'dense',
               paging: true,
               pageSize: 50,
               pageSizeOptions: [50, 100, cleanedAuction.length],
@@ -60,8 +63,8 @@ function Auctions(props) {
             }}
             columns={[
               {
-                title: <HeaderCellWithTooltip abbr={"PN"} />,
-                field: "player.name",
+                title: <HeaderCellWithTooltip abbr="PN" />,
+                field: 'player.name',
                 filtering: false,
                 render: (rowData) => (
                   <PlayerAvatarLink
@@ -72,19 +75,22 @@ function Auctions(props) {
                 ),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"YEAR"} />,
-                field: "year",
-                lookup: createLookup(cleanedAuction, ["year"]),
+                title: <HeaderCellWithTooltip abbr="YEAR" />,
+                field: 'year',
+                lookup: createLookup(cleanedAuction, ['year']),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"POS"} />,
-                field: "position",
-                lookup: createLookup(cleanedAuction, ["position"]),
+                title: <HeaderCellWithTooltip abbr="POS" />,
+                field: 'position',
+                lookup: createLookup(cleanedAuction, ['position']),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"OWN"} />,
-                field: "owner.name",
-                lookup: createLookup(cleanedAuction, ["owner", "name"]),
+                title: <HeaderCellWithTooltip abbr="OWN" />,
+                field: 'owner.name',
+                lookup: createLookup(cleanedAuction, [
+                  'owner',
+                  'name',
+                ]),
                 render: (rowData) => (
                   <OwnerAvatarLink
                     id={rowData.owner.id}
@@ -93,9 +99,12 @@ function Auctions(props) {
                 ),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"TEAM"} />,
-                field: "fantasyTeam.name",
-                lookup: createLookup(cleanedAuction, ["fantasyTeam", "name"]),
+                title: <HeaderCellWithTooltip abbr="TEAM" />,
+                field: 'fantasyTeam.name',
+                lookup: createLookup(cleanedAuction, [
+                  'fantasyTeam',
+                  'name',
+                ]),
                 render: (rowData) => (
                   <TeamAvatarLink
                     id={rowData.fantasyTeam.id}
@@ -105,28 +114,31 @@ function Auctions(props) {
                 ),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"PRC"} />,
-                field: "price",
+                title: <HeaderCellWithTooltip abbr="PRC" />,
+                field: 'price',
                 customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["price"]),
+                  filterBetween(term, rowData, ['price']),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"PDR"} />,
-                field: "player.preSeasonRank",
+                title: <HeaderCellWithTooltip abbr="PDR" />,
+                field: 'player.preSeasonRank',
                 customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["player", "preSeasonRank"]),
+                  filterBetween(term, rowData, [
+                    'player',
+                    'preSeasonRank',
+                  ]),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"FSR"} />,
-                field: "player.rankReg",
+                title: <HeaderCellWithTooltip abbr="FSR" />,
+                field: 'player.rankReg',
                 customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["player", "rankReg"]),
+                  filterBetween(term, rowData, ['player', 'rankReg']),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"FSRP"} />,
-                field: "player.rankPpr",
+                title: <HeaderCellWithTooltip abbr="FSRP" />,
+                field: 'player.rankPpr',
                 customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["player", "rankPpr"]),
+                  filterBetween(term, rowData, ['player', 'rankPpr']),
               },
             ]}
           />

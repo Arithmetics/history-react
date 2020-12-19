@@ -1,46 +1,46 @@
-import React from "react";
-import clsx from "clsx";
-import { useSelector } from "react-redux";
+import React from 'react';
+import clsx from 'clsx';
+import { useSelector } from 'react-redux';
 
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import BuildIcon from "@material-ui/icons/Build";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import HomeIcon from "@material-ui/icons/Home";
-import PeopleIcon from "@material-ui/icons/People";
-import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
-import GavelIcon from "@material-ui/icons/Gavel";
-import AudiotrackIcon from "@material-ui/icons/Audiotrack";
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import BuildIcon from '@material-ui/icons/Build';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import HomeIcon from '@material-ui/icons/Home';
+import PeopleIcon from '@material-ui/icons/People';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import GavelIcon from '@material-ui/icons/Gavel';
+import AudiotrackIcon from '@material-ui/icons/Audiotrack';
 
 const sideLinks = [
   {
-    page: "Home",
+    page: 'Home',
     icon: <HomeIcon />,
   },
   {
-    page: "Owners",
+    page: 'Owners',
     icon: <PeopleIcon />,
   },
   {
-    page: "Auctions",
+    page: 'Auctions',
     icon: <GavelIcon />,
   },
   {
-    page: "Players",
+    page: 'Players',
     icon: <DirectionsRunIcon />,
   },
   {
-    page: "Podcasts",
+    page: 'Podcasts',
     icon: <AudiotrackIcon />,
   },
   {
-    page: "Admin",
+    page: 'Admin',
     icon: <BuildIcon />,
     adminOnly: true,
   },
@@ -50,34 +50,34 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
+    position: 'relative',
+    whiteSpace: 'nowrap',
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9),
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('sm')]: {
       width: 0,
-      display: "none",
+      display: 'none',
     },
   },
   toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
     ...theme.mixins.toolbar,
   },
 }));
@@ -90,7 +90,10 @@ export default function SideMenu({ isOpen, handleDrawerClose }) {
     <Drawer
       variant="permanent"
       classes={{
-        paper: clsx(classes.drawerPaper, !isOpen && classes.drawerPaperClose),
+        paper: clsx(
+          classes.drawerPaper,
+          !isOpen && classes.drawerPaperClose,
+        ),
       }}
       open={isOpen}
     >
@@ -119,7 +122,7 @@ export default function SideMenu({ isOpen, handleDrawerClose }) {
         })}
       </List>
       <Divider />
-      <List></List>
+      <List />
     </Drawer>
   );
 }

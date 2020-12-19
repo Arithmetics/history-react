@@ -1,15 +1,13 @@
-import React from "react";
-import MaterialTable from "material-table";
+import React from 'react';
+import MaterialTable from 'material-table';
 import {
   TeamAvatarLink,
   OwnerAvatarLink,
-  GradedScore
-} from "../materialTableElements";
+  GradedScore,
+} from '../materialTableElements';
 
 export default function LastWeeksGames(props) {
   const { lastWeeksGames, lastWeek } = props;
-
-  console.log(lastWeeksGames)
 
   return (
     <MaterialTable
@@ -24,8 +22,8 @@ export default function LastWeeksGames(props) {
       title={`Week ${lastWeek} Completed Games`}
       columns={[
         {
-          title: "Away Owner",
-          field: "awayTeam.owner.name",
+          title: 'Away Owner',
+          field: 'awayTeam.owner.name',
           render: (rowData) => (
             <OwnerAvatarLink
               id={rowData.awayTeam.owner.id}
@@ -34,8 +32,8 @@ export default function LastWeeksGames(props) {
           ),
         },
         {
-          title: "Away Team",
-          field: "awayTeam.name",
+          title: 'Away Team',
+          field: 'awayTeam.name',
           render: (rowData) => (
             <TeamAvatarLink
               id={rowData.awayTeam.id}
@@ -45,22 +43,28 @@ export default function LastWeeksGames(props) {
           ),
         },
         {
-          title: "Away Score",
-          field: "awayScore",
+          title: 'Away Score',
+          field: 'awayScore',
           render: (rowData) => (
-            <GradedScore score={rowData.awayScore} grade={rowData.awayGrade} />
+            <GradedScore
+              score={rowData.awayScore}
+              grade={rowData.awayGrade}
+            />
           ),
         },
         {
-          title: "Home Score",
-          field: "homeScore",
+          title: 'Home Score',
+          field: 'homeScore',
           render: (rowData) => (
-            <GradedScore score={rowData.homeScore} grade={rowData.homeGrade} />
+            <GradedScore
+              score={rowData.homeScore}
+              grade={rowData.homeGrade}
+            />
           ),
         },
         {
-          title: "Home Team",
-          field: "homeTeam.name",
+          title: 'Home Team',
+          field: 'homeTeam.name',
           render: (rowData) => (
             <TeamAvatarLink
               id={rowData.homeTeam.id}
@@ -70,8 +74,8 @@ export default function LastWeeksGames(props) {
           ),
         },
         {
-          title: "Home Owner",
-          field: "homeTeam.owner.name",
+          title: 'Home Owner',
+          field: 'homeTeam.owner.name',
           render: (rowData) => (
             <OwnerAvatarLink
               id={rowData.homeTeam.owner.id}

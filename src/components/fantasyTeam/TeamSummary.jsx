@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
-import MaterialTable from "material-table";
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
+import MaterialTable from 'material-table';
 
-import LoadingSpinner from "../LoadingSpinner";
-import { config } from "../../api";
-import GameTable from "./GameTable";
-import TabContainer from "../TabContainer";
-import { PlayerAvatarLink } from "../materialTableElements";
+import LoadingSpinner from '../LoadingSpinner';
+import { config } from '../../api';
+import GameTable from './GameTable';
+import TabContainer from '../TabContainer';
+import { PlayerAvatarLink } from '../materialTableElements';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   statChip: {
     margin: 5,
   },
@@ -23,32 +23,32 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
   },
   panelTop: {
-    borderBottom: "grey solid 1px",
+    borderBottom: 'grey solid 1px',
   },
   teamsArea: {
     padding: 10,
-    display: "block",
+    display: 'block',
   },
   teamCard: {
-    width: "98%",
-    backgroundColor: "#4e5563",
-    margin: "10px auto",
-    display: "flex",
+    width: '98%',
+    backgroundColor: '#4e5563',
+    margin: '10px auto',
+    display: 'flex',
     borderRadius: 15,
   },
   teamCardContent: {
-    padding: "10px !important",
-    display: "flex",
-    alignItems: "baseline",
-    width: "100%",
-    flexWrap: "wrap",
+    padding: '10px !important',
+    display: 'flex',
+    alignItems: 'baseline',
+    width: '100%',
+    flexWrap: 'wrap',
   },
   teamCardContentItem: {
     marginRight: 20,
   },
   teamName: {
     width: 230,
-    textOverflow: "ellipsis",
+    textOverflow: 'ellipsis',
     flexGrow: 1,
   },
   resultIcon: {
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TeamSummary({ match, history }) {
+export default function TeamSummary({ match }) {
   const classes = useStyles();
   const [fantasyTeam, setTeam] = useState({});
   const [loading, setLoading] = useState(true);
@@ -68,8 +68,12 @@ export default function TeamSummary({ match, history }) {
   useEffect(() => {
     const teamID = match.params.id;
     const fetchData = async () => {
-      const result = await axios(`${config}/fantasy_teams/${teamID}.json`);
-      setTeam((result && result.data && result.data.fantasyTeam) || {});
+      const result = await axios(
+        `${config}/fantasy_teams/${teamID}.json`,
+      );
+      setTeam(
+        (result && result.data && result.data.fantasyTeam) || {},
+      );
       setLoading(false);
     };
     fetchData();
@@ -77,13 +81,18 @@ export default function TeamSummary({ match, history }) {
 
   // const fantasyStartWeeks = (fantasyTeam && fantasyTeam.fantasyStarts) || {};
   const ownerName =
-    (fantasyTeam && fantasyTeam.owner && fantasyTeam.owner.name) || "";
-  const fantasyTeamName = (fantasyTeam && fantasyTeam.name) || "";
-  const year = (fantasyTeam && fantasyTeam.year) || "";
+    (fantasyTeam && fantasyTeam.owner && fantasyTeam.owner.name) ||
+    '';
+  const fantasyTeamName = (fantasyTeam && fantasyTeam.name) || '';
+  const year = (fantasyTeam && fantasyTeam.year) || '';
   const auction = (fantasyTeam && fantasyTeam.purchases) || [];
-  const fantasyGames = (fantasyTeam && fantasyTeam.fantasyGames) || [];
-  const cuumulativeStats = (fantasyTeam && fantasyTeam.cuumulativeStats) || {};
-  const regularSeasonGames = fantasyGames.filter((game) => game.week < 14);
+  const fantasyGames =
+    (fantasyTeam && fantasyTeam.fantasyGames) || [];
+  const cuumulativeStats =
+    (fantasyTeam && fantasyTeam.cuumulativeStats) || {};
+  const regularSeasonGames = fantasyGames.filter(
+    (game) => game.week < 14,
+  );
   const playoffGames = fantasyGames.filter((game) => game.week > 13);
   return (
     <div>
@@ -91,7 +100,7 @@ export default function TeamSummary({ match, history }) {
         Team Summary
       </Typography>
       {!loading && (
-        <div class={classes.teamHeader}>
+        <div className={classes.teamHeader}>
           <Typography variant="h5" gutterBottom>
             {year}: {fantasyTeamName} ({ownerName})
           </Typography>
@@ -104,7 +113,7 @@ export default function TeamSummary({ match, history }) {
           <Chip
             className={classes.statChip}
             label={`Season Points: ${Math.round(
-              cuumulativeStats.seasonPoints
+              cuumulativeStats.seasonPoints,
             )}`}
           />
         </div>
@@ -113,7 +122,7 @@ export default function TeamSummary({ match, history }) {
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
         <TabContainer
-          tabNames={["Games", "Auction"]}
+          tabNames={['Games', 'Auction']}
           tabs={[
             <TeamGameTable
               regularSeasonGames={regularSeasonGames}
@@ -133,7 +142,7 @@ function TeamGameTable(props) {
   return (
     <>
       <GameTable
-        regularSeason={true}
+        regularSeason
         fantasyGames={regularSeasonGames}
         fantasyTeamName={fantasyTeamName}
       />
@@ -160,7 +169,7 @@ function AuctionTable(props) {
       data={auction}
       options={{
         filtering: false,
-        padding: "dense",
+        padding: 'dense',
         paging: false,
         search: false,
         exportButton: true,
@@ -169,8 +178,8 @@ function AuctionTable(props) {
       }}
       columns={[
         {
-          title: "Player",
-          field: "player.name",
+          title: 'Player',
+          field: 'player.name',
           render: (rowData) => (
             <PlayerAvatarLink
               id={rowData.player.id}
@@ -180,12 +189,12 @@ function AuctionTable(props) {
           ),
         },
         {
-          title: "Position",
-          field: "position",
+          title: 'Position',
+          field: 'position',
         },
         {
-          title: "Price",
-          field: "price",
+          title: 'Price',
+          field: 'price',
         },
       ]}
     />

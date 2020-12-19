@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { api } from "../api";
+import { createSlice } from '@reduxjs/toolkit';
+import { api } from '../api';
 
 // Slice
 const slice = createSlice({
-  name: "player",
+  name: 'player',
   initialState: {
     // new player
     newPlayerLoading: false,
@@ -63,7 +63,9 @@ const slice = createSlice({
       state.deletePlayerLoading = false;
       state.deletePlayerError = false;
       state.deletePlayerSuccess = true;
-      state.allPlayers = state.allPlayers.filter(p => p.id !== action.payload)
+      state.allPlayers = state.allPlayers.filter(
+        (p) => p.id !== action.payload,
+      );
     },
     deletePlayerError: (state, _action) => {
       state.deletePlayerLoading = false;
@@ -75,7 +77,17 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-const { newPlayerLoading, newPlayerSuccess, newPlayerError, allPlayersLoading, allPlayersSuccess, allPlayersError, deletePlayerLoading, deletePlayerSuccess, deletePlayerError } = slice.actions;
+const {
+  newPlayerLoading,
+  newPlayerSuccess,
+  newPlayerError,
+  allPlayersLoading,
+  allPlayersSuccess,
+  allPlayersError,
+  deletePlayerLoading,
+  deletePlayerSuccess,
+  deletePlayerError,
+} = slice.actions;
 
 export const newPlayer = ({
   name,
@@ -86,7 +98,7 @@ export const newPlayer = ({
 }) => async (dispatch) => {
   dispatch(newPlayerLoading());
   try {
-    const response = await api.post("/players.json", {
+    const response = await api.post('/players.json', {
       player: {
         name,
         id: profileId,
@@ -105,13 +117,13 @@ export const newPlayer = ({
 export const getAllPlayers = () => async (dispatch) => {
   dispatch(allPlayersLoading());
   try {
-    const response = await api.get("/players.json");
-    dispatch(allPlayersSuccess(response.data.players))
+    const response = await api.get('/players.json');
+    dispatch(allPlayersSuccess(response.data.players));
   } catch (e) {
     dispatch(allPlayersError());
-    return console.error(e.message)
+    return console.error(e.message);
   }
-}
+};
 
 export const deletePlayer = (playerId) => async (dispatch) => {
   dispatch(deletePlayerLoading());
@@ -122,4 +134,4 @@ export const deletePlayer = (playerId) => async (dispatch) => {
     dispatch(deletePlayerError());
     return console.error(e.message);
   }
-} 
+};

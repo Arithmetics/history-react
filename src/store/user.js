@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { api } from "../api";
+import { createSlice } from '@reduxjs/toolkit';
+import { api } from '../api';
 
-const initialUser = localStorage.getItem("user")
-  ? JSON.parse(localStorage.getItem("user"))
+const initialUser = localStorage.getItem('user')
+  ? JSON.parse(localStorage.getItem('user'))
   : null;
 
 // Slice
 const slice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: {
     user: initialUser,
     loginLoading: false,
@@ -20,15 +20,18 @@ const slice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.user = action.payload.user;
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem(
+        'user',
+        JSON.stringify(action.payload.user),
+      );
+      localStorage.setItem('token', action.payload.token);
       state.loginError = false;
       state.loginLoading = false;
     },
     logoutSuccess: (state, _action) => {
       state.user = null;
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
 
       state.loginError = false;
       state.loginLoading = false;
@@ -42,15 +45,25 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-const { loginSuccess, logoutSuccess, loginLoading, loginError } = slice.actions;
+const {
+  loginSuccess,
+  logoutSuccess,
+  loginLoading,
+  loginError,
+} = slice.actions;
 export const login = ({ email, password }) => async (dispatch) => {
   dispatch(loginLoading());
   try {
-    const response = await api.post("/login", { user: { email, password } });
+    const response = await api.post('/login', {
+      user: { email, password },
+    });
     const { admin } = response.data;
     const { authorization } = response.headers;
     dispatch(
-      loginSuccess({ user: { email, isAdmin: admin }, token: authorization })
+      loginSuccess({
+        user: { email, isAdmin: admin },
+        token: authorization,
+      }),
     );
   } catch (e) {
     dispatch(loginError());
@@ -59,7 +72,7 @@ export const login = ({ email, password }) => async (dispatch) => {
 };
 export const logout = () => async (dispatch) => {
   try {
-    await api.post("/logout");
+    await api.post('/logout');
     return dispatch(logoutSuccess());
   } catch (e) {
     console.error(e.message);

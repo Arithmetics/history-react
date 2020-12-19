@@ -1,26 +1,26 @@
-import React from "react";
-import clsx from "clsx";
-import { useSelector, useDispatch } from "react-redux";
-import { Link as RouterLink, useHistory } from "react-router-dom";
+import React from 'react';
+import clsx from 'clsx';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Button from "@material-ui/core/Button";
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Button from '@material-ui/core/Button';
 
-import { logout } from "../../store/user";
+import { logout } from '../../store/user';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    backgroundColor: "black",
-    color: "white",
+    backgroundColor: 'black',
+    color: 'white',
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 36,
   },
   menuButtonHidden: {
-    display: "none",
+    display: 'none',
   },
   title: {
     flexGrow: 1,
-    textAlign: "center",
+    textAlign: 'center',
   },
   mainIcon: {
     maxHeight: 55,
@@ -53,13 +53,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TopToolBar({ handleDrawerOpen, isOpen }) {
   const classes = useStyles();
-  let history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
   const handleLogout = () => {
     dispatch(logout());
-    history.push("/home");
+    history.push('/home');
   };
 
   return (
@@ -75,7 +75,7 @@ export default function TopToolBar({ handleDrawerOpen, isOpen }) {
           onClick={handleDrawerOpen}
           className={clsx(
             classes.menuButton,
-            isOpen && classes.menuButtonHidden
+            isOpen && classes.menuButtonHidden,
           )}
         >
           <MenuIcon />

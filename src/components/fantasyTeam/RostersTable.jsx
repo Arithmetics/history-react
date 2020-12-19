@@ -1,12 +1,12 @@
-import React from "react";
-import MaterialTable from "material-table";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import MaterialTable from 'material-table';
+import { makeStyles } from '@material-ui/core/styles';
 
-import { PlayerAvatarLink } from "../materialTableElements";
+import { PlayerAvatarLink } from '../materialTableElements';
 
 const useStyles = makeStyles({
   root: {
-    margin: "1rem",
+    margin: '1rem',
   },
 });
 
@@ -27,7 +27,7 @@ export default function RostersTable({ homeRoster, awayRoster }) {
         title=""
         data={combinedRosters}
         options={{
-          padding: "dense",
+          padding: 'dense',
           showTitle: false,
           paging: false,
           search: false,
@@ -35,20 +35,21 @@ export default function RostersTable({ homeRoster, awayRoster }) {
         }}
         columns={[
           {
-            title: "Position",
-            field: "awayRoster.position",
+            title: 'Position',
+            field: 'awayRoster.position',
             render: (rowData) => {
               if (rowData.awayRoster && rowData.awayRoster.position) {
                 return rowData.awayRoster.position;
-              } else if (rowData.homeRoster && rowData.homeRoster.position) {
+              }
+              if (rowData.homeRoster && rowData.homeRoster.position) {
                 return rowData.homeRoster.position;
               }
-              return "-";
+              return '-';
             },
           },
           {
-            title: "Away Player",
-            field: "awayRoster.player.name",
+            title: 'Away Player',
+            field: 'awayRoster.player.name',
             render: (rowData) => {
               if (!rowData.awayRoster || !rowData.awayRoster.player)
                 return null;
@@ -62,21 +63,21 @@ export default function RostersTable({ homeRoster, awayRoster }) {
             },
           },
           {
-            title: "Away Points",
-            field: "awayRoster.points",
+            title: 'Away Points',
+            field: 'awayRoster.points',
           },
           {
-            title: "-",
+            title: '-',
             field: undefined,
             width: 20,
           },
           {
-            title: "Home Points",
-            field: "homeRoster.points",
+            title: 'Home Points',
+            field: 'homeRoster.points',
           },
           {
-            title: "Home Player",
-            field: "homeRoster.player.name",
+            title: 'Home Player',
+            field: 'homeRoster.player.name',
             render: (rowData) => {
               if (!rowData.homeRoster || !rowData.homeRoster.player)
                 return null;

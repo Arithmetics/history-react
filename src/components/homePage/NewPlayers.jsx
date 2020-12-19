@@ -1,11 +1,9 @@
-import React from "react";
-import MaterialTable from "material-table";
+import React from 'react';
+import MaterialTable from 'material-table';
 import {
   PlayerAvatarLink,
   TeamAvatarLink,
-} from "../materialTableElements";
-
-
+} from '../materialTableElements';
 
 export default function NewPlayers(props) {
   const { firstStarts } = props;
@@ -19,11 +17,11 @@ export default function NewPlayers(props) {
         showTitle: true,
         exportButton: false,
       }}
-      title={`Welcome to the League! First Time Starters Last Week`}
+      title="Welcome to the League! First Time Starters Last Week"
       columns={[
         {
-          title: "Player",
-          field: "player.name",
+          title: 'Player',
+          field: 'player.name',
           render: (rowData) => (
             <PlayerAvatarLink
               id={rowData.player.id}
@@ -33,16 +31,16 @@ export default function NewPlayers(props) {
           ),
         },
         {
-          title: "Points",
-          field: "points",
+          title: 'Points',
+          field: 'points',
         },
         {
-          title: "Week",
-          field: "week",
+          title: 'Week',
+          field: 'week',
         },
         {
-          title: "Team",
-          field: "fantasyTeam.name",
+          title: 'Team',
+          field: 'fantasyTeam.name',
           render: (rowData) => (
             <TeamAvatarLink
               id={rowData.fantasyTeam.id}

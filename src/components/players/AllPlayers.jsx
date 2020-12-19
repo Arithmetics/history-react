@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import MaterialTable from "material-table";
+import MaterialTable from 'material-table';
 
-import Typography from "@material-ui/core/Typography";
-import LoadingSpinner from "../LoadingSpinner";
+import Typography from '@material-ui/core/Typography';
+import LoadingSpinner from '../LoadingSpinner';
 
-import { createLookup, filterBetween } from "../materialTableHelpers";
+import { createLookup, filterBetween } from '../materialTableHelpers';
 import {
   PlayerAvatarLink,
   HeaderCellWithTooltip,
-} from "../materialTableElements";
+} from '../materialTableElements';
 
-import { config } from "../../api";
+import { config } from '../../api';
 
-function AllPlayers({ match, history }) {
+function AllPlayers() {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -40,7 +40,7 @@ function AllPlayers({ match, history }) {
             data={players}
             options={{
               filtering: true,
-              padding: "dense",
+              padding: 'dense',
               paging: true,
               pageSize: 50,
               pageSizeOptions: [50, 100, players.length],
@@ -52,8 +52,8 @@ function AllPlayers({ match, history }) {
             }}
             columns={[
               {
-                title: <HeaderCellWithTooltip abbr={"PN"} />,
-                field: "playerName",
+                title: <HeaderCellWithTooltip abbr="PN" />,
+                field: 'playerName',
                 filtering: false,
                 render: (rowData) => (
                   <PlayerAvatarLink
@@ -64,74 +64,86 @@ function AllPlayers({ match, history }) {
                 ),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"POS"} />,
-                field: "careerStats.position",
-                lookup: createLookup(players, ["careerStats", "position"]),
+                title: <HeaderCellWithTooltip abbr="POS" />,
+                field: 'careerStats.position',
+                lookup: createLookup(players, [
+                  'careerStats',
+                  'position',
+                ]),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"TS"} />,
-                field: "careerStats.totalStarts",
+                title: <HeaderCellWithTooltip abbr="TS" />,
+                field: 'careerStats.totalStarts',
               },
               {
-                title: <HeaderCellWithTooltip abbr={"RSP"} />,
-                field: "careerStats.totalPoints",
+                title: <HeaderCellWithTooltip abbr="RSP" />,
+                field: 'careerStats.totalPoints',
                 filtering: false,
               },
               {
-                title: <HeaderCellWithTooltip abbr={"PP"} />,
-                field: "careerStats.playoffPoints",
+                title: <HeaderCellWithTooltip abbr="PP" />,
+                field: 'careerStats.playoffPoints',
                 filtering: false,
               },
               {
-                title: <HeaderCellWithTooltip abbr={"FP"} />,
-                field: "careerStats.finalsPoints",
+                title: <HeaderCellWithTooltip abbr="FP" />,
+                field: 'careerStats.finalsPoints',
                 filtering: false,
               },
               {
-                title: <HeaderCellWithTooltip abbr={"CMP"} />,
-                field: "careerStats.championships",
+                title: <HeaderCellWithTooltip abbr="CMP" />,
+                field: 'careerStats.championships',
                 filtering: false,
               },
               {
-                title: <HeaderCellWithTooltip abbr={"TAD"} />,
-                field: "careerStats.totalAuctionMoney",
+                title: <HeaderCellWithTooltip abbr="TAD" />,
+                field: 'careerStats.totalAuctionMoney',
                 filtering: false,
               },
               {
-                title: <HeaderCellWithTooltip abbr={"MAP"} />,
-                field: "careerStats.highestAuctionMoney",
+                title: <HeaderCellWithTooltip abbr="MAP" />,
+                field: 'careerStats.highestAuctionMoney',
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, [
-                    "careerStats",
-                    "highestAuctionMoney",
+                    'careerStats',
+                    'highestAuctionMoney',
                   ]),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"BSP"} />,
-                field: "careerStats.bestStart",
-                customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["careerStats", "bestStart"]),
-              },
-              {
-                title: <HeaderCellWithTooltip abbr={"BPDR"} />,
-                field: "careerStats.bestPreseasonRank",
+                title: <HeaderCellWithTooltip abbr="BSP" />,
+                field: 'careerStats.bestStart',
                 customFilterAndSearch: (term, rowData) =>
                   filterBetween(term, rowData, [
-                    "careerStats",
-                    "bestPreseasonRank",
+                    'careerStats',
+                    'bestStart',
                   ]),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"BFR"} />,
-                field: "careerStats.bestRegRank",
+                title: <HeaderCellWithTooltip abbr="BPDR" />,
+                field: 'careerStats.bestPreseasonRank',
                 customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["careerStats", "bestRegRank"]),
+                  filterBetween(term, rowData, [
+                    'careerStats',
+                    'bestPreseasonRank',
+                  ]),
               },
               {
-                title: <HeaderCellWithTooltip abbr={"BFRP"} />,
-                field: "careerStats.bestPprRank",
+                title: <HeaderCellWithTooltip abbr="BFR" />,
+                field: 'careerStats.bestRegRank',
                 customFilterAndSearch: (term, rowData) =>
-                  filterBetween(term, rowData, ["careerStats", "bestPprRank"]),
+                  filterBetween(term, rowData, [
+                    'careerStats',
+                    'bestRegRank',
+                  ]),
+              },
+              {
+                title: <HeaderCellWithTooltip abbr="BFRP" />,
+                field: 'careerStats.bestPprRank',
+                customFilterAndSearch: (term, rowData) =>
+                  filterBetween(term, rowData, [
+                    'careerStats',
+                    'bestPprRank',
+                  ]),
               },
             ]}
           />

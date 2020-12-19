@@ -1,8 +1,10 @@
-export const groupBy = key => array =>
+export const groupBy = (key) => (array) =>
   array.reduce((objectsByKeyValue, obj) => {
     const value = obj[key];
-    objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+    objectsByKeyValue[value] = (
+      objectsByKeyValue[value] || []
+    ).concat(obj);
     return objectsByKeyValue;
   }, {});
 
-export const groupByWeek = groupBy("week");
+export const groupByWeek = groupBy('week');

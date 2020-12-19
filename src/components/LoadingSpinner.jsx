@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Fade from "@material-ui/core/Fade";
+import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
     height: 500,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }));
 
@@ -22,7 +22,7 @@ function LoadingSpinner({ isLoading }) {
       <Fade
         in={isLoading}
         style={{
-          transitionDelay: isLoading ? "200ms" : "0ms",
+          transitionDelay: isLoading ? '200ms' : '0ms',
         }}
         unmountOnExit
       >

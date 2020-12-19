@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Typography from "@material-ui/core/Typography";
-import LoadingSpinner from "../LoadingSpinner";
-import { config } from "../../api";
-import TabContainer from "../TabContainer";
-import UpcomingGames from "./UpcomingGames";
-import NewPlayers from "./NewPlayers";
-import Leverage from "./Leverage";
-import Standings from "./Standings";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Typography from '@material-ui/core/Typography';
+import LoadingSpinner from '../LoadingSpinner';
+import { config } from '../../api';
+import TabContainer from '../TabContainer';
+import UpcomingGames from './UpcomingGames';
+import NewPlayers from './NewPlayers';
+import Leverage from './Leverage';
+import Standings from './Standings';
 import LastWeeksGames from './LastWeeksGames';
 
 export default function HomePage() {
@@ -24,31 +24,39 @@ export default function HomePage() {
       const result = await axios(`${config}/home/show.json`);
       // console.log(result)
       setVersusRecords(
-        (result && result.data && result.data.versusRecords) || []
+        (result && result.data && result.data.versusRecords) || [],
       );
       setScheduledGames(
-        (result && result.data && result.data.scheduledGames) || []
+        (result && result.data && result.data.scheduledGames) || [],
       );
       setLastWeeksGames(
-        (result && result.data && result.data.lastWeeksGames) || []
+        (result && result.data && result.data.lastWeeksGames) || [],
       );
-      setFirstStarts((result && result.data && result.data.firstStarts) || []);
+      setFirstStarts(
+        (result && result.data && result.data.firstStarts) || [],
+      );
 
-      setStandings((result && result.data && result.data.standings) || []);
-      setPlayoffOdds((result && result.data && result.data.playoffOdds) || []);
+      setStandings(
+        (result && result.data && result.data.standings) || [],
+      );
+      setPlayoffOdds(
+        (result && result.data && result.data.playoffOdds) || [],
+      );
       setLoading(false);
     };
     fetchData();
   }, []);
 
   const currentWeek =
-    (scheduledGames && scheduledGames.length > 0 && scheduledGames[0].week) ||
+    (scheduledGames &&
+      scheduledGames.length > 0 &&
+      scheduledGames[0].week) ||
     0;
 
   return (
     <>
       <Typography variant="h3">The 97062 Lab</Typography>
-      <br></br>
+      <br />
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
         <TabContainer
@@ -66,9 +74,15 @@ export default function HomePage() {
               versusRecords={versusRecords}
             />,
             <Leverage playoffOdds={playoffOdds} />,
-            <LastWeeksGames lastWeeksGames={lastWeeksGames} lastWeek={currentWeek - 1}/>,
+            <LastWeeksGames
+              lastWeeksGames={lastWeeksGames}
+              lastWeek={currentWeek - 1}
+            />,
             <NewPlayers firstStarts={firstStarts} />,
-            <Standings standings={standings} playoffOdds={playoffOdds} />,
+            <Standings
+              standings={standings}
+              playoffOdds={playoffOdds}
+            />,
           ]}
         />
       )}

@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 
-import Copyright from "./Copyright";
-import TopToolBar from "./TopToolBar";
-import SideMenu from "./SideMenu";
+import Copyright from './Copyright';
+import TopToolBar from './TopToolBar';
+import SideMenu from './SideMenu';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
+    display: 'flex',
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: "100vh",
-    overflow: "auto",
+    height: '100vh',
+    overflow: 'auto',
   },
   container: {
     paddingTop: theme.spacing(1),
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MainWrapper(props) {
+export default function MainWrapper({ children }) {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const handleDrawerOpen = () => {
@@ -43,13 +43,19 @@ export default function MainWrapper(props) {
 
       <CssBaseline />
 
-      <TopToolBar handleDrawerOpen={handleDrawerOpen} isOpen={isOpen} />
-      <SideMenu handleDrawerClose={handleDrawerClose} isOpen={isOpen} />
+      <TopToolBar
+        handleDrawerOpen={handleDrawerOpen}
+        isOpen={isOpen}
+      />
+      <SideMenu
+        handleDrawerClose={handleDrawerClose}
+        isOpen={isOpen}
+      />
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          {props.children}
+          {children}
           <Box pt={4}>
             <Copyright />
           </Box>
