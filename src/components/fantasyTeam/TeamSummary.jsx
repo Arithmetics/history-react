@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ResponsiveScatterPlot } from '@nivo/scatterplot';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import MaterialTable from 'material-table';
+import { lineGraphSettings } from '../nivoGraphHelpers';
 
+import theme from '../../theme';
 import LoadingSpinner from '../LoadingSpinner';
 import { config } from '../../api';
 import GameTable from './GameTable';
@@ -58,6 +61,9 @@ const useStyles = makeStyles(() => ({
   grow: {
     flexGrow: 3,
   },
+  graph: {
+    height: 300,
+  },
 }));
 
 export default function TeamSummary({ match }) {
@@ -80,6 +86,7 @@ export default function TeamSummary({ match }) {
   }, [match.params.id]);
 
   // const fantasyStartWeeks = (fantasyTeam && fantasyTeam.fantasyStarts) || {};
+  console.log(fantasyTeam);
   const ownerName =
     (fantasyTeam && fantasyTeam.owner && fantasyTeam.owner.name) ||
     '';
@@ -94,6 +101,16 @@ export default function TeamSummary({ match }) {
     (game) => game.week < 14,
   );
   const playoffGames = fantasyGames.filter((game) => game.week > 13);
+
+  const ptsByPositionRegular =
+    fantasyTeam &&
+    fantasyTeam.positionalScoring &&
+    fantasyTeam.positionalScoring.ptsByPositionRegular;
+  const startsByPositionRegular =
+    fantasyTeam &&
+    fantasyTeam.positionalScoring &&
+    fantasyTeam.positionalScoring.startsByPositionRegular;
+
   return (
     <div>
       <Typography variant="h3" gutterBottom>
@@ -122,7 +139,7 @@ export default function TeamSummary({ match }) {
       {loading && <LoadingSpinner isLoading={loading} />}
       {!loading && (
         <TabContainer
-          tabNames={['Games', 'Auction']}
+          tabNames={['Games', 'Auction', 'Positional Scoring']}
           tabs={[
             <TeamGameTable
               regularSeasonGames={regularSeasonGames}
@@ -130,6 +147,10 @@ export default function TeamSummary({ match }) {
               fantasyTeamName={fantasyTeamName}
             />,
             <AuctionTable auction={auction} />,
+            <PositionScoring
+              ptsByPositionRegular={ptsByPositionRegular}
+              startsByPositionRegular={startsByPositionRegular}
+            />,
           ]}
         />
       )}
@@ -198,5 +219,86 @@ function AuctionTable(props) {
         },
       ]}
     />
+  );
+}
+
+function prepPositionalData(startsByPosition, ptsByPosition) {
+  const data = [];
+  Object.keys(startsByPosition).forEach((pos) => {
+    data.push({
+      id: pos,
+      data: [{ x: startsByPosition[pos], y: ptsByPosition[pos] }],
+    });
+  });
+  return data;
+}
+
+function PositionScoring({
+  startsByPositionRegular,
+  ptsByPositionRegular,
+}) {
+  const classes = useStyles();
+
+  const data = prepPositionalData(
+    startsByPositionRegular,
+    ptsByPositionRegular,
+  );
+
+  return (
+    <div className={classes.graph}>
+      <ResponsiveScatterPlot
+        data={data}
+        theme={lineGraphSettings.theme}
+        colors={Object.values(theme.palette.graph)}
+        margin={{ top: 60, right: 140, bottom: 70, left: 90 }}
+        xScale={{ type: 'linear', min: 0, max: 50 }}
+        yScale={{ type: 'linear', min: 0, max: 1000 }}
+        blendMode="normal"
+        axisTop={null}
+        axisRight={null}
+        nodeSize={20}
+        axisBottom={{
+          orient: 'bottom',
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: 'starts',
+          legendPosition: 'middle',
+          legendOffset: 46,
+        }}
+        axisLeft={{
+          orient: 'left',
+          tickSize: 5,
+          tickPadding: 0,
+          tickRotation: 0,
+          legend: 'points',
+          legendPosition: 'middle',
+          legendOffset: -30,
+        }}
+        legends={[
+          {
+            anchor: 'bottom-right',
+            direction: 'column',
+            justify: false,
+            translateX: 130,
+            translateY: 0,
+            itemWidth: 100,
+            itemHeight: 12,
+            itemsSpacing: 5,
+            itemDirection: 'left-to-right',
+            symbolSize: 12,
+            symbolShape: 'circle',
+            effects: [
+              {
+                on: 'hover',
+                style: {
+                  itemOpacity: 1,
+                },
+              },
+            ],
+          },
+        ]}
+      />
+    </div>
   );
 }

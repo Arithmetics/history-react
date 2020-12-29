@@ -23,6 +23,15 @@ let theme = createMuiTheme({
       dark: '#136F63',
       darkest: '#0f564d',
     },
+    graph: {
+      graph1: '#20a08f',
+      graph2: '#d65155',
+      graph3: '#7D3BC1',
+      graph4: '#EABE3B',
+      graph5: '#DE542D',
+      graph6: '#1CAADE',
+      graph7: '#F0A58F',
+    },
   },
 });
 

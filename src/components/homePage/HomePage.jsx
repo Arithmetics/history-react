@@ -9,6 +9,7 @@ import NewPlayers from './NewPlayers';
 import Leverage from './Leverage';
 import Standings from './Standings';
 import LastWeeksGames from './LastWeeksGames';
+import PositionalScoring from './PositionalScoring';
 
 export default function HomePage() {
   const [versusRecords, setVersusRecords] = useState([]);
@@ -17,12 +18,13 @@ export default function HomePage() {
   const [firstStarts, setFirstStarts] = useState([]);
   const [standings, setStandings] = useState([]);
   const [playoffOdds, setPlayoffOdds] = useState([]);
+  const [positionalScoring, setPositionalScoring] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/home/show.json`);
-      // console.log(result)
+      // console.log(result);
       setVersusRecords(
         (result && result.data && result.data.versusRecords) || [],
       );
@@ -41,6 +43,10 @@ export default function HomePage() {
       );
       setPlayoffOdds(
         (result && result.data && result.data.playoffOdds) || [],
+      );
+      setPositionalScoring(
+        (result && result.data && result.data.positionalScoring) ||
+          [],
       );
       setLoading(false);
     };
@@ -66,6 +72,7 @@ export default function HomePage() {
             `Week ${currentWeek - 1} Games`,
             `Week ${currentWeek - 1} New Players`,
             `Standings`,
+            `Positional Scoring`,
           ]}
           tabs={[
             <UpcomingGames
@@ -82,6 +89,9 @@ export default function HomePage() {
             <Standings
               standings={standings}
               playoffOdds={playoffOdds}
+            />,
+            <PositionalScoring
+              positionalScoring={positionalScoring}
             />,
           ]}
         />

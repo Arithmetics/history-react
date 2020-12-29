@@ -3,6 +3,7 @@ import { ResponsiveBullet } from '@nivo/bullet';
 
 import { makeStyles } from '@material-ui/core/styles';
 import theme from '../../theme';
+import { lineGraphSettings } from '../nivoGraphHelpers';
 
 const useStyles = makeStyles((theme) => ({
   graph: {
@@ -22,7 +23,6 @@ function prepLeverageData(playoffOdds, category) {
       id: o.fantasyTeam.id,
       title: o.fantasyTeam.name,
       ranges: [0, o.oddsWithLoss + 0.005, o.oddsWithWin + 0.005, 1],
-      // ranges: [0,0.33, 0.66, 1],
       markers: [o.odds],
       measures: [],
     };
@@ -31,13 +31,6 @@ function prepLeverageData(playoffOdds, category) {
 
   return leverages;
 }
-
-const lineGraphSettings = {
-  theme: {
-    fontSize: '10px',
-    textColor: '#fff',
-  },
-};
 
 function MyResponsiveBullet({ data }) {
   return (
