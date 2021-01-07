@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import PlayerManager from './players/PlayerManager';
 
+import TabContainer from '../TabContainer';
+
 export default function Admin() {
   const history = useHistory();
 
@@ -19,7 +21,10 @@ export default function Admin() {
       <Typography variant="h3" gutterBottom>
         Admin
       </Typography>
-      <PlayerManager />
+      <TabContainer
+        tabNames={[`Players`, `WAB`, `Podcasts`]}
+        tabs={[<PlayerManager />, <p>wab</p>, <p>pods</p>]}
+      />
     </>
   );
 }

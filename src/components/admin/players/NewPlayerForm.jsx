@@ -65,7 +65,7 @@ export default function NewPlayerForm() {
   };
 
   return (
-    <Paper className={classes.paperPad}>
+    <>
       <Typography variant="h5" gutterBottom>
         Create Player
       </Typography>
@@ -184,6 +184,6 @@ export default function NewPlayerForm() {
           New player added!
         </Typography>
       )}
-    </Paper>
+    </>
   );
 }
