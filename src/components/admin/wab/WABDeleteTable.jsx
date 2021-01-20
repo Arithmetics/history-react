@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import MaterialTable from 'material-table';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingSpinner from '../../LoadingSpinner';
-
-import { getAllWAB } from '../../../store/wab';
-import { NFL_PLAYER_PAGE, NFL_IMAGE_URL } from '../../../constants';
-import { PlayerAvatarLink } from '../../materialTableElements';
-import DeletePlayerConfirm from './DeletePlayerConfirm';
+import DeleteResourceConfirm from '../DeleteResourceConfirm';
+import { deleteWAB, getAllWAB } from '../../../store/wab';
+import {
+  PlayerAvatarLink,
+  TeamAvatarLink,
+} from '../../materialTableElements';
 
 const useStyles = makeStyles((theme) => ({
   success: {
@@ -28,61 +29,74 @@ export default function WABDeleteTable() {
     allWAB,
     allWABSuccess,
     allWABError,
-  } = useSelector((state) => state.player);
+    //
+    deleteWABLoading,
+    deleteWABSuccess,
+    deleteWABError,
+  } = useSelector((state) => state.wab);
 
   const [open, setOpen] = useState(false);
-  const [playerToDelete, setPlayerToDelete] = useState(undefined);
+  const [wabToDelete, setWABToDelete] = useState(undefined);
 
   useEffect(() => {
-    dispatch(getAllPlayers());
+    dispatch(getAllWAB());
   }, [dispatch]);
 
-  const handleClickOpen = (player) => {
+  const handleClickOpen = (wab) => {
     setOpen(true);
-    setPlayerToDelete(player);
+    setWABToDelete(wab);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setPlayerToDelete(undefined);
+    setWABToDelete(undefined);
   };
 
-  if (allPlayersLoading) {
-    return <LoadingSpinner isLoading={allPlayersLoading} />;
+  if (allWABLoading) {
+    return <LoadingSpinner isLoading={allWABLoading} />;
   }
 
-  if (allPlayersError) {
-    return <p>There was an error fetching the player data</p>;
+  if (allWABError) {
+    return <p>There was an error fetching the WAB data</p>;
   }
 
-  if (allPlayersSuccess) {
-    const unfrozenData = allPlayers.map((p) => {
+  if (allWABSuccess) {
+    const unfrozenData = allWAB.map((p) => {
       const {
-        name,
-        birthdate,
         id,
-        createdAt,
-        nflUrlName,
-        pictureId,
+        amount,
+        year,
+        week,
+        winning,
+        player,
+        fantasyTeam,
       } = p;
       return {
-        name,
-        birthdate,
         id,
-        createdAt,
-        nflUrlName,
-        pictureId,
+        amount,
+        year,
+        week,
+        winning,
+        player,
+        fantasyTeam,
       };
     });
+
     return (
       <>
-        <DeletePlayerConfirm
+        <DeleteResourceConfirm
+          deleteResource={deleteWAB}
+          deleteResourceLoading={deleteWABLoading}
+          deleteResourceSuccess={deleteWABSuccess}
+          deleteResourceError={deleteWABError}
           handleClose={handleClose}
           open={open}
-          player={playerToDelete}
+          resource={wabToDelete}
+          resourceId={wabToDelete?.id}
+          resourceName="WAB Bid"
         />
         <MaterialTable
-          title="Manage Players"
+          title="Manage Waiver Bids"
           data={unfrozenData}
           options={{
             filtering: false,
@@ -99,63 +113,50 @@ export default function WABDeleteTable() {
           actions={[
             {
               icon: 'delete',
-              tooltip: 'Delete player',
+              tooltip: 'Delete WAB',
               onClick: (event, rowData) => handleClickOpen(rowData),
             },
           ]}
           columns={[
             {
-              title: 'Name',
-              field: 'name',
+              title: 'Player',
+              field: 'player',
               filtering: false,
               render: (rowData) => (
                 <PlayerAvatarLink
-                  id={rowData.id}
-                  playerName={rowData.name}
-                  pictureId={rowData.pictureId}
+                  id={rowData.player.id}
+                  playerName={rowData.player.name}
+                  pictureId={rowData.player.pictureId}
                 />
               ),
             },
             {
-              title: 'Profile ID',
-              field: 'id',
-            },
-            {
-              title: 'Picture ID',
-              field: 'pictureId',
+              title: 'Team',
+              field: 'fantasyTeam.name',
               render: (rowData) => (
-                <a
-                  href={`${NFL_IMAGE_URL}/${rowData.pictureId}`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  className={classes.link}
-                >
-                  {rowData.pictureId}
-                </a>
+                <TeamAvatarLink
+                  id={rowData.fantasyTeam.id}
+                  teamName={rowData.fantasyTeam.name}
+                  pictureUrl={rowData.fantasyTeam.pictureUrl}
+                />
               ),
             },
             {
-              title: 'NFL URL',
-              field: 'nflUrlName',
-              render: (rowData) => (
-                <a
-                  href={`${NFL_PLAYER_PAGE}/${rowData.nflUrlName}`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  className={classes.link}
-                >
-                  {rowData.nflUrlName}
-                </a>
-              ),
+              title: 'Year',
+              field: 'year',
             },
             {
-              title: 'Birthdate',
-              field: 'birthdate',
+              title: 'Week',
+              field: 'week',
             },
             {
-              title: 'Created At',
-              field: 'createdAt',
-              defaultSort: 'desc',
+              title: 'Winning?',
+              field: 'winning',
+            },
+
+            {
+              title: 'Amount',
+              field: 'amount',
             },
           ]}
         />

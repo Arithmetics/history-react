@@ -4,10 +4,10 @@ import MaterialTable from 'material-table';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingSpinner from '../../LoadingSpinner';
 
-import { getAllPlayers } from '../../../store/player';
+import { deletePlayer, getAllPlayers } from '../../../store/player';
 import { NFL_PLAYER_PAGE, NFL_IMAGE_URL } from '../../../constants';
 import { PlayerAvatarLink } from '../../materialTableElements';
-import DeletePlayerConfirm from './DeletePlayerConfirm';
+import DeleteResourceConfirm from '../DeleteResourceConfirm';
 
 const useStyles = makeStyles((theme) => ({
   success: {
@@ -28,6 +28,10 @@ export default function PlayerDeleteTable() {
     allPlayers,
     allPlayersSuccess,
     allPlayersError,
+    //
+    deletePlayerLoading,
+    deletePlayerSuccess,
+    deletePlayerError,
   } = useSelector((state) => state.player);
 
   const [open, setOpen] = useState(false);
@@ -76,10 +80,16 @@ export default function PlayerDeleteTable() {
     });
     return (
       <>
-        <DeletePlayerConfirm
+        <DeleteResourceConfirm
+          deleteResource={deletePlayer}
+          deleteResourceLoading={deletePlayerLoading}
+          deleteResourceSuccess={deletePlayerSuccess}
+          deleteResourceError={deletePlayerError}
           handleClose={handleClose}
           open={open}
-          player={playerToDelete}
+          resource={playerToDelete}
+          resourceId={playerToDelete?.id}
+          resourceName={playerToDelete?.name}
         />
         <MaterialTable
           title="Manage Players"

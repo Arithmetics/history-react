@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import PlayerManager from './players/PlayerManager';
+import WABManager from './wab/WABManager';
 
 import TabContainer from '../TabContainer';
 
@@ -23,7 +24,7 @@ export default function Admin() {
       </Typography>
       <TabContainer
         tabNames={[`Players`, `WAB`, `Podcasts`]}
-        tabs={[<PlayerManager />, <p>wab</p>, <p>pods</p>]}
+        tabs={[<PlayerManager />, <WABManager />, <p>pods</p>]}
       />
     </>
   );

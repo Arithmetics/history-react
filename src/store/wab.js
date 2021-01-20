@@ -114,7 +114,7 @@ export const getAllWAB = () => async (dispatch) => {
   dispatch(allWABLoading());
   try {
     const response = await api.get('/waiver_bids.json');
-    dispatch(allWABSuccess(response.data.wab));
+    dispatch(allWABSuccess(response.data.waiverBids));
   } catch (e) {
     dispatch(allWABError());
     return console.error(e.message);
@@ -125,7 +125,7 @@ export const deleteWAB = (wabId) => async (dispatch) => {
   dispatch(deleteWABLoading());
   try {
     await api.delete(`waiver_bids/${wabId}.json`);
-    dispatch(deleteWABSuccess(wanId));
+    dispatch(deleteWABSuccess(wabId));
   } catch (e) {
     dispatch(deleteWABError());
     return console.error(e.message);

@@ -86,7 +86,6 @@ export default function TeamSummary({ match }) {
   }, [match.params.id]);
 
   // const fantasyStartWeeks = (fantasyTeam && fantasyTeam.fantasyStarts) || {};
-  console.log(fantasyTeam);
   const ownerName =
     (fantasyTeam && fantasyTeam.owner && fantasyTeam.owner.name) ||
     '';

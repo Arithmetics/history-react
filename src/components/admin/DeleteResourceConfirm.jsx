@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import SchemaViewer from 'material-ui-json-schema-viewer';
+
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,8 +9,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
-import { deletePlayer } from '../../../store/player';
 
 const useStyles = makeStyles((theme) => ({
   success: {
@@ -23,30 +23,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DeletePlayerConfirm({
-  player,
+export default function DeleteResourceConfirm({
+  resourceId,
+  resourceName,
+  resource,
   open,
   handleClose,
+  deleteResource,
+  deleteResourceLoading,
+  deleteResourceSuccess,
+  deleteResourceError,
 }) {
-  const {
-    deletePlayerLoading,
-    deletePlayerSuccess,
-    deletePlayerError,
-  } = useSelector((state) => state.player);
-
   const dispatch = useDispatch();
 
-  const submitDeletePlayer = () => {
-    dispatch(deletePlayer(player.id));
+  const submitDeleteResource = () => {
+    dispatch(deleteResource(resourceId));
   };
 
   useEffect(() => {
-    if (deletePlayerSuccess) {
+    if (deleteResourceSuccess) {
       handleClose();
     }
-  }, [handleClose, deletePlayerSuccess]);
-
-  const playName = (player && player.name) || '';
+  }, [handleClose, deleteResourceSuccess]);
 
   return (
     <Dialog
@@ -56,14 +54,14 @@ export default function DeletePlayerConfirm({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {`Delete ${playName}?`}
+        {`Delete ${resourceName}?`}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {`This will delete the player permanently ${JSON.stringify(
-            player,
+          {`This will delete the resource permanently ${JSON.stringify(
+            resource,
           )}`}
-          {deletePlayerError ? 'There was an error' : undefined}
+          {deleteResourceError ? 'There was an error' : undefined}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -71,8 +69,8 @@ export default function DeletePlayerConfirm({
           Cancel
         </Button>
         <Button
-          disabled={deletePlayerLoading}
-          onClick={submitDeletePlayer}
+          disabled={deleteResourceLoading}
+          onClick={submitDeleteResource}
           color="primary"
           autoFocus
         >
