@@ -106,6 +106,10 @@ export default function NewPlayerForm() {
           </Grid>
           <Grid item xs={6} sm={4}>
             <Controller
+              name="birthdate"
+              defaultValue="01/01/1990"
+              rules={{ required: 'Field Required' }}
+              control={control}
               as={
                 <DatePicker
                   className={classes.dateCell}
@@ -119,10 +123,6 @@ export default function NewPlayerForm() {
                   error={!!errors.birthdate}
                 />
               }
-              name="birthdate"
-              defaultValue="01/01/1990"
-              rules={{ required: 'Field Required' }}
-              control={control}
             />
           </Grid>
           <Grid item xs={6} sm={4}>

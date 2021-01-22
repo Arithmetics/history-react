@@ -89,21 +89,27 @@ const {
   deleteWABError,
 } = slice.actions;
 
-export const newWAB = ({ id, amount, year, week, winning }) => async (
-  dispatch,
-) => {
+export const newWAB = ({
+  amount,
+  year,
+  week,
+  winning,
+  playerId,
+  fantasyTeamId,
+}) => async (dispatch) => {
   dispatch(newWABLoading());
   try {
     const response = await api.post('/waiver_bids.json', {
-      wab: {
-        id,
+      waiver_bid: {
+        player_id: playerId,
+        fantasy_team_id: fantasyTeamId,
         amount,
         year,
         week,
         winning,
       },
     });
-    dispatch(newWABSuccess(response.data.wab));
+    dispatch(newWABSuccess(response.data.bid));
   } catch (e) {
     dispatch(newWABError());
     return console.error(e.message);

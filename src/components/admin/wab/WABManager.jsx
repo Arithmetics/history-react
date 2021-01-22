@@ -5,7 +5,7 @@ import NewWABForm from './NewWABForm';
 export default function WABManager() {
   return (
     <>
-      {/* <NewWABForm /> */}
+      <NewWABForm />
       <br />
       <WABDeleteTable />
     </>
