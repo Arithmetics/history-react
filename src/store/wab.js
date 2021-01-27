@@ -29,7 +29,7 @@ const slice = createSlice({
       state.newWABLoading = false;
       state.newWABError = false;
       state.newWABSuccess = true;
-      state.allWAB = [action.payload, ...state.allWAB];
+      state.allWAB = [...action.payload, ...state.allWAB];
     },
     newWABError: (state, _action) => {
       state.newWABLoading = false;
@@ -90,26 +90,35 @@ const {
 } = slice.actions;
 
 export const newWAB = ({
-  amount,
+  playerId,
   year,
   week,
-  winning,
-  playerId,
-  fantasyTeamId,
+  // winning,
+  // amount,
+  // fantasyTeamId,
+  teamBids,
 }) => async (dispatch) => {
   dispatch(newWABLoading());
+
+  const team_bids = teamBids.map((b, i) => {
+    const winning = i === 0;
+    return {
+      fantasy_team_id: b.team.id,
+      amount: parseInt(b.amount, 10),
+      winning,
+    };
+  });
+
   try {
     const response = await api.post('/waiver_bids.json', {
       waiver_bid: {
         player_id: playerId,
-        fantasy_team_id: fantasyTeamId,
-        amount,
         year,
         week,
-        winning,
+        team_bids,
       },
     });
-    dispatch(newWABSuccess(response.data.bid));
+    dispatch(newWABSuccess(response.data.waiverBids));
   } catch (e) {
     dispatch(newWABError());
     return console.error(e.message);

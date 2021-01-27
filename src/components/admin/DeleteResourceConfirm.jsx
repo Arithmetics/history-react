@@ -1,27 +1,26 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import SchemaViewer from 'material-ui-json-schema-viewer';
+import { useDispatch } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const useStyles = makeStyles((theme) => ({
-  success: {
-    color: theme.palette.success.main,
-    margin: 16,
-  },
-  link: {
-    color: theme.palette.primary.main,
-  },
-  buttonProgress: {
-    color: theme.palette.primary.light,
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   success: {
+//     color: theme.palette.success.main,
+//     margin: 16,
+//   },
+//   link: {
+//     color: theme.palette.primary.main,
+//   },
+//   buttonProgress: {
+//     color: theme.palette.primary.light,
+//   },
+// }));
 
 export default function DeleteResourceConfirm({
   resourceId,

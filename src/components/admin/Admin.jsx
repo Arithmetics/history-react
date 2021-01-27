@@ -25,7 +25,7 @@ export default function Admin() {
       <TabContainer
         tabNames={[`Players`, `WAB`, `Podcasts`]}
         // tabs={[<PlayerManager />, <WABManager />, <p>pods</p>]}
-        tabs={[<WABManager />, <p>players</p>, <p>pods</p>]}
+        tabs={[<WABManager />, <PlayerManager />, <p>pods</p>]}
       />
     </>
   );

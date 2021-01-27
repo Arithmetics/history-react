@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
-import { DatePicker } from '@material-ui/pickers';
-
-import Paper from '@material-ui/core/Paper';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
@@ -14,11 +11,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-
+import IconButton from '@material-ui/core/IconButton';
+import Delete from '@material-ui/icons/Delete';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormLabel from '@material-ui/core/FormLabel';
 
 import { newWAB } from '../../../store/wab';
-import { YoutubeSearchedForSharp } from '@material-ui/icons';
 
 const ControlledAutocomplete = ({
   options = [],
@@ -29,9 +34,11 @@ const ControlledAutocomplete = ({
   defaultValue,
   name,
   renderOption,
+  rules,
 }) => {
   return (
     <Controller
+      rules={rules}
       render={({ onChange, ...props }) => (
         <Autocomplete
           options={options}
@@ -46,7 +53,7 @@ const ControlledAutocomplete = ({
         />
       )}
       onChange={([, data]) => data}
-      defaultValue={defaultValue}
+      // defaultValue={defaultValue}
       name={name}
       control={control}
     />
@@ -76,9 +83,15 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.light,
   },
   select: {
-    width: 192,
+    width: '100%',
     marginTop: 16,
     marginBottom: 8,
+  },
+  buttonCenter: {
+    margin: 18,
+  },
+  bidType: {
+    marginTop: 10,
   },
 }));
 
@@ -94,29 +107,50 @@ export default function NewWABForm() {
     register,
     control,
     handleSubmit,
+    formState,
     reset,
     errors,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      year: '',
+      week: '',
+      player: null,
+      'teamBids[0].team': null,
+    },
+  });
 
   useEffect(() => (newWABSuccess ? reset() : undefined), [
     newWABSuccess,
     reset,
   ]);
 
-  const onSubmit = (data) => {
-    const { amount, year, week, player, team } = data;
-    const wab = {
-      amount: parseInt(data.amount, 10),
-      year,
-      week,
-      playerId: parseInt(player.id),
-      fantasyTeamId: parseInt(team.id),
-      winning: true,
-    };
-    dispatch(newWAB(wab));
+  const [indexes, setIndexes] = React.useState([0]);
+  const [counter, setCounter] = React.useState(1);
+
+  const addTeamBid = () => {
+    setIndexes((prevIndexes) => [...prevIndexes, counter]);
+    setCounter((prevCounter) => prevCounter + 1);
   };
 
-  const bidCount = [0];
+  const removeTeamBid = (index) => () => {
+    setIndexes((prevIndexes) => [
+      ...prevIndexes.filter((item) => item !== index),
+    ]);
+    setCounter((prevCounter) => prevCounter - 1);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data, errors);
+    // const { year, week, player, teamBids } = data;
+    // const wab = {
+    //   year,
+    //   week,
+    //   playerId: parseInt(player.id),
+    //   teamBids,
+    // };
+    // dispatch(newWAB(wab));
+  };
+
   const weeks = [...Array(17).keys()].slice(1, 17);
   const currentWeek = 1;
   const players = [
@@ -129,19 +163,40 @@ export default function NewWABForm() {
     { id: 115, ownerName: 'Jhi', teamName: 'Burrows Boys' },
   ];
 
+  const tryThis = (currentVal) => {
+    // console.log(formState, formState.dirty, formState.dirtyFields);
+    let checkedCount = 0;
+    const teamBids = formState?.dirtyFields?.teamBids;
+    if (!teamBids) {
+      return false;
+    }
+    Object.keys(teamBids).forEach((key) => {
+      if (teamBids[key].winner) {
+        checkedCount += 1;
+      }
+    });
+    if (checkedCount !== 1) {
+      return false;
+    }
+    return true;
+  };
+
+  console.log(errors);
   return (
     <>
       <Typography variant="h5" gutterBottom>
-        Enter waiver bids
+        New waiver bids
       </Typography>
+
       <form
         className={classes.form}
         onSubmit={handleSubmit(onSubmit)}
       >
         <Grid container spacing={2}>
-          <Grid item xs={6} sm={4}>
+          <Grid item xs={4}>
             <ControlledAutocomplete
               control={control}
+              rules={{ required: 'Select player' }}
               name="player"
               options={players}
               getOptionLabel={(option) => `${option.name}`}
@@ -151,15 +206,17 @@ export default function NewWABForm() {
                   label="Player"
                   margin="normal"
                   variant="outlined"
+                  error={!!errors.player}
+                  helperText={errors.player?.message}
                 />
               )}
-              defaultValue={null}
             />
           </Grid>
-          <Grid item xs={6} sm={4}>
+          <Grid item xs={2}>
             <FormControl
               variant="outlined"
               className={classes.select}
+              error={!!errors.year}
             >
               <InputLabel id="age-label">Year</InputLabel>
               <Controller
@@ -167,16 +224,15 @@ export default function NewWABForm() {
                 name="year"
                 label="Year"
                 autoComplete="year"
-                rules={{ required: true }}
+                rules={{ required: 'Select year' }}
                 error={!!errors.year}
                 helperText={errors.year?.message}
                 disabled={newWABLoading}
-                defaultValue={null}
                 as={
                   <Select
                     variant="outlined"
-                    margin="normal"
                     labelId="age-label"
+                    helperText={errors.year?.message}
                   >
                     {[2020, 2021].map((year) => {
                       return (
@@ -188,12 +244,14 @@ export default function NewWABForm() {
                   </Select>
                 }
               />
+              <FormHelperText>{errors.year?.message}</FormHelperText>
             </FormControl>
           </Grid>
-          <Grid item xs={6} sm={4}>
+          <Grid item xs={2}>
             <FormControl
               variant="outlined"
               className={classes.select}
+              error={!!errors.week}
             >
               <InputLabel id="week-label">Week</InputLabel>
               <Controller
@@ -201,13 +259,12 @@ export default function NewWABForm() {
                 name="week"
                 label="Week"
                 autoComplete="week"
-                rules={{ required: true }}
+                rules={{ required: 'Select week' }}
                 error={!!errors.week}
                 helperText={errors.week?.message}
                 disabled={newWABLoading}
-                defaultValue={null}
                 as={
-                  <Select variant="outlined" margin="normal">
+                  <Select variant="outlined">
                     {weeks.map((week) => {
                       return (
                         <MenuItem key={week} value={week}>
@@ -218,15 +275,23 @@ export default function NewWABForm() {
                   </Select>
                 }
               />
+              <FormHelperText>{errors.week?.message}</FormHelperText>
             </FormControl>
           </Grid>
-          {bidCount.map((b) => {
+          <Grid item xs={4}></Grid>
+          <Divider />
+          {indexes.map((index, i) => {
+            const fieldName = `teamBids[${index}]`;
             return (
               <>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
                 <Grid item xs={4}>
                   <ControlledAutocomplete
                     control={control}
-                    name="team"
+                    rules={{ required: 'Select team' }}
+                    name={`${fieldName}.team`}
                     options={teams}
                     getOptionLabel={(option) =>
                       `${option.ownerName} - ${option.teamName}`
@@ -237,17 +302,20 @@ export default function NewWABForm() {
                         label="Team"
                         margin="normal"
                         variant="outlined"
+                        error={!!errors.teamBids?.[i]?.team}
+                        helperText={
+                          errors.teamBids?.[i]?.team?.message
+                        }
                       />
                     )}
-                    defaultValue={null}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={2}>
                   <TextField
                     variant="outlined"
                     margin="normal"
                     type="number"
-                    name="amount"
+                    name={`${fieldName}.amount`}
                     label="Amount"
                     inputRef={register({
                       required: 'Enter amount',
@@ -260,16 +328,66 @@ export default function NewWABForm() {
                         message: '$200 at most',
                       },
                     })}
-                    error={!!errors.amount}
-                    helperText={errors.amount?.message}
+                    error={!!errors.teamBids?.[i]?.amount}
+                    helperText={errors.teamBids?.[i]?.amount?.message}
                     disabled={newWABLoading}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AttachMoneyIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Grid>
-                <Grid item xs={4}></Grid>
+                <Grid item xs={2}>
+                  <FormControl error={true}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          helperText={
+                            errors.teamBids?.[i]?.winner?.message
+                          }
+                          name={`${fieldName}.winner`}
+                          color="primary"
+                          inputRef={register({
+                            validate: tryThis,
+                          })}
+                        />
+                      }
+                      label="Winning?"
+                      labelPlacement="top"
+                    />
+                    {errors.teamBids?.[i]?.winner && (
+                      <FormHelperText>
+                        Only one winning bid
+                      </FormHelperText>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={4}>
+                  {i !== 0 && (
+                    <IconButton
+                      className={classes.buttonCenter}
+                      color="secondary"
+                      onClick={removeTeamBid(i)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  )}
+                  {i === indexes.length - 1 && (
+                    <IconButton
+                      className={classes.buttonCenter}
+                      disabled={newWABLoading}
+                      onClick={addTeamBid}
+                    >
+                      <GroupAddIcon />
+                    </IconButton>
+                  )}
+                </Grid>
               </>
             );
           })}
-
           <Grid item xs={12}>
             <Button
               type="submit"

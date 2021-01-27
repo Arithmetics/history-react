@@ -10,18 +10,18 @@ import {
   TeamAvatarLink,
 } from '../../materialTableElements';
 
-const useStyles = makeStyles((theme) => ({
-  success: {
-    color: theme.palette.success.main,
-    margin: 16,
-  },
-  link: {
-    color: theme.palette.primary.main,
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   success: {
+//     color: theme.palette.success.main,
+//     margin: 16,
+//   },
+//   link: {
+//     color: theme.palette.primary.main,
+//   },
+// }));
 
 export default function WABDeleteTable() {
-  const classes = useStyles();
+  // const classes = useStyles();
   const dispatch = useDispatch();
 
   const {
