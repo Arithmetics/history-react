@@ -107,6 +107,7 @@ export default function NewWABForm() {
     register,
     control,
     handleSubmit,
+    trigger,
     formState,
     reset,
     errors,
@@ -116,8 +117,25 @@ export default function NewWABForm() {
       week: '',
       player: null,
       'teamBids[0].team': null,
+      'teamBids[0].amount': null,
+      'teamBids[0].winning': false,
     },
   });
+
+  useEffect(() => {
+    const teamBids = formState?.dirtyFields?.teamBids;
+    if (!teamBids) {
+      return;
+    }
+    teamBids.forEach((bid, i) => {
+      console.log('trigger', `teamBids[${i}].winning`);
+      trigger(`teamBids[${i}].winning`);
+    });
+    teamBids.forEach((bid, i) => {
+      console.log('trigger', `teamBids[${i}].winning`);
+      trigger(`teamBids[${i}].winning`);
+    });
+  }, [formState]);
 
   useEffect(() => (newWABSuccess ? reset() : undefined), [
     newWABSuccess,
@@ -163,15 +181,15 @@ export default function NewWABForm() {
     { id: 115, ownerName: 'Jhi', teamName: 'Burrows Boys' },
   ];
 
-  const tryThis = (currentVal) => {
+  const mustBeOneWinning = (currentVal) => {
     // console.log(formState, formState.dirty, formState.dirtyFields);
     let checkedCount = 0;
     const teamBids = formState?.dirtyFields?.teamBids;
     if (!teamBids) {
       return false;
     }
-    Object.keys(teamBids).forEach((key) => {
-      if (teamBids[key].winner) {
+    teamBids.forEach((bid) => {
+      if (bid.winning) {
         checkedCount += 1;
       }
     });
@@ -181,7 +199,11 @@ export default function NewWABForm() {
     return true;
   };
 
-  console.log(errors);
+  const mustBeTheHighestValue = () => {
+    return true;
+  };
+
+  // console.log(errors);
   return (
     <>
       <Typography variant="h5" gutterBottom>
@@ -346,21 +368,24 @@ export default function NewWABForm() {
                       control={
                         <Checkbox
                           helperText={
-                            errors.teamBids?.[i]?.winner?.message
+                            errors.teamBids?.[i]?.winning?.message
                           }
-                          name={`${fieldName}.winner`}
+                          name={`${fieldName}.winning`}
                           color="primary"
                           inputRef={register({
-                            validate: tryThis,
+                            validate: {
+                              mustBeOneWinning: mustBeOneWinning,
+                              mustBeTheHighestValue: mustBeTheHighestValue,
+                            },
                           })}
                         />
                       }
                       label="Winning?"
                       labelPlacement="top"
                     />
-                    {errors.teamBids?.[i]?.winner && (
+                    {errors.teamBids?.[i]?.winning && (
                       <FormHelperText>
-                        Only one winning bid
+                        Must have exactly one winning bid
                       </FormHelperText>
                     )}
                   </FormControl>

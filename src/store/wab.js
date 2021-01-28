@@ -89,23 +89,16 @@ const {
   deleteWABError,
 } = slice.actions;
 
-export const newWAB = ({
-  playerId,
-  year,
-  week,
-  // winning,
-  // amount,
-  // fantasyTeamId,
-  teamBids,
-}) => async (dispatch) => {
+export const newWAB = ({ playerId, year, week, teamBids }) => async (
+  dispatch,
+) => {
   dispatch(newWABLoading());
 
   const team_bids = teamBids.map((b, i) => {
-    const winning = i === 0;
     return {
       fantasy_team_id: b.team.id,
       amount: parseInt(b.amount, 10),
-      winning,
+      winning: b.winning,
     };
   });
 
