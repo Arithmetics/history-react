@@ -17,48 +17,13 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Divider from '@material-ui/core/Divider';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
+
+import ControlledAutocomplete from './ControlledAutocomplete';
 
 import { newWAB } from '../../../store/wab';
-
-const ControlledAutocomplete = ({
-  options = [],
-  renderInput,
-  getOptionLabel,
-  onChange: ignored,
-  control,
-  defaultValue,
-  name,
-  renderOption,
-  rules,
-}) => {
-  return (
-    <Controller
-      rules={rules}
-      render={({ onChange, ...props }) => (
-        <Autocomplete
-          options={options}
-          getOptionLabel={getOptionLabel}
-          getOptionSelected={(option, value) =>
-            option.id === value.id
-          }
-          renderOption={renderOption}
-          renderInput={renderInput}
-          onChange={(e, data) => onChange(data)}
-          {...props}
-        />
-      )}
-      onChange={([, data]) => data}
-      // defaultValue={defaultValue}
-      name={name}
-      control={control}
-    />
-  );
-};
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -92,6 +57,25 @@ const useStyles = makeStyles((theme) => ({
   },
   bidType: {
     marginTop: 10,
+  },
+  winningLabel: {
+    marginTop: 8,
+    marginLeft: 43,
+    '& span': {
+      fontSize: 12,
+    },
+  },
+  winningLabelError: {
+    color: theme.palette.error.main,
+    marginTop: 8,
+    marginBottom: -2,
+    '& span': {
+      fontSize: 12,
+    },
+  },
+  checkboxErrorLabel: {
+    marginLeft: 16,
+    marginRight: 6,
   },
 }));
 
@@ -127,6 +111,7 @@ export default function NewWABForm() {
     if (!teamBids) {
       return;
     }
+    console.log(teamBids);
     teamBids.forEach((bid, i) => {
       console.log('trigger', `teamBids[${i}].winning`);
       trigger(`teamBids[${i}].winning`);
@@ -240,7 +225,7 @@ export default function NewWABForm() {
               className={classes.select}
               error={!!errors.year}
             >
-              <InputLabel id="age-label">Year</InputLabel>
+              <InputLabel id="year-label">Year</InputLabel>
               <Controller
                 control={control}
                 name="year"
@@ -253,7 +238,7 @@ export default function NewWABForm() {
                 as={
                   <Select
                     variant="outlined"
-                    labelId="age-label"
+                    labelId="year-label"
                     helperText={errors.year?.message}
                   >
                     {[2020, 2021].map((year) => {
@@ -382,9 +367,16 @@ export default function NewWABForm() {
                       }
                       label="Winning?"
                       labelPlacement="top"
+                      className={
+                        errors.teamBids?.[i]?.winning
+                          ? classes.winningLabelError
+                          : classes.winningLabel
+                      }
                     />
                     {errors.teamBids?.[i]?.winning && (
-                      <FormHelperText>
+                      <FormHelperText
+                        className={classes.checkboxErrorLabel}
+                      >
                         Must have exactly one winning bid
                       </FormHelperText>
                     )}
@@ -401,13 +393,16 @@ export default function NewWABForm() {
                     </IconButton>
                   )}
                   {i === indexes.length - 1 && (
-                    <IconButton
+                    <Button
+                      variant="contained"
+                      color="primary"
                       className={classes.buttonCenter}
                       disabled={newWABLoading}
                       onClick={addTeamBid}
+                      startIcon={<GroupAddIcon />}
                     >
-                      <GroupAddIcon />
-                    </IconButton>
+                      Add Team Bid
+                    </Button>
                   )}
                 </Grid>
               </>
