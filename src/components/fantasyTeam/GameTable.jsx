@@ -5,7 +5,6 @@ import {
   TeamAvatarLink,
   GradedScore,
 } from '../materialTableElements';
-//.
 import RostersTable from './RostersTable';
 import theme from '../../theme';
 
