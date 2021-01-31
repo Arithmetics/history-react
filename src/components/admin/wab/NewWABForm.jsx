@@ -20,10 +20,13 @@ import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import LoadingSpinner from '../../LoadingSpinner';
 
 import ControlledAutocomplete from './ControlledAutocomplete';
 
 import { newWAB } from '../../../store/wab';
+import { getAllPlayers } from '../../../store/player';
+import { getAllFantasyTeams } from '../../../store/fantasyTeam';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -88,6 +91,26 @@ export default function NewWABForm() {
   );
 
   const {
+    allPlayersLoading,
+    allPlayers,
+    allPlayersError,
+  } = useSelector((state) => state.player);
+
+  const {
+    allFantasyTeamsLoading,
+    allFantasyTeams,
+    allFantasyTeamsError,
+  } = useSelector((state) => state.fantasyTeam);
+
+  useEffect(() => {
+    dispatch(getAllPlayers());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getAllFantasyTeams());
+  }, [dispatch]);
+
+  const {
     register,
     control,
     handleSubmit,
@@ -95,6 +118,8 @@ export default function NewWABForm() {
     formState,
     reset,
     errors,
+    watch,
+    getValues,
   } = useForm({
     defaultValues: {
       year: '',
@@ -111,13 +136,10 @@ export default function NewWABForm() {
     if (!teamBids) {
       return;
     }
-    console.log(teamBids);
     teamBids.forEach((bid, i) => {
-      console.log('trigger', `teamBids[${i}].winning`);
       trigger(`teamBids[${i}].winning`);
     });
     teamBids.forEach((bid, i) => {
-      console.log('trigger', `teamBids[${i}].winning`);
       trigger(`teamBids[${i}].winning`);
     });
   }, [formState]);
@@ -155,19 +177,8 @@ export default function NewWABForm() {
   };
 
   const weeks = [...Array(17).keys()].slice(1, 17);
-  const currentWeek = 1;
-  const players = [
-    { id: 310, name: 'Matt Ryan' },
-    { id: 925, name: 'Jamal Charles' },
-  ];
 
-  const teams = [
-    { id: 119, ownerName: 'Woody', teamName: 'Flip Rivers' },
-    { id: 115, ownerName: 'Jhi', teamName: 'Burrows Boys' },
-  ];
-
-  const mustBeOneWinning = (currentVal) => {
-    // console.log(formState, formState.dirty, formState.dirtyFields);
+  const mustBeOneWinning = () => {
     let checkedCount = 0;
     const teamBids = formState?.dirtyFields?.teamBids;
     if (!teamBids) {
@@ -184,11 +195,37 @@ export default function NewWABForm() {
     return true;
   };
 
+  const mustMatchSelectedYear = (currentTeam) => {
+    const selectedYear = getValues('year');
+    if (!selectedYear) {
+      return 'Unable to match team to year';
+    }
+    if (currentTeam.year !== selectedYear) {
+      return 'Team must match the selected year';
+    }
+    return true;
+  };
+
   const mustBeTheHighestValue = () => {
     return true;
   };
 
-  // console.log(errors);
+  if (allPlayersLoading || allFantasyTeamsLoading) {
+    return (
+      <LoadingSpinner
+        isLoading={allPlayersLoading || allFantasyTeamsLoading}
+      />
+    );
+  }
+
+  if (allPlayersError || allFantasyTeamsError) {
+    return <p>There was an error, sorry no new wab</p>;
+  }
+
+  const watchYear = watch('year', 0);
+  const allowedTeams =
+    allFantasyTeams?.filter((f) => f.year === watchYear) || [];
+
   return (
     <>
       <Typography variant="h5" gutterBottom>
@@ -205,7 +242,7 @@ export default function NewWABForm() {
               control={control}
               rules={{ required: 'Select player' }}
               name="player"
-              options={players}
+              options={allPlayers}
               getOptionLabel={(option) => `${option.name}`}
               renderInput={(params) => (
                 <TextField
@@ -297,11 +334,16 @@ export default function NewWABForm() {
                 <Grid item xs={4}>
                   <ControlledAutocomplete
                     control={control}
-                    rules={{ required: 'Select team' }}
+                    rules={{
+                      required: 'Select team',
+                      validate: {
+                        mustMatchSelectedYear: mustMatchSelectedYear,
+                      },
+                    }}
                     name={`${fieldName}.team`}
-                    options={teams}
+                    options={allowedTeams}
                     getOptionLabel={(option) =>
-                      `${option.ownerName} - ${option.teamName}`
+                      `${option.year} - ${option.owner.name} - ${option.name}`
                     }
                     renderInput={(params) => (
                       <TextField
