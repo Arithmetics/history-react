@@ -131,16 +131,10 @@ export default function NewWABForm() {
   };
 
   const removeTeamBid = (index) => () => {
+    console.log('removing at', index);
     setIndexes((prevIndexes) => [
       ...prevIndexes.filter((item) => item !== index),
     ]);
-    setCounter((prevCounter) => prevCounter - 1);
-  };
-
-  const reRunTeamBidVal = () => {
-    indexes.forEach((index) => {
-      trigger(`teamBids[${index}].winning`);
-    });
   };
 
   const onSubmit = (data) => {
@@ -153,58 +147,6 @@ export default function NewWABForm() {
       teamBids,
     };
     dispatch(newWAB(wab));
-  };
-
-  const mustBeOneWinning = () => {
-    let checkedCount = 0;
-    indexes.forEach((index) => {
-      const winning = getValues(`teamBids[${index}].winning`);
-      if (winning) {
-        checkedCount += 1;
-      }
-    });
-    console.log('checkedCount', checkedCount);
-    if (checkedCount !== 1) {
-      return 'Must have exactly one winning bid';
-    }
-    return true;
-  };
-
-  const mustMatchSelectedYear = (currentTeam) => {
-    const selectedYear = getValues('year');
-    if (!selectedYear) {
-      return 'Unable to match team to year';
-    }
-    if (currentTeam.year !== selectedYear) {
-      return 'Team must match the selected year';
-    }
-    return true;
-  };
-
-  const mustBeTheHighestValue = (inputIsWinning) => {
-    if (!inputIsWinning) {
-      return true;
-    }
-    let bad = false;
-    let highestValue = 0;
-    indexes.forEach((index) => {
-      const amount = getValues(`teamBids[${index}].amount`);
-      if (amount > highestValue) {
-        highestValue = amount;
-      }
-    });
-    indexes.forEach((index) => {
-      const amount = getValues(`teamBids[${index}].amount`);
-      const winning = getValues(`teamBids[${index}].winning`);
-
-      if (winning && amount !== highestValue) {
-        bad = true;
-      }
-    });
-    if (bad) {
-      return 'Winning bid must be at least tied for the highest amount';
-    }
-    return true;
   };
 
   if (allPlayersLoading || allFantasyTeamsLoading) {
@@ -327,24 +269,21 @@ export default function NewWABForm() {
           </Grid>
           <Grid item xs={2} md={4}></Grid>
           <Divider />
-          {indexes.map((index, i) => {
+          {indexes.map((index) => {
             return (
               <TeamBidLine
                 key={index}
                 index={index}
                 indexes={indexes}
-                i={i}
                 control={control}
-                mustMatchSelectedYear={mustMatchSelectedYear}
                 allowedTeams={allowedTeams}
+                disabled={newWABLoading}
+                getValues={getValues}
                 errors={errors}
-                newWABLoading={newWABLoading}
                 addTeamBid={addTeamBid}
                 register={register}
-                mustBeOneWinning={mustBeOneWinning}
-                mustBeTheHighestValue={mustBeTheHighestValue}
                 removeTeamBid={removeTeamBid}
-                reRunTeamBidVal={reRunTeamBidVal}
+                trigger={trigger}
               />
             );
           })}

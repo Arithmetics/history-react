@@ -58,6 +58,7 @@ export default function WABDeleteTable() {
         winning,
         player,
         fantasyTeam,
+        createdAt,
       } = p;
       return {
         id,
@@ -67,6 +68,7 @@ export default function WABDeleteTable() {
         winning,
         player,
         fantasyTeam,
+        createdAt,
       };
     });
 
@@ -146,7 +148,7 @@ export default function WABDeleteTable() {
               field: 'amount',
             },
             {
-              title: 'Created At',
+              title: 'Entered',
               field: 'createdAt',
             },
           ]}

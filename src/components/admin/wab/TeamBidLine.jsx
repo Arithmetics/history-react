@@ -19,38 +19,10 @@ import Hidden from '@material-ui/core/Hidden';
 import ControlledAutocomplete from './ControlledAutocomplete';
 
 const useStyles = makeStyles((theme) => ({
-  form: {
-    width: '100%',
-  },
-  dateCell: {
-    marginTop: 16,
-    width: '100%',
-  },
-  paperPad: {
-    padding: 16,
-  },
-  failure: {
-    color: theme.palette.secondary.light,
-    margin: 16,
-  },
-  success: {
-    color: theme.palette.success.main,
-    margin: 16,
-  },
-  buttonProgress: {
-    color: theme.palette.primary.light,
-  },
-  select: {
-    width: '100%',
-    marginTop: 16,
-    marginBottom: 8,
-  },
   buttonCenter: {
     margin: 18,
   },
-  bidType: {
-    marginTop: 10,
-  },
+
   winningLabel: {
     marginTop: 8,
     marginLeft: 43,
@@ -74,21 +46,75 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TeamBidLine({
   index,
-  i,
   control,
-  mustMatchSelectedYear,
   allowedTeams,
   errors,
-  newWABLoading,
+  disabled,
   addTeamBid,
   register,
   indexes,
-  mustBeOneWinning,
-  mustBeTheHighestValue,
+  getValues,
   removeTeamBid,
-  reRunTeamBidVal,
+  trigger,
 }) {
   const classes = useStyles();
+
+  const mustBeOneWinning = () => {
+    let checkedCount = 0;
+    indexes.forEach((index) => {
+      const winning = getValues(`teamBids[${index}].winning`);
+      if (winning) {
+        checkedCount += 1;
+      }
+    });
+    if (checkedCount !== 1) {
+      return 'Must have exactly one winning bid';
+    }
+    return true;
+  };
+
+  const mustMatchSelectedYear = (currentTeam) => {
+    const selectedYear = getValues('year');
+    if (!selectedYear) {
+      return 'Unable to match team to year';
+    }
+    if (currentTeam.year !== selectedYear) {
+      return 'Team must match the selected year';
+    }
+    return true;
+  };
+
+  const mustBeTheHighestValue = (inputIsWinning) => {
+    if (!inputIsWinning) {
+      return true;
+    }
+    let bad = false;
+    let highestValue = 0;
+    indexes.forEach((index) => {
+      const amount = getValues(`teamBids[${index}].amount`);
+      if (amount > highestValue) {
+        highestValue = amount;
+      }
+    });
+    indexes.forEach((index) => {
+      const amount = getValues(`teamBids[${index}].amount`);
+      const winning = getValues(`teamBids[${index}].winning`);
+
+      if (winning && amount !== highestValue) {
+        bad = true;
+      }
+    });
+    if (bad) {
+      return 'Winning bid must be at least tied for the highest amount';
+    }
+    return true;
+  };
+
+  const reRunTeamBidVal = () => {
+    indexes.forEach((index) => {
+      trigger(`teamBids[${index}].winning`);
+    });
+  };
 
   const fieldName = `teamBids[${index}]`;
   return (
@@ -118,8 +144,8 @@ export default function TeamBidLine({
               label="Team"
               margin="normal"
               variant="outlined"
-              error={!!errors.teamBids?.[i]?.team}
-              helperText={errors.teamBids?.[i]?.team?.message}
+              error={!!errors.teamBids?.[index]?.team}
+              helperText={errors.teamBids?.[index]?.team?.message}
             />
           )}
         />
@@ -146,9 +172,9 @@ export default function TeamBidLine({
               message: '$200 at most',
             },
           })}
-          error={!!errors.teamBids?.[i]?.amount}
-          helperText={errors.teamBids?.[i]?.amount?.message}
-          disabled={newWABLoading}
+          error={!!errors.teamBids?.[index]?.amount}
+          helperText={errors.teamBids?.[index]?.amount?.message}
+          disabled={disabled}
           defaultValue={null}
           InputProps={{
             startAdornment: (
@@ -171,7 +197,9 @@ export default function TeamBidLine({
             control={
               <Checkbox
                 onChange={() => reRunTeamBidVal()}
-                helperText={errors.teamBids?.[i]?.winning?.message}
+                helperText={
+                  errors.teamBids?.[index]?.winning?.message
+                }
                 name={`${fieldName}.winning`}
                 color="primary"
                 inputRef={register({
@@ -185,37 +213,37 @@ export default function TeamBidLine({
             label="Winning?"
             labelPlacement="top"
             className={
-              errors.teamBids?.[i]?.winning
+              errors.teamBids?.[index]?.winning
                 ? classes.winningLabelError
                 : classes.winningLabel
             }
           />
-          {errors.teamBids?.[i]?.winning && (
+          {errors.teamBids?.[index]?.winning && (
             <FormHelperText className={classes.checkboxErrorLabel}>
-              {errors.teamBids?.[i]?.winning.message}
+              {errors.teamBids?.[index]?.winning.message}
             </FormHelperText>
           )}
         </FormControl>
       </Grid>
       <Grid item xs={8} md={4}>
-        {i !== 0 && (
+        {index !== 0 && (
           <Tooltip title="Delete bid">
             <IconButton
               className={classes.buttonCenter}
               color="secondary"
-              onClick={removeTeamBid(i)}
+              onClick={removeTeamBid(index)}
             >
               <Delete />
             </IconButton>
           </Tooltip>
         )}
-        {i === indexes.length - 1 && (
+        {index === indexes[indexes.length - 1] && (
           <Tooltip title="Add bid on player">
             <Button
               variant="contained"
               color="primary"
               className={classes.buttonCenter}
-              disabled={newWABLoading}
+              disabled={disabled}
               onClick={addTeamBid}
               startIcon={<GroupAddIcon />}
             >
