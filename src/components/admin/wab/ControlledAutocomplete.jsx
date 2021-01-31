@@ -12,12 +12,14 @@ export default function ControlledAutocomplete({
   name,
   renderOption,
   rules,
+  noOptionsText,
 }) {
   return (
     <Controller
       rules={rules}
       onChange={([, data]) => data}
       name={name}
+      noOptionsText={noOptionsText}
       defaultValue={defaultValue}
       control={control}
       render={({ onChange, ...props }) => (

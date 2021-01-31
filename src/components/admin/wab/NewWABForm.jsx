@@ -11,17 +11,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import IconButton from '@material-ui/core/IconButton';
-import Delete from '@material-ui/icons/Delete';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Divider from '@material-ui/core/Divider';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import LoadingSpinner from '../../LoadingSpinner';
 
+import TeamBidLine from './TeamBidLine';
 import ControlledAutocomplete from './ControlledAutocomplete';
 
 import { newWAB } from '../../../store/wab';
@@ -32,15 +26,8 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%',
   },
-  dateCell: {
-    marginTop: 16,
-    width: '100%',
-  },
-  paperPad: {
-    padding: 16,
-  },
   failure: {
-    color: theme.palette.secondary.light,
+    color: theme.palette.error.main,
     margin: 16,
   },
   success: {
@@ -89,33 +76,22 @@ export default function NewWABForm() {
   const { newWABLoading, newWABError, newWABSuccess } = useSelector(
     (state) => state.wab,
   );
-
   const {
     allPlayersLoading,
     allPlayers,
     allPlayersError,
   } = useSelector((state) => state.player);
-
   const {
     allFantasyTeamsLoading,
     allFantasyTeams,
     allFantasyTeamsError,
   } = useSelector((state) => state.fantasyTeam);
 
-  useEffect(() => {
-    dispatch(getAllPlayers());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getAllFantasyTeams());
-  }, [dispatch]);
-
   const {
     register,
     control,
     handleSubmit,
     trigger,
-    formState,
     reset,
     errors,
     watch,
@@ -125,24 +101,16 @@ export default function NewWABForm() {
       year: '',
       week: '',
       player: null,
-      'teamBids[0].team': null,
-      'teamBids[0].amount': null,
-      'teamBids[0].winning': false,
     },
   });
 
   useEffect(() => {
-    const teamBids = formState?.dirtyFields?.teamBids;
-    if (!teamBids) {
-      return;
-    }
-    teamBids.forEach((bid, i) => {
-      trigger(`teamBids[${i}].winning`);
-    });
-    teamBids.forEach((bid, i) => {
-      trigger(`teamBids[${i}].winning`);
-    });
-  }, [formState]);
+    dispatch(getAllPlayers());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getAllFantasyTeams());
+  }, [dispatch]);
 
   useEffect(() => (newWABSuccess ? reset() : undefined), [
     newWABSuccess,
@@ -164,8 +132,14 @@ export default function NewWABForm() {
     setCounter((prevCounter) => prevCounter - 1);
   };
 
+  const reRunTeamBidVal = () => {
+    indexes.forEach((index) => {
+      trigger(`teamBids[${index}].winning`);
+    });
+  };
+
   const onSubmit = (data) => {
-    console.log(data, errors);
+    console.log(data);
     // const { year, week, player, teamBids } = data;
     // const wab = {
     //   year,
@@ -176,21 +150,16 @@ export default function NewWABForm() {
     // dispatch(newWAB(wab));
   };
 
-  const weeks = [...Array(17).keys()].slice(1, 17);
-
   const mustBeOneWinning = () => {
     let checkedCount = 0;
-    const teamBids = formState?.dirtyFields?.teamBids;
-    if (!teamBids) {
-      return false;
-    }
-    teamBids.forEach((bid) => {
-      if (bid.winning) {
+    indexes.forEach((index) => {
+      const winning = getValues(`teamBids[${index}].winning`);
+      if (winning) {
         checkedCount += 1;
       }
     });
     if (checkedCount !== 1) {
-      return false;
+      return 'Must have exactly one winning bid';
     }
     return true;
   };
@@ -207,6 +176,32 @@ export default function NewWABForm() {
   };
 
   const mustBeTheHighestValue = () => {
+    console.log('running');
+    let bad = false;
+    let highestValue = 0;
+    indexes.forEach((index) => {
+      const amount = getValues(`teamBids[${index}].amount`);
+
+      if (amount > highestValue) {
+        highestValue = amount;
+      }
+      const winning = getValues(`teamBids[${index}].winning`);
+
+      console.log(
+        'test',
+        winning,
+        amount !== highestValue,
+        amount,
+        highestValue,
+      );
+      if (winning && amount !== highestValue) {
+        console.log('asdfkhsljdfhslkdfjh');
+        bad = true;
+      }
+    });
+    if (bad) {
+      return 'Winning bid must be at least tied for the highest amount';
+    }
     return true;
   };
 
@@ -222,6 +217,8 @@ export default function NewWABForm() {
     return <p>There was an error, sorry no new wab</p>;
   }
 
+  const years = [2020, 2021];
+  const weeks = [...Array(17).keys()].slice(1, 17);
   const watchYear = watch('year', 0);
   const allowedTeams =
     allFantasyTeams?.filter((f) => f.year === watchYear) || [];
@@ -239,11 +236,13 @@ export default function NewWABForm() {
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <ControlledAutocomplete
+              defaultValue={null}
               control={control}
               rules={{ required: 'Select player' }}
               name="player"
               options={allPlayers}
               getOptionLabel={(option) => `${option.name}`}
+              noOptionsText={'Select a year'}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -278,7 +277,7 @@ export default function NewWABForm() {
                     labelId="year-label"
                     helperText={errors.year?.message}
                   >
-                    {[2020, 2021].map((year) => {
+                    {years.map((year) => {
                       return (
                         <MenuItem key={year} value={year}>
                           {year}
@@ -325,129 +324,24 @@ export default function NewWABForm() {
           <Grid item xs={4}></Grid>
           <Divider />
           {indexes.map((index, i) => {
-            const fieldName = `teamBids[${index}]`;
             return (
-              <>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={4}>
-                  <ControlledAutocomplete
-                    control={control}
-                    rules={{
-                      required: 'Select team',
-                      validate: {
-                        mustMatchSelectedYear: mustMatchSelectedYear,
-                      },
-                    }}
-                    name={`${fieldName}.team`}
-                    options={allowedTeams}
-                    getOptionLabel={(option) =>
-                      `${option.year} - ${option.owner.name} - ${option.name}`
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Team"
-                        margin="normal"
-                        variant="outlined"
-                        error={!!errors.teamBids?.[i]?.team}
-                        helperText={
-                          errors.teamBids?.[i]?.team?.message
-                        }
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={2}>
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    type="number"
-                    name={`${fieldName}.amount`}
-                    label="Amount"
-                    inputRef={register({
-                      required: 'Enter amount',
-                      min: {
-                        value: 1,
-                        message: 'Must be at least 1',
-                      },
-                      max: {
-                        value: 200,
-                        message: '$200 at most',
-                      },
-                    })}
-                    error={!!errors.teamBids?.[i]?.amount}
-                    helperText={errors.teamBids?.[i]?.amount?.message}
-                    disabled={newWABLoading}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AttachMoneyIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={2}>
-                  <FormControl error={true}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          helperText={
-                            errors.teamBids?.[i]?.winning?.message
-                          }
-                          name={`${fieldName}.winning`}
-                          color="primary"
-                          inputRef={register({
-                            validate: {
-                              mustBeOneWinning: mustBeOneWinning,
-                              mustBeTheHighestValue: mustBeTheHighestValue,
-                            },
-                          })}
-                        />
-                      }
-                      label="Winning?"
-                      labelPlacement="top"
-                      className={
-                        errors.teamBids?.[i]?.winning
-                          ? classes.winningLabelError
-                          : classes.winningLabel
-                      }
-                    />
-                    {errors.teamBids?.[i]?.winning && (
-                      <FormHelperText
-                        className={classes.checkboxErrorLabel}
-                      >
-                        Must have exactly one winning bid
-                      </FormHelperText>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={4}>
-                  {i !== 0 && (
-                    <IconButton
-                      className={classes.buttonCenter}
-                      color="secondary"
-                      onClick={removeTeamBid(i)}
-                    >
-                      <Delete />
-                    </IconButton>
-                  )}
-                  {i === indexes.length - 1 && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.buttonCenter}
-                      disabled={newWABLoading}
-                      onClick={addTeamBid}
-                      startIcon={<GroupAddIcon />}
-                    >
-                      Add Team Bid
-                    </Button>
-                  )}
-                </Grid>
-              </>
+              <TeamBidLine
+                key={index}
+                index={index}
+                indexes={indexes}
+                i={i}
+                control={control}
+                mustMatchSelectedYear={mustMatchSelectedYear}
+                allowedTeams={allowedTeams}
+                errors={errors}
+                newWABLoading={newWABLoading}
+                addTeamBid={addTeamBid}
+                register={register}
+                mustBeOneWinning={mustBeOneWinning}
+                mustBeTheHighestValue={mustBeTheHighestValue}
+                removeTeamBid={removeTeamBid}
+                reRunTeamBidVal={reRunTeamBidVal}
+              />
             );
           })}
           <Grid item xs={12}>
