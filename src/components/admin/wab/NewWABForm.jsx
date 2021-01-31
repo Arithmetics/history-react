@@ -112,10 +112,14 @@ export default function NewWABForm() {
     dispatch(getAllFantasyTeams());
   }, [dispatch]);
 
-  useEffect(() => (newWABSuccess ? reset() : undefined), [
-    newWABSuccess,
-    reset,
-  ]);
+  useEffect(() => {
+    if (!newWABSuccess) {
+      return;
+    }
+    reset();
+    setIndexes([0]);
+    setCounter(1);
+  }, [newWABSuccess, reset]);
 
   const [indexes, setIndexes] = React.useState([0]);
   const [counter, setCounter] = React.useState(1);
@@ -140,14 +144,14 @@ export default function NewWABForm() {
 
   const onSubmit = (data) => {
     console.log(data);
-    // const { year, week, player, teamBids } = data;
-    // const wab = {
-    //   year,
-    //   week,
-    //   playerId: parseInt(player.id),
-    //   teamBids,
-    // };
-    // dispatch(newWAB(wab));
+    const { year, week, player, teamBids } = data;
+    const wab = {
+      year,
+      week,
+      playerId: parseInt(player.id),
+      teamBids,
+    };
+    dispatch(newWAB(wab));
   };
 
   const mustBeOneWinning = () => {
@@ -158,6 +162,7 @@ export default function NewWABForm() {
         checkedCount += 1;
       }
     });
+    console.log('checkedCount', checkedCount);
     if (checkedCount !== 1) {
       return 'Must have exactly one winning bid';
     }
@@ -175,27 +180,23 @@ export default function NewWABForm() {
     return true;
   };
 
-  const mustBeTheHighestValue = () => {
-    console.log('running');
+  const mustBeTheHighestValue = (inputIsWinning) => {
+    if (!inputIsWinning) {
+      return true;
+    }
     let bad = false;
     let highestValue = 0;
     indexes.forEach((index) => {
       const amount = getValues(`teamBids[${index}].amount`);
-
       if (amount > highestValue) {
         highestValue = amount;
       }
+    });
+    indexes.forEach((index) => {
+      const amount = getValues(`teamBids[${index}].amount`);
       const winning = getValues(`teamBids[${index}].winning`);
 
-      console.log(
-        'test',
-        winning,
-        amount !== highestValue,
-        amount,
-        highestValue,
-      );
       if (winning && amount !== highestValue) {
-        console.log('asdfkhsljdfhslkdfjh');
         bad = true;
       }
     });
@@ -242,7 +243,6 @@ export default function NewWABForm() {
               name="player"
               options={allPlayers}
               getOptionLabel={(option) => `${option.name}`}
-              noOptionsText={'Select a year'}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -366,12 +366,12 @@ export default function NewWABForm() {
       </form>
       <br />
       {newWABError && (
-        <Typography variant="body" className={classes.failure}>
+        <Typography variant="p" className={classes.failure}>
           Error when creating waiver bid(s)
         </Typography>
       )}
       {newWABSuccess && (
-        <Typography variant="body" className={classes.success}>
+        <Typography variant="p" className={classes.success}>
           New waiver bids added successfully
         </Typography>
       )}

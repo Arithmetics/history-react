@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ControlledAutocomplete from './ControlledAutocomplete';
 
@@ -84,7 +85,7 @@ export default function TeamBidLine({
   mustBeOneWinning,
   mustBeTheHighestValue,
   removeTeamBid,
-  reRunTeamBidVal = { reRunTeamBidVal },
+  reRunTeamBidVal,
 }) {
   const classes = useStyles();
 
@@ -98,6 +99,7 @@ export default function TeamBidLine({
         <ControlledAutocomplete
           defaultValue={null}
           control={control}
+          noOptionsText={'Select a year first'}
           rules={{
             required: 'Select team',
             validate: {
@@ -192,25 +194,29 @@ export default function TeamBidLine({
       </Grid>
       <Grid item xs={4}>
         {i !== 0 && (
-          <IconButton
-            className={classes.buttonCenter}
-            color="secondary"
-            onClick={removeTeamBid(i)}
-          >
-            <Delete />
-          </IconButton>
+          <Tooltip title="Delete bid">
+            <IconButton
+              className={classes.buttonCenter}
+              color="secondary"
+              onClick={removeTeamBid(i)}
+            >
+              <Delete />
+            </IconButton>
+          </Tooltip>
         )}
         {i === indexes.length - 1 && (
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.buttonCenter}
-            disabled={newWABLoading}
-            onClick={addTeamBid}
-            startIcon={<GroupAddIcon />}
-          >
-            Add Team Bid
-          </Button>
+          <Tooltip title="Add bid on player">
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.buttonCenter}
+              disabled={newWABLoading}
+              onClick={addTeamBid}
+              startIcon={<GroupAddIcon />}
+            >
+              Add Team Bid
+            </Button>
+          </Tooltip>
         )}
       </Grid>
     </>

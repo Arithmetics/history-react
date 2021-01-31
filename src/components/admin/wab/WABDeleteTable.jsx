@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialTable from 'material-table';
-import { makeStyles } from '@material-ui/core/styles';
 import LoadingSpinner from '../../LoadingSpinner';
 import DeleteResourceConfirm from '../DeleteResourceConfirm';
 import { deleteWAB, getAllWAB } from '../../../store/wab';
@@ -10,18 +9,7 @@ import {
   TeamAvatarLink,
 } from '../../materialTableElements';
 
-// const useStyles = makeStyles((theme) => ({
-//   success: {
-//     color: theme.palette.success.main,
-//     margin: 16,
-//   },
-//   link: {
-//     color: theme.palette.primary.main,
-//   },
-// }));
-
 export default function WABDeleteTable() {
-  // const classes = useStyles();
   const dispatch = useDispatch();
 
   const {
@@ -153,10 +141,13 @@ export default function WABDeleteTable() {
               title: 'Winning?',
               field: 'winning',
             },
-
             {
               title: 'Amount',
               field: 'amount',
+            },
+            {
+              title: 'Created At',
+              field: 'createdAt',
             },
           ]}
         />

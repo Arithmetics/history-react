@@ -19,11 +19,11 @@ export default function ControlledAutocomplete({
       rules={rules}
       onChange={([, data]) => data}
       name={name}
-      noOptionsText={noOptionsText}
       defaultValue={defaultValue}
       control={control}
       render={({ onChange, ...props }) => (
         <Autocomplete
+          noOptionsText={noOptionsText}
           options={options}
           getOptionLabel={getOptionLabel}
           getOptionSelected={(option, value) =>
