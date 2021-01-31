@@ -4,3 +4,5 @@ export const lineGraphSettings = {
     textColor: '#fff',
   },
 };
+
+export default lineGraphSettings;

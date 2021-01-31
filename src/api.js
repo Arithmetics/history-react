@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-export const config =
+export const baseURLConfig =
   !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
     ? 'http://localhost:8080'
     : 'https://brocktillotson.pagekite.me';
 
 export const api = axios.create({
-  baseURL: config,
+  baseURL: baseURLConfig,
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Credentials': true,
@@ -14,11 +14,13 @@ export const api = axios.create({
 });
 api.interceptors.request.use(
   (config) => {
+    const edittedConfig = { ...config };
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers['Authorization'] = `${token}`;
+      // eslint-disable-next-line dot-notation
+      edittedConfig.headers['Authorization'] = `${token}`;
     }
-    return config;
+    return edittedConfig;
   },
   (error) => Promise.reject(error),
 );

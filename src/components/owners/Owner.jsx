@@ -21,7 +21,7 @@ import TabContainer from '../TabContainer';
 import OwnerHeader from './OwnerHeader';
 
 import LoadingSpinner from '../LoadingSpinner';
-import { config } from '../../api';
+import { baseURLConfig } from '../../api';
 import { OwnerAvatarLink } from '../materialTableElements';
 
 export function streakEmoji(streak) {
@@ -86,7 +86,9 @@ function Owner({ match }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(`${config}/owners/${id}.json`);
+      const result = await axios(
+        `${baseURLConfig}/owners/${id}.json`,
+      );
       setOwner((result && result.data && result.data.owner) || {});
       setLoading(false);
     };

@@ -84,12 +84,11 @@ function RegularSeasonPoints({ positionalScoring }) {
             legend: 'team',
             legendPosition: 'middle',
             legendOffset: 32,
-            format: function (value) {
-              return value
+            format: (value) =>
+              value
                 .match(/\b(\w)/g)
                 .join('')
-                .toUpperCase();
-            },
+                .toUpperCase(),
           }}
           axisLeft={{
             tickSize: 5,
@@ -130,13 +129,13 @@ function RegularSeasonPoints({ positionalScoring }) {
               ],
             },
           ]}
-          animate={true}
+          animate
           motionStiffness={90}
           motionDamping={15}
-          tooltip={function ({ data, id, value }) {
+          tooltip={({ datum, id, value }) => {
             return (
               <div className={classes.tip}>
-                {data.team}: {id} - {value} pts.
+                {datum.team}: {id} - {value} pts.
               </div>
             );
           }}
@@ -179,12 +178,11 @@ function RegularSeasonStarts({ positionalScoring }) {
             legend: 'team',
             legendPosition: 'middle',
             legendOffset: 32,
-            format: function (value) {
-              return value
+            format: (value) =>
+              value
                 .match(/\b(\w)/g)
                 .join('')
-                .toUpperCase();
-            },
+                .toUpperCase(),
           }}
           axisLeft={{
             tickSize: 5,
@@ -225,13 +223,13 @@ function RegularSeasonStarts({ positionalScoring }) {
               ],
             },
           ]}
-          animate={true}
+          animate
           motionStiffness={90}
           motionDamping={15}
-          tooltip={function ({ data, id, value }) {
+          tooltip={({ datum, id, value }) => {
             return (
               <div className={classes.tip}>
-                {data.team}: {id} - {value} starts
+                {datum.team}: {id} - {value} starts
               </div>
             );
           }}

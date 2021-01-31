@@ -12,7 +12,7 @@ import {
   HeaderCellWithTooltip,
 } from '../materialTableElements';
 
-import { config } from '../../api';
+import { baseURLConfig } from '../../api';
 
 function AllPlayers() {
   const [players, setPlayers] = useState([]);
@@ -20,7 +20,7 @@ function AllPlayers() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(`${config}/players.json`);
+      const result = await axios(`${baseURLConfig}/players.json`);
       setPlayers(result && result.data && result.data.players);
       setLoading(false);
     };

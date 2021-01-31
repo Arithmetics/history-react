@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { combineReducers } from 'redux';
 
 import user from './user';

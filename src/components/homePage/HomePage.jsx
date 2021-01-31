@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
 import LoadingSpinner from '../LoadingSpinner';
-import { config } from '../../api';
+import { baseURLConfig } from '../../api';
 import TabContainer from '../TabContainer';
 import UpcomingGames from './UpcomingGames';
 import NewPlayers from './NewPlayers';
@@ -23,7 +23,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(`${config}/home/show.json`);
+      const result = await axios(`${baseURLConfig}/home/show.json`);
 
       setVersusRecords(
         (result && result.data && result.data.versusRecords) || [],

@@ -6,7 +6,7 @@ export default function ControlledAutocomplete({
   options = [],
   renderInput,
   getOptionLabel,
-  onChange: ignored,
+  onChange: _,
   control,
   defaultValue,
   name,
@@ -32,6 +32,7 @@ export default function ControlledAutocomplete({
           renderOption={renderOption}
           renderInput={renderInput}
           onChange={(e, data) => onChange(data)}
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
         />
       )}

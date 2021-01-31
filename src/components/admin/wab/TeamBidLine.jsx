@@ -62,8 +62,8 @@ export default function TeamBidLine({
 
   const mustBeOneWinning = () => {
     let checkedCount = 0;
-    indexes.forEach((index) => {
-      const winning = getValues(`teamBids[${index}].winning`);
+    indexes.forEach((indexMap) => {
+      const winning = getValues(`teamBids[${indexMap}].winning`);
       if (winning) {
         checkedCount += 1;
       }
@@ -91,15 +91,15 @@ export default function TeamBidLine({
     }
     let bad = false;
     let highestValue = 0;
-    indexes.forEach((index) => {
-      const amount = getValues(`teamBids[${index}].amount`);
+    indexes.forEach((indexMap) => {
+      const amount = getValues(`teamBids[${indexMap}].amount`);
       if (amount > highestValue) {
         highestValue = amount;
       }
     });
-    indexes.forEach((index) => {
-      const amount = getValues(`teamBids[${index}].amount`);
-      const winning = getValues(`teamBids[${index}].winning`);
+    indexes.forEach((indexMap) => {
+      const amount = getValues(`teamBids[${indexMap}].amount`);
+      const winning = getValues(`teamBids[${indexMap}].winning`);
 
       if (winning && amount !== highestValue) {
         bad = true;
@@ -112,8 +112,8 @@ export default function TeamBidLine({
   };
 
   const reRunTeamBidVal = () => {
-    indexes.forEach((index) => {
-      trigger(`teamBids[${index}].winning`);
+    indexes.forEach((indexMap) => {
+      trigger(`teamBids[${indexMap}].winning`);
     });
   };
 
@@ -127,11 +127,11 @@ export default function TeamBidLine({
         <ControlledAutocomplete
           defaultValue={null}
           control={control}
-          noOptionsText={'Select a year first'}
+          noOptionsText="Select a year first"
           rules={{
             required: 'Select team',
             validate: {
-              mustMatchSelectedYear: mustMatchSelectedYear,
+              mustMatchSelectedYear,
             },
           }}
           name={`${fieldName}.team`}
@@ -141,6 +141,7 @@ export default function TeamBidLine({
           }
           renderInput={(params) => (
             <TextField
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...params}
               label="Team"
               margin="normal"
@@ -152,7 +153,7 @@ export default function TeamBidLine({
         />
       </Grid>
       <Hidden mdUp xsDown>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={4} />
       </Hidden>
 
       <Grid item xs={2} md={2}>
@@ -187,12 +188,12 @@ export default function TeamBidLine({
         />
       </Grid>
       <Grid item xs={2}>
-        <FormControl error={true}>
+        <FormControl>
           <FormControlLabel
             inputRef={register({
               validate: {
-                mustBeOneWinning: mustBeOneWinning,
-                mustBeTheHighestValue: mustBeTheHighestValue,
+                mustBeOneWinning,
+                mustBeTheHighestValue,
               },
             })}
             control={
@@ -205,8 +206,8 @@ export default function TeamBidLine({
                 color="primary"
                 inputRef={register({
                   validate: {
-                    mustBeOneWinning: mustBeOneWinning,
-                    mustBeTheHighestValue: mustBeTheHighestValue,
+                    mustBeOneWinning,
+                    mustBeTheHighestValue,
                   },
                 })}
               />

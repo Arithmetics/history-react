@@ -106,6 +106,9 @@ export default function NewWABForm() {
     },
   });
 
+  const [indexes, setIndexes] = React.useState([0]);
+  const [counter, setCounter] = React.useState(1);
+
   useEffect(() => {
     dispatch(getAllPlayers());
   }, [dispatch]);
@@ -123,28 +126,23 @@ export default function NewWABForm() {
     setCounter(1);
   }, [newWABSuccess, reset]);
 
-  const [indexes, setIndexes] = React.useState([0]);
-  const [counter, setCounter] = React.useState(1);
-
   const addTeamBid = () => {
     setIndexes((prevIndexes) => [...prevIndexes, counter]);
     setCounter((prevCounter) => prevCounter + 1);
   };
 
   const removeTeamBid = (index) => () => {
-    console.log('removing at', index);
     setIndexes((prevIndexes) => [
       ...prevIndexes.filter((item) => item !== index),
     ]);
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     const { year, week, player, teamBids } = data;
     const wab = {
       year,
       week,
-      playerId: parseInt(player.id),
+      playerId: parseInt(player.id, 10),
       teamBids,
     };
     dispatch(newWAB(wab));
@@ -189,6 +187,7 @@ export default function NewWABForm() {
               getOptionLabel={(option) => `${option.name}`}
               renderInput={(params) => (
                 <TextField
+                  // eslint-disable-next-line react/jsx-props-no-spreading
                   {...params}
                   label="Player"
                   margin="normal"
@@ -200,7 +199,7 @@ export default function NewWABForm() {
             />
           </Grid>
           <Hidden mdUp xsDown>
-            <Grid item xs={4}></Grid>
+            <Grid item xs={4} />
           </Hidden>
           <Grid item xs={4} md={2}>
             <FormControl
@@ -268,7 +267,7 @@ export default function NewWABForm() {
               <FormHelperText>{errors.week?.message}</FormHelperText>
             </FormControl>
           </Grid>
-          <Grid item xs={2} md={4}></Grid>
+          <Grid item xs={2} md={4} />
           <Divider />
           {indexes.map((index) => {
             return (

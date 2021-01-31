@@ -10,7 +10,7 @@ import { lineGraphSettings } from '../nivoGraphHelpers';
 
 import theme from '../../theme';
 import LoadingSpinner from '../LoadingSpinner';
-import { config } from '../../api';
+import { baseURLConfig } from '../../api';
 import GameTable from './GameTable';
 import TabContainer from '../TabContainer';
 import { PlayerAvatarLink } from '../materialTableElements';
@@ -75,7 +75,7 @@ export default function TeamSummary({ match }) {
     const teamID = match.params.id;
     const fetchData = async () => {
       const result = await axios(
-        `${config}/fantasy_teams/${teamID}.json`,
+        `${baseURLConfig}/fantasy_teams/${teamID}.json`,
       );
       setTeam(
         (result && result.data && result.data.fantasyTeam) || {},

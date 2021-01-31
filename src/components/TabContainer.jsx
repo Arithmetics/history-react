@@ -57,7 +57,11 @@ export default function TabContainer(props) {
         </Tabs>
       </AppBar>
       {tabs.map((tab, i) => (
-        <TabPanel key={i} value={selectedTabIndex} index={i}>
+        <TabPanel
+          key={tabNames[i]}
+          value={selectedTabIndex}
+          index={i}
+        >
           {tab}
         </TabPanel>
       ))}

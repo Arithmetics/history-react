@@ -3,6 +3,7 @@ import {
   responsiveFontSizes,
 } from '@material-ui/core/styles';
 
+// eslint-disable-next-line import/no-mutable-exports
 let theme = createMuiTheme({
   palette: {
     type: 'dark',

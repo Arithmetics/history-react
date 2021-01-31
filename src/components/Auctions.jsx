@@ -4,7 +4,7 @@ import MaterialTable from 'material-table';
 
 import Typography from '@material-ui/core/Typography';
 import LoadingSpinner from './LoadingSpinner';
-import { config } from '../api';
+import { baseURLConfig } from '../api';
 
 import { createLookup, filterBetween } from './materialTableHelpers';
 import {
@@ -20,7 +20,7 @@ function Auctions() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(`${config}/purchases.json`);
+      const result = await axios(`${baseURLConfig}/purchases.json`);
       setAuction(
         (result && result.data && result.data.purchases) || [],
       );

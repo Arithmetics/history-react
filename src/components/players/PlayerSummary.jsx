@@ -9,7 +9,7 @@ import Chip from '@material-ui/core/Chip';
 
 import LoadingSpinner from '../LoadingSpinner';
 
-import { config } from '../../api';
+import { baseURLConfig } from '../../api';
 
 import { createLookup, filterBetween } from '../materialTableHelpers';
 import {
@@ -46,7 +46,7 @@ function PlayerSummary({ match }) {
     const playerID = match.params.id;
     const fetchData = async () => {
       const result = await axios(
-        `${config}/players/${playerID}.json`,
+        `${baseURLConfig}/players/${playerID}.json`,
       );
       setPlayer((result && result.data && result.data.player) || {});
       setLoading(false);

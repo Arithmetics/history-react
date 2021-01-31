@@ -94,7 +94,7 @@ export const newWAB = ({ playerId, year, week, teamBids }) => async (
 ) => {
   dispatch(newWABLoading());
 
-  const team_bids = teamBids.map((b, i) => {
+  const dataTeamBids = teamBids.map((b) => {
     return {
       fantasy_team_id: b.team.id,
       amount: parseInt(b.amount, 10),
@@ -108,14 +108,16 @@ export const newWAB = ({ playerId, year, week, teamBids }) => async (
         player_id: playerId,
         year,
         week,
-        team_bids,
+        team_bids: dataTeamBids,
       },
     });
     dispatch(newWABSuccess(response.data.waiverBids));
   } catch (e) {
     dispatch(newWABError());
+    // eslint-disable-next-line no-console
     return console.error(e.message);
   }
+  return true;
 };
 
 export const getAllWAB = () => async (dispatch) => {
@@ -125,8 +127,10 @@ export const getAllWAB = () => async (dispatch) => {
     dispatch(allWABSuccess(response.data.waiverBids));
   } catch (e) {
     dispatch(allWABError());
+    // eslint-disable-next-line no-console
     return console.error(e.message);
   }
+  return true;
 };
 
 export const deleteWAB = (wabId) => async (dispatch) => {
@@ -136,6 +140,8 @@ export const deleteWAB = (wabId) => async (dispatch) => {
     dispatch(deleteWABSuccess(wabId));
   } catch (e) {
     dispatch(deleteWABError());
+    // eslint-disable-next-line no-console
     return console.error(e.message);
   }
+  return true;
 };

@@ -5,7 +5,7 @@ import MaterialTable from 'material-table';
 import Typography from '@material-ui/core/Typography';
 
 import LoadingSpinner from '../LoadingSpinner';
-import { config } from '../../api';
+import { baseURLConfig } from '../../api';
 
 import {
   HeaderCellWithTooltip,
@@ -18,7 +18,7 @@ function Owners() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(`${config}/owners.json`);
+      const result = await axios(`${baseURLConfig}/owners.json`);
       setOwners((result && result.data && result.data.owners) || []);
       setLoading(false);
     };

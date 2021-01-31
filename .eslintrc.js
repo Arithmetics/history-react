@@ -20,5 +20,6 @@ module.exports = {
   rules: {
     'react/prop-types': 0,
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'no-param-reassign': ['error', { props: false }],
   },
 };
