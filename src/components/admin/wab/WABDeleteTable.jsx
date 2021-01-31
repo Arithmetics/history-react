@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialTable from 'material-table';
+
 import LoadingSpinner from '../../LoadingSpinner';
 import DeleteResourceConfirm from '../DeleteResourceConfirm';
 import { deleteWAB, getAllWAB } from '../../../store/wab';
