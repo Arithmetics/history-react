@@ -18,7 +18,7 @@
     "@nivo/scatterplot": "^0.67.0",
     "@nivo/tooltip": "^0.65.1",
     "@reduxjs/toolkit": "^1.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "clsx": "^1.1.0",
     "material-table": "^1.58.0",
