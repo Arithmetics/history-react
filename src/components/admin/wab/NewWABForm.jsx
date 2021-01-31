@@ -13,8 +13,9 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import Divider from '@material-ui/core/Divider';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import LoadingSpinner from '../../LoadingSpinner';
+import Hidden from '@material-ui/core/Hidden';
 
+import LoadingSpinner from '../../LoadingSpinner';
 import TeamBidLine from './TeamBidLine';
 import ControlledAutocomplete from './ControlledAutocomplete';
 
@@ -235,7 +236,7 @@ export default function NewWABForm() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={8} md={4}>
             <ControlledAutocomplete
               defaultValue={null}
               control={control}
@@ -255,7 +256,10 @@ export default function NewWABForm() {
               )}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Hidden mdUp xsDown>
+            <Grid item xs={4}></Grid>
+          </Hidden>
+          <Grid item xs={4} md={2}>
             <FormControl
               variant="outlined"
               className={classes.select}
@@ -290,7 +294,7 @@ export default function NewWABForm() {
               <FormHelperText>{errors.year?.message}</FormHelperText>
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={4} md={2}>
             <FormControl
               variant="outlined"
               className={classes.select}
@@ -321,7 +325,7 @@ export default function NewWABForm() {
               <FormHelperText>{errors.week?.message}</FormHelperText>
             </FormControl>
           </Grid>
-          <Grid item xs={4}></Grid>
+          <Grid item xs={2} md={4}></Grid>
           <Divider />
           {indexes.map((index, i) => {
             return (

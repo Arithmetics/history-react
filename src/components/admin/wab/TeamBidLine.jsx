@@ -14,6 +14,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Tooltip from '@material-ui/core/Tooltip';
+import Hidden from '@material-ui/core/Hidden';
 
 import ControlledAutocomplete from './ControlledAutocomplete';
 
@@ -95,7 +96,7 @@ export default function TeamBidLine({
       <Grid item xs={12}>
         <Divider />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={8} md={4}>
         <ControlledAutocomplete
           defaultValue={null}
           control={control}
@@ -123,7 +124,11 @@ export default function TeamBidLine({
           )}
         />
       </Grid>
-      <Grid item xs={2}>
+      <Hidden mdUp xsDown>
+        <Grid item xs={4}></Grid>
+      </Hidden>
+
+      <Grid item xs={2} md={2}>
         <TextField
           variant="outlined"
           margin="normal"
@@ -192,7 +197,7 @@ export default function TeamBidLine({
           )}
         </FormControl>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={8} md={4}>
         {i !== 0 && (
           <Tooltip title="Delete bid">
             <IconButton
