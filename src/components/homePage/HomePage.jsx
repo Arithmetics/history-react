@@ -24,7 +24,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(`${config}/home/show.json`);
-      // console.log(result);
+
       setVersusRecords(
         (result && result.data && result.data.versusRecords) || [],
       );

@@ -81,7 +81,7 @@ const useStyles = makeStyles(() => ({
 function Owner({ match }) {
   const [owner, setOwner] = useState({});
   const [loading, setLoading] = useState(true);
-  const { params } = match.params.id;
+  const { params } = match;
   const { id } = params;
 
   useEffect(() => {
