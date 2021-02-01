@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+// eslint-disable-next-line camelcase
+import jwt_decode from 'jwt-decode';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
@@ -13,7 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { login } from '../../store/user';
+import { login, logout } from '../../store/user';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,13 +47,33 @@ export default function SignIn() {
     (state) => state.user,
   );
 
+  const storedToken = localStorage.getItem('token');
+  const storedUser = localStorage.getItem('user');
+
+  useEffect(() => {
+    if (storedToken || storedUser) {
+      if (!storedToken) {
+        console.log('disd log');
+        dispatch(logout());
+        return;
+      }
+      const cleanToken = storedToken.replace('Bearer ', '');
+      const expireTimeStamp = jwt_decode(cleanToken).exp * 1000;
+      const nowTimeStamp = Date.now();
+      if (expireTimeStamp - nowTimeStamp < 0) {
+        console.log('dispatchin logout');
+        dispatch(logout());
+      }
+    }
+  }, [storedToken, storedUser, dispatch]);
+
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = (data) => {
     dispatch(login(data));
   };
 
-  if (user) {
+  if (user && storedToken) {
     return <Redirect to="/home" />;
   }
 
