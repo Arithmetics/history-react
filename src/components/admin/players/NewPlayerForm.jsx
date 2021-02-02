@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import LoadingSpinner from '../../LoadingSpinner';
 import { newPlayer } from '../../../store/player';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +40,7 @@ export default function NewPlayerForm() {
 
   const dispatch = useDispatch();
   const {
+    allPlayersLoading,
     newPlayerLoading,
     newPlayerError,
     newPlayerSuccess,
@@ -61,6 +62,10 @@ export default function NewPlayerForm() {
   const onSubmit = (data) => {
     dispatch(newPlayer(data));
   };
+
+  if (allPlayersLoading) {
+    return <LoadingSpinner isLoading={allPlayersLoading} />;
+  }
 
   return (
     <>

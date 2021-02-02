@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import JSONPretty from 'react-json-pretty';
+import themeX from 'react-json-pretty/dist/1337';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -18,6 +20,7 @@ export default function DeleteResourceConfirm({
   deleteResourceLoading,
   deleteResourceSuccess,
   deleteResourceError,
+  resetDeleteResource,
 }) {
   const dispatch = useDispatch();
 
@@ -28,6 +31,7 @@ export default function DeleteResourceConfirm({
   useEffect(() => {
     if (deleteResourceSuccess) {
       handleClose();
+      dispatch(resetDeleteResource());
     }
   }, [handleClose, deleteResourceSuccess]);
 
@@ -43,9 +47,15 @@ export default function DeleteResourceConfirm({
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {`This will delete the resource permanently ${JSON.stringify(
+          {/* {`This will delete the resource permanently ${JSON.stringify(
             resource,
-          )}`}
+          )}`} */}
+          This will permanently delete the data below:
+          <JSONPretty
+            theme={themeX}
+            id="json-pretty"
+            data={resource}
+          />
           {deleteResourceError ? 'There was an error' : undefined}
         </DialogContentText>
       </DialogContent>

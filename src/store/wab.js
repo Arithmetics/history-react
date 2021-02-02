@@ -54,6 +54,11 @@ const slice = createSlice({
       state.allWABSuccess = false;
     },
     // delete WAB
+    deleteWABReset: (state, _action) => {
+      state.deleteWABLoading = false;
+      state.deleteWABError = false;
+      state.deleteWABSuccess = false;
+    },
     deleteWABLoading: (state, _action) => {
       state.deleteWABLoading = true;
       state.deleteWABError = false;
@@ -84,6 +89,7 @@ const {
   allWABLoading,
   allWABSuccess,
   allWABError,
+  deleteWABReset,
   deleteWABLoading,
   deleteWABSuccess,
   deleteWABError,
@@ -138,4 +144,8 @@ export const deleteWAB = (wabId) => async (dispatch) => {
     dispatch(deleteWABError());
     return console.error(e.message);
   }
+};
+
+export const resetWABDelete = () => (dispatch) => {
+  dispatch(deleteWABReset());
 };
