@@ -7,6 +7,16 @@ export const config =
     ? 'http://localhost:8080'
     : 'https://brocktillotson.pagekite.me';
 
+export function isJSONTokenExpired(token) {
+  const cleanToken = token.replace('Bearer ', '');
+  const expireTimeStamp = jwt_decode(cleanToken).exp * 1000;
+  const nowTimeStamp = Date.now();
+  if (expireTimeStamp - nowTimeStamp < 0) {
+    return true;
+  }
+  return false;
+}
+
 export const api = axios.create({
   baseURL: config,
   headers: {
@@ -20,11 +30,9 @@ api.interceptors.request.use(
     const token = localStorage.getItem('token');
 
     if (token) {
-      const cleanToken = token.replace('Bearer ', '');
-      const expireTimeStamp = jwt_decode(cleanToken).exp * 1000;
-      const nowTimeStamp = Date.now();
-      if (expireTimeStamp - nowTimeStamp < 0) {
+      if (isJSONTokenExpired(token)) {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         window.location = '/login';
         throw new Error('JWT Expired');
       }

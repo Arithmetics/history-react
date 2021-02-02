@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-// eslint-disable-next-line camelcase
-import jwt_decode from 'jwt-decode';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
@@ -16,6 +14,7 @@ import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { login, logout } from '../../store/user';
+import { isJSONTokenExpired } from '../../api';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -53,15 +52,10 @@ export default function SignIn() {
   useEffect(() => {
     if (storedToken || storedUser) {
       if (!storedToken) {
-        console.log('disd log');
         dispatch(logout());
         return;
       }
-      const cleanToken = storedToken.replace('Bearer ', '');
-      const expireTimeStamp = jwt_decode(cleanToken).exp * 1000;
-      const nowTimeStamp = Date.now();
-      if (expireTimeStamp - nowTimeStamp < 0) {
-        console.log('dispatchin logout');
+      if (isJSONTokenExpired(storedToken)) {
         dispatch(logout());
       }
     }

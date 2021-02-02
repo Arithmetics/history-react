@@ -47,9 +47,6 @@ export default function DeleteResourceConfirm({
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {/* {`This will delete the resource permanently ${JSON.stringify(
-            resource,
-          )}`} */}
           This will permanently delete the data below:
           <JSONPretty
             theme={themeX}

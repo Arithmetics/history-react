@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
-import jwt_decode from 'jwt-decode';
 
 const initialUser = localStorage.getItem('user')
   ? JSON.parse(localStorage.getItem('user'))
@@ -25,14 +24,6 @@ const slice = createSlice({
         'user',
         JSON.stringify(action.payload.user),
       );
-      console.log(action.payload);
-
-      const cleanToken = action.payload.token.replace('Bearer ', '');
-      const expire = jwt_decode(cleanToken).exp * 1000;
-
-      const expireTime = new Date(expire);
-      console.log(expireTime);
-
       localStorage.setItem('token', action.payload.token);
       state.loginError = false;
       state.loginLoading = false;
@@ -76,6 +67,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     );
   } catch (e) {
     dispatch(loginError());
+    // eslint-disable-next-line no-console
     return console.error(e.message);
   }
 };
@@ -84,6 +76,7 @@ export const logout = () => async (dispatch) => {
     await api.post('/logout');
     return dispatch(logoutSuccess());
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e.message);
     return dispatch(logoutSuccess());
   }
