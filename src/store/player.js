@@ -54,6 +54,11 @@ const slice = createSlice({
       state.allPlayersSuccess = false;
     },
     // delete player
+    deletePlayerReset: (state, _action) => {
+      state.deletePlayerLoading = false;
+      state.deletePlayerError = false;
+      state.deletePlayerSuccess = false;
+    },
     deletePlayerLoading: (state, _action) => {
       state.deletePlayerLoading = true;
       state.deletePlayerError = false;
@@ -87,6 +92,7 @@ const {
   deletePlayerLoading,
   deletePlayerSuccess,
   deletePlayerError,
+  deletePlayerReset,
 } = slice.actions;
 
 export const newPlayer = ({
@@ -134,4 +140,8 @@ export const deletePlayer = (playerId) => async (dispatch) => {
     dispatch(deletePlayerError());
     return console.error(e.message);
   }
+};
+
+export const resetDeletePlayer = () => (dispatch) => {
+  dispatch(deletePlayerReset());
 };

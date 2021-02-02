@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
@@ -13,7 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { login } from '../../store/user';
+import { login, logout } from '../../store/user';
+import { isJSONTokenExpired } from '../../api';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -45,13 +46,28 @@ export default function SignIn() {
     (state) => state.user,
   );
 
+  const storedToken = localStorage.getItem('token');
+  const storedUser = localStorage.getItem('user');
+
+  useEffect(() => {
+    if (storedToken || storedUser) {
+      if (!storedToken) {
+        dispatch(logout());
+        return;
+      }
+      if (isJSONTokenExpired(storedToken)) {
+        dispatch(logout());
+      }
+    }
+  }, [storedToken, storedUser, dispatch]);
+
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = (data) => {
     dispatch(login(data));
   };
 
-  if (user) {
+  if (user && storedToken) {
     return <Redirect to="/home" />;
   }
 

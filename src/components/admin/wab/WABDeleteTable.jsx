@@ -4,7 +4,11 @@ import MaterialTable from 'material-table';
 
 import LoadingSpinner from '../../LoadingSpinner';
 import DeleteResourceConfirm from '../DeleteResourceConfirm';
-import { deleteWAB, getAllWAB } from '../../../store/wab';
+import {
+  deleteWAB,
+  getAllWAB,
+  resetWABDelete,
+} from '../../../store/wab';
 import {
   PlayerAvatarLink,
   TeamAvatarLink,
@@ -80,6 +84,7 @@ export default function WABDeleteTable() {
           deleteResourceLoading={deleteWABLoading}
           deleteResourceSuccess={deleteWABSuccess}
           deleteResourceError={deleteWABError}
+          resetDeleteResource={resetWABDelete}
           handleClose={handleClose}
           open={open}
           resource={wabToDelete}
@@ -105,7 +110,7 @@ export default function WABDeleteTable() {
             {
               icon: 'delete',
               tooltip: 'Delete WAB',
-              onClick: (event, rowData) => handleClickOpen(rowData),
+              onClick: (_, rowData) => handleClickOpen(rowData),
             },
           ]}
           columns={[

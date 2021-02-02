@@ -4,7 +4,11 @@ import MaterialTable from 'material-table';
 import { makeStyles } from '@material-ui/core/styles';
 import LoadingSpinner from '../../LoadingSpinner';
 
-import { deletePlayer, getAllPlayers } from '../../../store/player';
+import {
+  deletePlayer,
+  resetDeletePlayer,
+  getAllPlayers,
+} from '../../../store/player';
 import { NFL_PLAYER_PAGE, NFL_IMAGE_URL } from '../../../constants';
 import { PlayerAvatarLink } from '../../materialTableElements';
 import DeleteResourceConfirm from '../DeleteResourceConfirm';
@@ -85,6 +89,7 @@ export default function PlayerDeleteTable() {
           deleteResourceLoading={deletePlayerLoading}
           deleteResourceSuccess={deletePlayerSuccess}
           deleteResourceError={deletePlayerError}
+          resetDeleteResource={resetDeletePlayer}
           handleClose={handleClose}
           open={open}
           resource={playerToDelete}

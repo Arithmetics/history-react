@@ -67,6 +67,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     );
   } catch (e) {
     dispatch(loginError());
+    // eslint-disable-next-line no-console
     return console.error(e.message);
   }
 };
@@ -75,6 +76,7 @@ export const logout = () => async (dispatch) => {
     await api.post('/logout');
     return dispatch(logoutSuccess());
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e.message);
     return dispatch(logoutSuccess());
   }
