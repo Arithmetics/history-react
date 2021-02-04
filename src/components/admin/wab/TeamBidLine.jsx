@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TeamBidLine({
-  index,
+  index: indexX,
   control,
   allowedTeams,
   errors,
@@ -61,16 +61,16 @@ export default function TeamBidLine({
   const classes = useStyles();
 
   const mustBeOneWinning = () => {
-    let checkedCount = 0;
-    indexes.forEach((index) => {
-      const winning = getValues(`teamBids[${index}].winning`);
-      if (winning) {
-        checkedCount += 1;
-      }
-    });
-    if (checkedCount !== 1) {
-      return 'Must have exactly one winning bid';
-    }
+    // let checkedCount = 0;
+    // indexes.forEach((index) => {
+    //   const winning = getValues(`teamBids[${index}].winning`);
+    //   if (winning) {
+    //     checkedCount += 1;
+    //   }
+    // });
+    // if (checkedCount !== 1) {
+    //   return 'Must have exactly one winning bid';
+    // }
     return true;
   };
 
@@ -85,29 +85,29 @@ export default function TeamBidLine({
     return true;
   };
 
-  const mustBeTheHighestValue = (inputIsWinning) => {
-    if (!inputIsWinning) {
-      return true;
-    }
-    let bad = false;
-    let highestValue = 0;
-    indexes.forEach((index) => {
-      const amount = getValues(`teamBids[${index}].amount`);
-      if (amount > highestValue) {
-        highestValue = amount;
-      }
-    });
-    indexes.forEach((index) => {
-      const amount = getValues(`teamBids[${index}].amount`);
-      const winning = getValues(`teamBids[${index}].winning`);
+  const mustBeTheHighestValue = (_inputIsWinning) => {
+    // if (!inputIsWinning) {
+    //   return true;
+    // }
+    // let bad = false;
+    // let highestValue = 0;
+    // indexes.forEach((index) => {
+    //   const amount = getValues(`teamBids[${index}].amount`);
+    //   if (amount > highestValue) {
+    //     highestValue = amount;
+    //   }
+    // });
+    // indexes.forEach((index) => {
+    //   const amount = getValues(`teamBids[${index}].amount`);
+    //   const winning = getValues(`teamBids[${index}].winning`);
 
-      if (winning && amount !== highestValue) {
-        bad = true;
-      }
-    });
-    if (bad) {
-      return 'Winning bid must be at least tied for the highest amount';
-    }
+    //   if (winning && amount !== highestValue) {
+    //     bad = true;
+    //   }
+    // });
+    // if (bad) {
+    //   return 'Winning bid must be at least tied for the highest amount';
+    // }
     return true;
   };
 
@@ -117,7 +117,7 @@ export default function TeamBidLine({
     });
   };
 
-  const fieldName = `teamBids[${index}]`;
+  const fieldName = `teamBids[${indexX}]`;
   return (
     <>
       <Grid item xs={12}>
@@ -127,11 +127,11 @@ export default function TeamBidLine({
         <ControlledAutocomplete
           defaultValue={null}
           control={control}
-          noOptionsText={'Select a year first'}
+          noOptionsText="Select a year first"
           rules={{
             required: 'Select team',
             validate: {
-              mustMatchSelectedYear: mustMatchSelectedYear,
+              mustMatchSelectedYear,
             },
           }}
           name={`${fieldName}.team`}
@@ -141,18 +141,19 @@ export default function TeamBidLine({
           }
           renderInput={(params) => (
             <TextField
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...params}
               label="Team"
               margin="normal"
               variant="outlined"
-              error={!!errors.teamBids?.[index]?.team}
-              helperText={errors.teamBids?.[index]?.team?.message}
+              error={!!errors.teamBids?.[indexX]?.team}
+              helperText={errors.teamBids?.[indexX]?.team?.message}
             />
           )}
         />
       </Grid>
       <Hidden mdUp xsDown>
-        <Grid item xs={4}></Grid>
+        <Grid item xs={4} />
       </Hidden>
 
       <Grid item xs={2} md={2}>
@@ -173,8 +174,8 @@ export default function TeamBidLine({
               message: '$200 at most',
             },
           })}
-          error={!!errors.teamBids?.[index]?.amount}
-          helperText={errors.teamBids?.[index]?.amount?.message}
+          error={!!errors.teamBids?.[indexX]?.amount}
+          helperText={errors.teamBids?.[indexX]?.amount?.message}
           disabled={disabled}
           defaultValue={null}
           InputProps={{
@@ -187,26 +188,26 @@ export default function TeamBidLine({
         />
       </Grid>
       <Grid item xs={2}>
-        <FormControl error={true}>
+        <FormControl error>
           <FormControlLabel
             inputRef={register({
               validate: {
-                mustBeOneWinning: mustBeOneWinning,
-                mustBeTheHighestValue: mustBeTheHighestValue,
+                mustBeOneWinning,
+                mustBeTheHighestValue,
               },
             })}
             control={
               <Checkbox
                 onChange={() => reRunTeamBidVal()}
                 helperText={
-                  errors.teamBids?.[index]?.winning?.message
+                  errors.teamBids?.[indexX]?.winning?.message
                 }
                 name={`${fieldName}.winning`}
                 color="primary"
                 inputRef={register({
                   validate: {
-                    mustBeOneWinning: mustBeOneWinning,
-                    mustBeTheHighestValue: mustBeTheHighestValue,
+                    mustBeOneWinning,
+                    mustBeTheHighestValue,
                   },
                 })}
               />
@@ -214,31 +215,31 @@ export default function TeamBidLine({
             label="Winning?"
             labelPlacement="top"
             className={
-              errors.teamBids?.[index]?.winning
+              errors.teamBids?.[indexX]?.winning
                 ? classes.winningLabelError
                 : classes.winningLabel
             }
           />
-          {errors.teamBids?.[index]?.winning && (
+          {errors.teamBids?.[indexX]?.winning && (
             <FormHelperText className={classes.checkboxErrorLabel}>
-              {errors.teamBids?.[index]?.winning.message}
+              {errors.teamBids?.[indexX]?.winning.message}
             </FormHelperText>
           )}
         </FormControl>
       </Grid>
       <Grid item xs={8} md={4}>
-        {index !== 0 && (
+        {indexX !== 0 && (
           <Tooltip title="Delete bid">
             <IconButton
               className={classes.buttonCenter}
               color="secondary"
-              onClick={removeTeamBid(index)}
+              onClick={removeTeamBid(indexX)}
             >
               <Delete />
             </IconButton>
           </Tooltip>
         )}
-        {index === indexes[indexes.length - 1] && (
+        {indexX === indexes[indexes.length - 1] && (
           <Tooltip title="Add bid on player">
             <Button
               variant="contained"
