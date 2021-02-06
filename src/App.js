@@ -20,6 +20,7 @@ import Podcasts from './components/Podcasts';
 import HomePage from './components/homePage/HomePage';
 import Login from './components/users/Login';
 import Admin from './components/admin/Admin';
+import ManyLabCards from './components/homePage/ManyLabCards';
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
             <BrowserRouter>
               <MainWrapper>
                 <Switch>
-                  <Route exact path="/" component={HomePage} />
+                  <Route exact path="/" component={ManyLabCards} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/home" component={HomePage} />
                   <Route exact path="/owners/:id" component={Owner} />
