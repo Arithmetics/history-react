@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 
+import LabCardBack from './LabCardBack';
+
 const useStyles = makeStyles((theme) => ({
   card: {
     width: 335,
@@ -28,18 +30,19 @@ const useStyles = makeStyles((theme) => ({
     transform: 'rotateY(-180deg)',
   },
   cardSide: {
+    backgroundColor: '#868686',
     borderRadius: 15,
     position: 'absolute',
     width: '100%',
     height: '100%',
     backfaceVisibility: 'hidden',
-    // boxShadow:
-    //   '-3px -3px 3px 0 rgba(#26e6f7, 0.6), 3px 3px 3px 0 rgba(#f759e4, 0.6), 0 0 6px 2px rgba(#ffe759, 0.6), 0 35px 25px -15px rgba(0, 0, 0, 0.5)',
+    backgroundImage:
+      'linear-gradient(115deg, transparent 0%, rgb(0, 231, 255) 30%, rgb(255, 0, 231) 70%, transparent 100%)',
   },
   cardFront: {
     boxShadow: '0px 10vw 9vw -6vw rgba(0, 0, 0, 0.5)',
-    backgroundColor: '#868686',
-    color: 'black',
+
+    color: '#191818',
     backgroundImage:
       'linear-gradient(115deg, transparent 0%, rgb(0, 231, 255) 30%, rgb(255, 0, 231) 70%, transparent 100%)',
     '&::before': {
@@ -49,16 +52,17 @@ const useStyles = makeStyles((theme) => ({
       right: 0,
       bottom: 0,
       top: 0,
-      backgroundImage:
-        'linear-gradient(115deg, transparent 0%, rgb(0, 231, 255) 30%, rgb(255, 0, 231) 70%, transparent 100%)',
       backgroundPosition: '0% 0%',
       backgroundRepeat: 'no-repeat',
       backgroundSize: '300% 300%',
+      backgroundImage:
+        'linear-gradient(115deg, transparent 0%, rgb(0, 231, 255) 30%, rgb(255, 0, 231) 70%, transparent 100%)',
       // mixBlendMode: 'color-dodge',
       opacity: 0.2,
       borderRadius: 15,
       zIndex: 1,
       animation: `$holoGradient 15s ease infinite`,
+      boxShadow: '0px 0px 15px 5px rgba(83, 172, 188, .75)',
     },
     '&::after': {
       content: '""',
@@ -68,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
       bottom: 0,
       top: 0,
       backgroundImage:
-        'url(https://media.giphy.com/media/3NeSk2IVEd2FYUQEcM/giphy.gif)',
+        'url(https://media.giphy.com/media/CZUoJhyPs7q1O/giphy.gif)',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: '180%',
@@ -80,12 +84,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   cardBack: {
-    backgroundColor: 'dodgerblue',
     color: 'white',
     transform: 'rotateY(-180deg)',
     zIndex: 30,
-    boxShadow:
-      '0px -2vw 4vw -2vw rgba(35, 2, 2, 0.68), inset 0px -8vw 12vw -5vw rgba(0,0,0,0.3)',
   },
   playerPicture: {
     height: 400,
@@ -97,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
   coverShape: {
     position: 'absolute',
-    backgroundColor: 'black',
+    backgroundColor: '#191818',
     clipPath:
       'polygon(0 0, 93% 0, 100% 21%, 100% 100%, 7% 100%, 0 76%)',
     width: 300,
@@ -107,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
   },
   leftCoverShape: {
     position: 'absolute',
-    backgroundColor: 'black',
+    backgroundColor: '#191818',
     clipPath: 'polygon(52% 0, 100% 0, 100% 100%, 0 100%, 0 5%)',
     left: -29,
     width: 35,
@@ -126,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
     fontVariant: 'petite-caps',
     margin: 0,
     marginLeft: 32,
-    zIndex: 5,
+    zIndex: 10,
   },
   lastName: {
     color: 'white',
@@ -136,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     marginLeft: 44,
     marginTop: -10,
-    zIndex: 5,
+    zIndex: 10,
   },
   year: {
     color: '#fff',
@@ -154,6 +155,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backfaceVisibility: 'hidden',
   },
   avatarPic: {
     width: 50,
@@ -239,7 +241,8 @@ const useStyles = makeStyles((theme) => ({
 function LabCard() {
   const classes = useStyles();
 
-  const [flipped, setFlipped] = useState(false);
+  // const [flipped, setFlipped] = useState(false);
+  const [flipped, setFlipped] = useState(true);
 
   const flipCard = () => setFlipped(!flipped);
 
@@ -265,6 +268,7 @@ function LabCard() {
               className={classes.avatarPic}
               alt="owner-img"
             />
+
             <div className={classes.smallAvatar}>
               <GiTrophy />
             </div>
@@ -290,11 +294,25 @@ function LabCard() {
           </div>
         </div>
         <div className={clsx(classes.cardSide, classes.cardBack)}>
-          bbb
+          <LabCardBack />
         </div>
       </div>
     </div>
   );
 }
+
+// back of card:
+// age at season
+// experience at season
+// rushing yards -qb , rb
+// rushing td - qb, rb
+// receiving yards  - wr, rb
+// receiving td
+// receptions
+// passing yards
+// passing td
+// rank
+// points scored
+// auction $
 
 export default LabCard;
