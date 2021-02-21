@@ -18,32 +18,38 @@ import PeopleIcon from '@material-ui/icons/People';
 import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 import GavelIcon from '@material-ui/icons/Gavel';
 import AudiotrackIcon from '@material-ui/icons/Audiotrack';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
 
 const sideLinks = [
   {
-    page: 'Home',
+    page: 'home',
     icon: <HomeIcon />,
   },
   {
-    page: 'Owners',
+    page: 'owners',
     icon: <PeopleIcon />,
   },
   {
-    page: 'Auctions',
+    page: 'auctions',
     icon: <GavelIcon />,
   },
   {
-    page: 'Players',
+    page: 'players',
     icon: <DirectionsRunIcon />,
   },
   {
-    page: 'Podcasts',
+    page: 'podcasts',
     icon: <AudiotrackIcon />,
   },
   {
-    page: 'Admin',
+    page: 'admin',
     icon: <BuildIcon />,
     adminOnly: true,
+  },
+  {
+    page: 'cards',
+    icon: <RecentActorsIcon />,
+    userOnly: true,
   },
 ];
 
@@ -107,6 +113,9 @@ export default function SideMenu({ isOpen, handleDrawerClose }) {
       <List>
         {sideLinks.map((link) => {
           if (link.adminOnly && (!user || !user.isAdmin)) {
+            return undefined;
+          }
+          if (link.userOnly && !user) {
             return undefined;
           }
           return (

@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
       bottom: 0,
       top: 0,
       backgroundImage:
-        'url(https://media.giphy.com/media/CZUoJhyPs7q1O/giphy.gif)',
+        'url(https://www.ignant.com/wp-content/uploads/2016/01/s%C3%B6derberg_gif-03i.gif)',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: '180%',
@@ -241,8 +241,7 @@ const useStyles = makeStyles((theme) => ({
 function LabCard() {
   const classes = useStyles();
 
-  // const [flipped, setFlipped] = useState(false);
-  const [flipped, setFlipped] = useState(true);
+  const [flipped, setFlipped] = useState(false);
 
   const flipCard = () => setFlipped(!flipped);
 
