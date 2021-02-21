@@ -74,8 +74,62 @@ const stats = [
   { field: 'Positional Rank', value: 2 },
 ];
 
-export default function LabCardBack() {
+function createStats(card) {
+  const isPpr = card.year > 2018;
+  if (card.position === 'QB') {
+    return [
+      { field: 'Passing Yards', value: card.passingYards },
+      { field: 'Passing TDs', value: card.passingTouchdowns },
+      { field: 'Rushing Yards', value: card.rushingYards },
+      { field: 'Rushing TDs', value: card.rushingTouchdowns },
+      {
+        field: 'Fantasy Points',
+        value: isPpr ? card.fantasyPointsPpr : card.fantasyPointsReg,
+      },
+      {
+        field: 'Positional Rank',
+        value: isPpr ? card.rankPpr : card.rankReg,
+      },
+    ];
+  }
+  if (card.position === 'RB') {
+    return [
+      { field: 'Rushing Yards', value: card.rushingYards },
+      { field: 'Rushing TDs', value: card.rushingTouchdowns },
+      { field: 'Receiving Yards', value: card.receivingYards },
+      { field: 'Receiving TDs', value: card.receivingTouchdowns },
+      { field: 'Receptions', value: card.receptions },
+      {
+        field: 'Fantasy Points',
+        value: isPpr ? card.fantasyPointsPpr : card.fantasyPointsReg,
+      },
+      {
+        field: 'Positional Rank',
+        value: isPpr ? card.rankPpr : card.rankReg,
+      },
+    ];
+  }
+  if (card.position === 'WR' || card.position === 'TE') {
+    return [
+      { field: 'Receiving Yards', value: card.receivingYards },
+      { field: 'Receiving TDs', value: card.receivingTouchdowns },
+      { field: 'Receptions', value: card.receptions },
+      {
+        field: 'Fantasy Points',
+        value: isPpr ? card.fantasyPointsPpr : card.fantasyPointsReg,
+      },
+      {
+        field: 'Positional Rank',
+        value: isPpr ? card.rankPpr : card.rankReg,
+      },
+    ];
+  }
+}
+
+export default function LabCardBack({ card }) {
   const classes = useStyles();
+
+  const stats = createStats(card);
 
   return (
     <div className={classes.innerCard}>
@@ -84,18 +138,18 @@ export default function LabCardBack() {
         <img
           alt="player-profile-pic"
           className={classes.profileImage}
-          src={`${NFL_IMAGE_URL}/${'ify1tyrdfnh3oixudcuz'}`}
+          src={`${NFL_IMAGE_URL}/${card.player.pictureId}`}
         />
-        <h3 className={classes.playerName}>JuJu Smith-Schuster</h3>
+        <h3 className={classes.playerName}>{card.player.name}</h3>
         <div className={classes.info}>
           <p>
-            <i>Age: 27</i>
+            <i>Age: {Math.floor(card.ageAtSeason)}</i>
           </p>
           <p>
-            <i>Experience: 3</i>
+            <i>Experience: {card.experienceAtSeason}</i>
           </p>
           <p>
-            <i>Auction: $67</i>
+            <i>Auction: ${card.auctionPrice}</i>
           </p>
         </div>
       </div>
