@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
     perspective: 1000,
     animation: `$holoCard 15s ease infinite`,
+    animationDelay: ({ animationDelay }) => `${animationDelay}s`,
   },
   cardInner: {
     borderRadius: 15,
@@ -35,15 +36,15 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     height: '100%',
     backfaceVisibility: 'hidden',
-    backgroundImage:
-      'linear-gradient(115deg, transparent 0%, rgb(0, 231, 255) 30%, rgb(255, 0, 231) 70%, transparent 100%)',
+    backgroundImage: ({ colorOne, colorTwo }) =>
+      `linear-gradient(115deg, transparent 0%, ${colorOne} 30%, ${colorTwo} 70%, transparent 100%)`,
   },
   cardFront: {
     boxShadow: '0px 10vw 9vw -6vw rgba(0, 0, 0, 0.5)',
 
     color: '#191818',
-    backgroundImage:
-      'linear-gradient(115deg, transparent 0%, rgb(0, 231, 255) 30%, rgb(255, 0, 231) 70%, transparent 100%)',
+    backgroundImage: ({ colorOne, colorTwo }) =>
+      `linear-gradient(115deg, transparent 0%, ${colorOne} 30%, ${colorTwo} 70%, transparent 100%)`,
     '&::before': {
       content: '""',
       position: 'absolute',
@@ -54,14 +55,15 @@ const useStyles = makeStyles((theme) => ({
       backgroundPosition: '0% 0%',
       backgroundRepeat: 'no-repeat',
       backgroundSize: '300% 300%',
-      backgroundImage:
-        'linear-gradient(115deg, transparent 0%, rgb(0, 231, 255) 30%, rgb(255, 0, 231) 70%, transparent 100%)',
-      // mixBlendMode: 'color-dodge',
+      backgroundImage: ({ colorOne, colorTwo }) =>
+        `linear-gradient(115deg, transparent 0%, ${colorOne} 30%, ${colorTwo} 70%, transparent 100%)`,
       opacity: 0.2,
       borderRadius: 15,
       zIndex: 1,
       animation: `$holoGradient 15s ease infinite`,
-      boxShadow: '0px 0px 15px 5px rgba(83, 172, 188, .75)',
+      animationDelay: ({ animationDelay }) => `${animationDelay}s`,
+      boxShadow: ({ colorOne, colorTwo }) =>
+        `0px 0px 15px 5px ${colorOne}`,
     },
     '&::after': {
       content: '""',
@@ -70,16 +72,16 @@ const useStyles = makeStyles((theme) => ({
       right: 0,
       bottom: 0,
       top: 0,
-      backgroundImage:
-        'url(https://www.ignant.com/wp-content/uploads/2016/01/s%C3%B6derberg_gif-03i.gif)',
+      backgroundImage: ({ backgroundImage }) =>
+        `url(${backgroundImage})`,
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: '180%',
-      // mixBlendMode: 'color-dodge',
-      opacity: 1,
+      opacity: 0.1,
       borderRadius: 15,
       zIndex: 2,
       animation: `$holoSparkle 15s ease infinite`,
+      animationDelay: ({ animationDelay }) => `${animationDelay}s`,
     },
   },
   cardBack: {
@@ -148,43 +150,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LabCard() {
-  const classes = useStyles();
-
+function LabCard({ card }) {
   const [flipped, setFlipped] = useState(false);
 
-  const flipCard = () => setFlipped(!flipped);
+  const [animationDelay, setAnimationDelay] = useState(0);
 
-  const card = {
-    id: 1034,
-    auctionPrice: 0,
-    breakout: false,
-    repeat: false,
-    champion: false,
-    year: 2020,
-    passingYards: 0,
-    passingTouchdowns: 0,
-    rushingYards: 691,
-    rushingTouchdowns: 2,
-    receivingYards: 52,
-    receivingTouchdowns: 0,
-    receptions: 5,
-    ageAtSeason: 23.57,
-    experienceAtSeason: 2,
-    position: 'RB',
-    rankReg: 44,
-    rankPpr: 50,
-    fantasyPointsPpr: 88.8,
-    fantasyPointsReg: 86.3,
-    player: {
-      id: 2562281,
-      name: 'Damien Harris',
-      nflUrlName: 'damien-harris',
-      pictureId: 'fkm1w2mp3ocice26vuk4',
-    },
-    owner: { id: 1, name: 'Dagr' },
-    users: [{ id: 3, name: 'Brock' }],
-  };
+  useEffect(() => {
+    setAnimationDelay(Math.floor(Math.random() * Math.floor(10)));
+  }, []);
+
+  const classes = useStyles({
+    animationDelay,
+    backgroundImage: card.effectImage,
+    colorOne: card.colorOne,
+    colorTwo: card.colorTwo,
+  });
+
+  const flipCard = () => setFlipped(!flipped);
 
   return (
     <div className={classes.card}>
