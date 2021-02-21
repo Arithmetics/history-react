@@ -64,16 +64,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const stats = [
-  { field: 'Rushing Yards', value: 1324 },
-  { field: 'Rushing TDs', value: 12 },
-  { field: 'Receiving Yards', value: 1324 },
-  { field: 'Receiving TDs', value: 5 },
-  { field: 'Receptions', value: 104 },
-  { field: 'Fantasy Points', value: 236 },
-  { field: 'Positional Rank', value: 2 },
-];
-
 function createStats(card) {
   const isPpr = card.year > 2018;
   if (card.position === 'QB') {
@@ -134,7 +124,9 @@ export default function LabCardBack({ card }) {
   return (
     <div className={classes.innerCard}>
       <div className={classes.topCard}>
-        <h2 className={classes.year}>2019 - WR</h2>
+        <h2 className={classes.year}>
+          {card.year} - {card.position}
+        </h2>
         <img
           alt="player-profile-pic"
           className={classes.profileImage}
@@ -155,7 +147,7 @@ export default function LabCardBack({ card }) {
       </div>
       <div className={classes.bottomCard}>
         {stats.map((stat) => (
-          <div className={classes.statLine}>
+          <div key={stat.field} className={classes.statLine}>
             <div className={classes.statField}>{stat.field}</div>
             <div className={classes.statMiddle}>-</div>
             <div className={classes.statValue}>{stat.value}</div>

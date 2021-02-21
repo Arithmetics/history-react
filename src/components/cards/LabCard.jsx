@@ -182,7 +182,7 @@ function LabCard() {
       nflUrlName: 'damien-harris',
       pictureId: 'fkm1w2mp3ocice26vuk4',
     },
-    owner: { id: 8, name: 'joe' },
+    owner: { id: 1, name: 'Dagr' },
     users: [{ id: 3, name: 'Brock' }],
   };
 
@@ -202,7 +202,7 @@ function LabCard() {
         )}
       >
         <div className={clsx(classes.cardSide, classes.cardFront)}>
-          <LabCardFront />
+          <LabCardFront card={card} />
         </div>
         <div className={clsx(classes.cardSide, classes.cardBack)}>
           <LabCardBack card={card} />
