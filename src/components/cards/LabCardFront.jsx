@@ -1,7 +1,7 @@
 import React from 'react';
 import { GiTrophy } from 'react-icons/gi';
 import { BsFillLightningFill } from 'react-icons/bs';
-
+import WhatshotIcon from '@material-ui/icons/Whatshot';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -137,6 +137,11 @@ function LabCardFront({ card }) {
         {card.breakout && (
           <div className={classes.smallAvatar}>
             <BsFillLightningFill />
+          </div>
+        )}
+        {card.repeat && (
+          <div className={classes.smallAvatar}>
+            <WhatshotIcon />
           </div>
         )}
       </div>

@@ -161,7 +161,7 @@ function LabCard({ card }) {
 
   const classes = useStyles({
     animationDelay,
-    backgroundImage: card.effectImage,
+    backgroundImage: card.effectImageUrl,
     colorOne: card.colorOne,
     colorTwo: card.colorTwo,
   });
