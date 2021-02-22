@@ -2,6 +2,7 @@ import React from 'react';
 import { GiTrophy } from 'react-icons/gi';
 import { BsFillLightningFill } from 'react-icons/bs';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatars: {
     position: 'absolute',
-    zIndex: 2,
+    zIndex: ({ active }) => (active ? 3 : 2),
     right: 11,
     top: 9,
     display: 'flex',
@@ -104,10 +105,20 @@ const useStyles = makeStyles((theme) => ({
     right: -6,
     backfaceVisibility: 'hidden',
   },
+  serial: {
+    position: 'absolute',
+    color: '#fff',
+    bottom: 3,
+    width: '100%',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    margin: 0,
+    fontSize: 10,
+  },
 }));
 
-function LabCardFront({ card }) {
-  const classes = useStyles();
+function LabCardFront({ card, active }) {
+  const classes = useStyles({ active });
 
   const firstName = card.player.name.substr(
     0,
@@ -120,35 +131,47 @@ function LabCardFront({ card }) {
   return (
     <>
       <div className={classes.avatars}>
-        <img
-          src={`/ownerAvatars/50_x_50/${card.owner.id}.png`}
-          className={classes.avatarPic}
-          alt="owner-img"
-        />
+        <Tooltip title={card.owner.name}>
+          <img
+            src={`/ownerAvatars/50_x_50/${card.owner.id}.png`}
+            className={classes.avatarPic}
+            alt="owner-img"
+          />
+        </Tooltip>
 
         {card.champion && (
-          <div className={classes.smallAvatar}>
-            <GiTrophy />
-          </div>
+          <Tooltip title="Champion">
+            <div className={classes.smallAvatar}>
+              <GiTrophy />
+            </div>
+          </Tooltip>
         )}
         {card.experienceAtSeason === 1 && (
-          <div className={classes.smallAvatar}>R</div>
+          <Tooltip title="Rookie">
+            <div className={classes.smallAvatar}>R</div>
+          </Tooltip>
         )}
         {card.breakout && (
-          <div className={classes.smallAvatar}>
-            <BsFillLightningFill />
-          </div>
+          <Tooltip title="Breakout">
+            <div className={classes.smallAvatar}>
+              <BsFillLightningFill />
+            </div>
+          </Tooltip>
         )}
         {card.repeat && (
-          <div className={classes.smallAvatar}>
-            <WhatshotIcon />
-          </div>
+          <Tooltip title="Top Performer Streak">
+            <div className={classes.smallAvatar}>
+              <WhatshotIcon />
+            </div>
+          </Tooltip>
         )}
       </div>
 
       <div
         className={classes.playerPicture}
-        style={{ backgroundImage: 'url(/cards/2555224.jpg)' }}
+        style={{
+          backgroundImage: `url(https://res.cloudinary.com/brock/image/upload/theLab/${card.year}/${card.player.id}.jpg)`,
+        }}
       >
         <div className={classes.coverShape}>
           <p className={classes.firstName}>{firstName}</p>
@@ -160,6 +183,10 @@ function LabCardFront({ card }) {
           </div>
         </div>
       </div>
+
+      <p className={classes.serial}>
+        Serial #{card.serialNumber}/12 - {card.effectName}
+      </p>
     </>
   );
 }

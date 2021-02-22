@@ -184,7 +184,7 @@ function LabCard({ card }) {
         )}
       >
         <div className={clsx(classes.cardSide, classes.cardFront)}>
-          <LabCardFront card={card} />
+          <LabCardFront card={card} active={!flipped} />
         </div>
         <div className={clsx(classes.cardSide, classes.cardBack)}>
           <LabCardBack card={card} />
