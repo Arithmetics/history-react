@@ -20,7 +20,7 @@ import Podcasts from './components/Podcasts';
 import HomePage from './components/homePage/HomePage';
 import Login from './components/users/Login';
 import Admin from './components/admin/Admin';
-import Cards from './components/cards/Cards';
+import OwnersLabCards from './components/cards/OwnersLabCards';
 
 function App() {
   return (
@@ -32,12 +32,16 @@ function App() {
             <BrowserRouter>
               <MainWrapper>
                 <Switch>
-                  <Route exact path="/" component={Cards} />
+                  <Route exact path="/" component={OwnersLabCards} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/home" component={HomePage} />
                   <Route exact path="/owners/:id" component={Owner} />
                   <Route exact path="/owners" component={Owners} />
-                  <Route exact path="/cards" component={Cards} />
+                  <Route
+                    exact
+                    path="/cards"
+                    component={OwnersLabCards}
+                  />
                   <Route
                     exact
                     path="/fantasyTeams/:id"
