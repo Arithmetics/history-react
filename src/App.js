@@ -21,6 +21,7 @@ import HomePage from './components/homePage/HomePage';
 import Login from './components/users/Login';
 import Admin from './components/admin/Admin';
 import OwnersLabCards from './components/cards/OwnersLabCards';
+import AllLabCards from './components/cards/AllLabCards';
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
                   <Route
                     exact
                     path="/cards"
-                    component={OwnersLabCards}
+                    component={AllLabCards}
                   />
                   <Route
                     exact

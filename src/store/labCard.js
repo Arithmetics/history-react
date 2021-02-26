@@ -9,9 +9,15 @@ const slice = createSlice({
     getOwnersCardsLoading: false,
     getOwnersCardsError: false,
     getOwnersCardsSuccess: false,
+    ownersCards: {},
+    // get all cards
+    getAllCardsLoading: false,
+    getAllCardsError: false,
+    getAllCardsSuccess: false,
+    allCards: [],
   },
   reducers: {
-    // all players
+    // one owners cards
     getOwnersCardsLoading: (state, _action) => {
       state.getOwnersCardsLoading = true;
       state.getOwnersCardsError = false;
@@ -31,6 +37,23 @@ const slice = createSlice({
       state.getOwnersCardsError = true;
       state.getOwnersCardsSuccess = false;
     },
+    // all cards
+    getAllCardsLoading: (state, _action) => {
+      state.getAllCardsLoading = true;
+      state.getAllCardsError = false;
+      state.getAllCardsSuccess = false;
+    },
+    getAllCardsSuccess: (state, action) => {
+      state.getAllCardsLoading = false;
+      state.getAllCardsError = false;
+      state.getAllCardsSuccess = true;
+      state.allCards = action.payload;
+    },
+    getAllCardsError: (state, _action) => {
+      state.getAllCardsLoading = false;
+      state.getAllCardsError = true;
+      state.getAllCardsSuccess = false;
+    },
   },
 });
 export default slice.reducer;
@@ -39,6 +62,9 @@ const {
   getOwnersCardsLoading,
   getOwnersCardsSuccess,
   getOwnersCardsError,
+  getAllCardsLoading,
+  getAllCardsSuccess,
+  getAllCardsError,
 } = slice.actions;
 
 export const getOwnersCards = (ownerId) => async (dispatch) => {
@@ -53,6 +79,17 @@ export const getOwnersCards = (ownerId) => async (dispatch) => {
     );
   } catch (e) {
     dispatch(getOwnersCardsError());
+    return console.error(e.message);
+  }
+};
+
+export const getAllCards = () => async (dispatch) => {
+  dispatch(getAllCardsLoading());
+  try {
+    const response = await api.get(`/season_cards.json`);
+    dispatch(getAllCardsSuccess(response.data.seasonCards));
+  } catch (e) {
+    dispatch(getAllCardsError());
     return console.error(e.message);
   }
 };
