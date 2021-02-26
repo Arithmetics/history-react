@@ -153,6 +153,28 @@ export function OwnerAvatarLink(props) {
   );
 }
 
+export function OwnerCardLink(props) {
+  const classes = useStyles();
+  const { id, name } = props;
+  return (
+    <div className={classes.avatarContainer}>
+      <Tooltip title={name}>
+        <Link
+          className={classes.avatarLink}
+          component={RouterLink}
+          to={`/cards/${id}`}
+        >
+          <img
+            src={`/ownerAvatars/50_x_50/${id}.png`}
+            className={classes.teamAvatarPic}
+            alt="owner-img"
+          />
+        </Link>
+      </Tooltip>
+    </div>
+  );
+}
+
 export function GradedScore(props) {
   const classes = useStyles();
   const { score, grade } = props;

@@ -1,20 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialTable from 'material-table';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Typography from '@material-ui/core/Typography';
 import LoadingSpinner from '../LoadingSpinner';
 
-import { createLookup, filterBetween } from '../materialTableHelpers';
+import { filterBetween, createLookup } from '../materialTableHelpers';
 import {
   PlayerAvatarLink,
-  HeaderCellWithTooltip,
+  OwnerAvatarLink,
+  OwnerCardLink,
 } from '../materialTableElements';
 
 import { getAllCards } from '../../store/labCard';
 
+const useStyles = makeStyles({
+  avatarContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+});
+
 function AllLabCards() {
-  // const classes = useStyles();
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const {
@@ -28,9 +37,6 @@ function AllLabCards() {
     dispatch(getAllCards());
   }, [dispatch]);
 
-  console.log(allCards);
-  return <p>all cards</p>;
-
   // id
   // player - player avatar
   // year
@@ -39,130 +45,108 @@ function AllLabCards() {
   // owner - owner avatar
   // users whos own  - owner avatars ?
 
-  // return (
-  //   <>
-  //     <Typography variant="h3" gutterBottom>
-  //       Lab Cards
-  //     </Typography>
-  //     {loading && <LoadingSpinner isLoading={loading} />}
-  //     {!loading && (
-  //       <>
-  //         <MaterialTable
-  //           title="All Cards"
-  //           data={players}
-  //           options={{
-  //             filtering: true,
-  //             padding: 'dense',
-  //             paging: true,
-  //             pageSize: 50,
-  //             pageSizeOptions: [50, 100, players.length],
-  //             search: true,
-  //             exportButton: true,
-  //             emptyRowsWhenPaging: false,
-  //             exportAllData: true,
-  //             showTitle: false,
-  //           }}
-  //           columns={[
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="PN" />,
-  //               field: 'playerName',
-  //               filtering: false,
-  //               render: (rowData) => (
-  //                 <PlayerAvatarLink
-  //                   id={rowData.id}
-  //                   playerName={rowData.playerName}
-  //                   pictureId={rowData.pictureId}
-  //                 />
-  //               ),
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="POS" />,
-  //               field: 'careerStats.position',
-  //               lookup: createLookup(players, [
-  //                 'careerStats',
-  //                 'position',
-  //               ]),
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="TS" />,
-  //               field: 'careerStats.totalStarts',
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="RSP" />,
-  //               field: 'careerStats.totalPoints',
-  //               filtering: false,
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="PP" />,
-  //               field: 'careerStats.playoffPoints',
-  //               filtering: false,
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="FP" />,
-  //               field: 'careerStats.finalsPoints',
-  //               filtering: false,
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="CMP" />,
-  //               field: 'careerStats.championships',
-  //               filtering: false,
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="TAD" />,
-  //               field: 'careerStats.totalAuctionMoney',
-  //               filtering: false,
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="MAP" />,
-  //               field: 'careerStats.highestAuctionMoney',
-  //               customFilterAndSearch: (term, rowData) =>
-  //                 filterBetween(term, rowData, [
-  //                   'careerStats',
-  //                   'highestAuctionMoney',
-  //                 ]),
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="BSP" />,
-  //               field: 'careerStats.bestStart',
-  //               customFilterAndSearch: (term, rowData) =>
-  //                 filterBetween(term, rowData, [
-  //                   'careerStats',
-  //                   'bestStart',
-  //                 ]),
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="BPDR" />,
-  //               field: 'careerStats.bestPreseasonRank',
-  //               customFilterAndSearch: (term, rowData) =>
-  //                 filterBetween(term, rowData, [
-  //                   'careerStats',
-  //                   'bestPreseasonRank',
-  //                 ]),
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="BFR" />,
-  //               field: 'careerStats.bestRegRank',
-  //               customFilterAndSearch: (term, rowData) =>
-  //                 filterBetween(term, rowData, [
-  //                   'careerStats',
-  //                   'bestRegRank',
-  //                 ]),
-  //             },
-  //             {
-  //               title: <HeaderCellWithTooltip abbr="BFRP" />,
-  //               field: 'careerStats.bestPprRank',
-  //               customFilterAndSearch: (term, rowData) =>
-  //                 filterBetween(term, rowData, [
-  //                   'careerStats',
-  //                   'bestPprRank',
-  //                 ]),
-  //             },
-  //           ]}
-  //         />
-  //       </>
-  //     )}
-  //   </>
-  // );
+  const unfrozenData = allCards.map((p) => {
+    const { id, year, player, rankPpr, rankReg, owner, users } = p;
+    return {
+      id,
+      year,
+      player,
+      rankPpr,
+      rankReg,
+      owner,
+      users,
+    };
+  });
+
+  return (
+    <>
+      <Typography variant="h3" gutterBottom>
+        Lab Cards
+      </Typography>
+      {getAllCardsLoading && (
+        <LoadingSpinner isLoading={getAllCardsLoading} />
+      )}
+      {getAllCardsError && <p>Oops bad error</p>}
+      {getAllCardsSuccess && (
+        <>
+          <MaterialTable
+            title="All Cards"
+            data={unfrozenData}
+            options={{
+              filtering: true,
+              padding: 'dense',
+              paging: true,
+              pageSize: 50,
+              pageSizeOptions: [50, 100, 200],
+              search: true,
+              exportButton: true,
+              emptyRowsWhenPaging: false,
+              exportAllData: true,
+              showTitle: false,
+            }}
+            columns={[
+              {
+                title: 'Card ID',
+                field: 'id',
+              },
+              {
+                title: 'Player Name',
+                field: 'player.name',
+                filtering: true,
+                render: (rowData) => (
+                  <PlayerAvatarLink
+                    id={rowData.id}
+                    playerName={rowData.player.name}
+                    pictureId={rowData.player.pictureId}
+                  />
+                ),
+              },
+              {
+                title: 'Year',
+                field: 'year',
+              },
+              {
+                title: 'Rank PPR',
+                field: 'rankPpr',
+                filtering: true,
+                customFilterAndSearch: (term, rowData) =>
+                  filterBetween(term, rowData, ['rankPpr']),
+              },
+              {
+                title: 'Rank Regular',
+                field: 'rankReg',
+                filtering: true,
+                customFilterAndSearch: (term, rowData) =>
+                  filterBetween(term, rowData, ['rankReg']),
+              },
+              {
+                title: 'Owner on Card',
+                field: 'owner.name',
+                lookup: createLookup(unfrozenData, ['owner', 'name']),
+                render: (rowData) => (
+                  <OwnerAvatarLink
+                    id={rowData.owner.id}
+                    ownerName={rowData.owner.name}
+                  />
+                ),
+              },
+              {
+                title: 'Card Owners',
+                field: 'users',
+                render: (rowData) => (
+                  <div className={classes.avatarContainer}>
+                    {rowData.users.map((user) => (
+                      <OwnerCardLink id={user.id} name={user.name} />
+                    ))}
+                  </div>
+                ),
+              },
+            ]}
+          />
+        </>
+      )}
+    </>
+  );
 }
 
 export default AllLabCards;

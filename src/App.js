@@ -33,7 +33,7 @@ function App() {
             <BrowserRouter>
               <MainWrapper>
                 <Switch>
-                  <Route exact path="/" component={OwnersLabCards} />
+                  <Route exact path="/" component={HomePage} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/home" component={HomePage} />
                   <Route exact path="/owners/:id" component={Owner} />
@@ -42,6 +42,11 @@ function App() {
                     exact
                     path="/cards"
                     component={AllLabCards}
+                  />
+                  <Route
+                    exact
+                    path="/cards/:id"
+                    component={OwnersLabCards}
                   />
                   <Route
                     exact
