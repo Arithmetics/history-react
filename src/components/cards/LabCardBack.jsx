@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
+
 import { NFL_IMAGE_URL } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -114,6 +115,7 @@ function createStats(card) {
       },
     ];
   }
+  return {};
 }
 
 export default function LabCardBack({ card }) {

@@ -17,6 +17,7 @@ import { getAllCards } from '../../store/labCard';
 
 const useStyles = makeStyles({
   avatarContainer: {
+    width: '100%',
     display: 'flex',
     alignItems: 'center',
   },
@@ -37,26 +38,20 @@ function AllLabCards() {
     dispatch(getAllCards());
   }, [dispatch]);
 
-  // id
-  // player - player avatar
-  // year
-  // rankPpr
-  // rankReg
-  // owner - owner avatar
-  // users whos own  - owner avatars ?
-
-  const unfrozenData = allCards.map((p) => {
-    const { id, year, player, rankPpr, rankReg, owner, users } = p;
-    return {
-      id,
-      year,
-      player,
-      rankPpr,
-      rankReg,
-      owner,
-      users,
-    };
-  });
+  const unfrozenData = allCards
+    .filter((c) => c.users.length > 0)
+    .map((p) => {
+      const { id, year, player, rankPpr, rankReg, owner, users } = p;
+      return {
+        id,
+        year,
+        player,
+        rankPpr,
+        rankReg,
+        owner,
+        users,
+      };
+    });
 
   return (
     <>
@@ -104,6 +99,19 @@ function AllLabCards() {
               {
                 title: 'Year',
                 field: 'year',
+                lookup: createLookup(unfrozenData, ['year']),
+              },
+              {
+                title: 'Card Owners',
+                field: 'users',
+                render: (rowData) => (
+                  <div className={classes.avatarContainer}>
+                    {rowData.users.map((user) => (
+                      <OwnerCardLink id={user.id} name={user.name} />
+                    ))}
+                  </div>
+                ),
+                filtering: false,
               },
               {
                 title: 'Rank PPR',
@@ -128,17 +136,6 @@ function AllLabCards() {
                     id={rowData.owner.id}
                     ownerName={rowData.owner.name}
                   />
-                ),
-              },
-              {
-                title: 'Card Owners',
-                field: 'users',
-                render: (rowData) => (
-                  <div className={classes.avatarContainer}>
-                    {rowData.users.map((user) => (
-                      <OwnerCardLink id={user.id} name={user.name} />
-                    ))}
-                  </div>
                 ),
               },
             ]}

@@ -7,8 +7,9 @@ import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 
 import LabCardFront from './LabCardFront';
 import LabCardBack from './LabCardBack';
+import LabCardUnknown from './LabCardUnknown';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
     width: 335,
     height: 485,
@@ -150,8 +151,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LabCard({ card }) {
-  const [flipped, setFlipped] = useState(false);
+function LabCard({ card, startUnknown = false }) {
+  const [flipped, setFlipped] = useState(startUnknown);
+
+  const [unknown, setUnknown] = useState(startUnknown);
 
   const [animationDelay, setAnimationDelay] = useState(0);
 
@@ -168,15 +171,24 @@ function LabCard({ card }) {
 
   const flipCard = () => setFlipped(!flipped);
 
+  const revealCard = () => {
+    flipCard();
+    setTimeout(() => {
+      setUnknown(false);
+    }, 1000);
+  };
+
   return (
     <div className={classes.card}>
-      <IconButton
-        aria-label="flip"
-        className={classes.flipButton}
-        onClick={flipCard}
-      >
-        <FlipCameraAndroidIcon />
-      </IconButton>
+      {!unknown && (
+        <IconButton
+          aria-label="flip"
+          className={classes.flipButton}
+          onClick={flipCard}
+        >
+          <FlipCameraAndroidIcon />
+        </IconButton>
+      )}
       <div
         className={clsx(
           classes.cardInner,
@@ -187,7 +199,11 @@ function LabCard({ card }) {
           <LabCardFront card={card} active={!flipped} />
         </div>
         <div className={clsx(classes.cardSide, classes.cardBack)}>
-          <LabCardBack card={card} />
+          {unknown ? (
+            <LabCardUnknown revealCard={revealCard} />
+          ) : (
+            <LabCardBack card={card} />
+          )}
         </div>
       </div>
     </div>
