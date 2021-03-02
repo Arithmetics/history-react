@@ -53,14 +53,14 @@ export default function PositionalScoring({ positionalScoring }) {
 
 function RegularSeasonPoints({ positionalScoring }) {
   const classes = useStyles();
-  const data = preparePtsGraphData(positionalScoring);
+  const ptsData = preparePtsGraphData(positionalScoring);
 
   return (
     <>
       <Typography variant="h4">Regular Season Points</Typography>
       <div className={classes.graph}>
         <ResponsiveBar
-          data={data}
+          data={ptsData}
           theme={lineGraphSettings.theme}
           keys={keys}
           indexBy="team"
@@ -84,7 +84,7 @@ function RegularSeasonPoints({ positionalScoring }) {
             legend: 'team',
             legendPosition: 'middle',
             legendOffset: 32,
-            format: function (value) {
+            format: (value) => {
               return value
                 .match(/\b(\w)/g)
                 .join('')
@@ -130,10 +130,10 @@ function RegularSeasonPoints({ positionalScoring }) {
               ],
             },
           ]}
-          animate={true}
+          animate
           motionStiffness={90}
           motionDamping={15}
-          tooltip={function ({ data, id, value }) {
+          tooltip={({ data, id, value }) => {
             return (
               <div className={classes.tip}>
                 {data.team}: {id} - {value} pts.
@@ -148,14 +148,14 @@ function RegularSeasonPoints({ positionalScoring }) {
 
 function RegularSeasonStarts({ positionalScoring }) {
   const classes = useStyles();
-  const data = prepareStartsGraphData(positionalScoring);
+  const startsData = prepareStartsGraphData(positionalScoring);
 
   return (
     <>
       <Typography variant="h4">Regular Season Starts</Typography>
       <div className={classes.graph}>
         <ResponsiveBar
-          data={data}
+          data={startsData}
           theme={lineGraphSettings.theme}
           keys={keys}
           indexBy="team"
@@ -179,7 +179,7 @@ function RegularSeasonStarts({ positionalScoring }) {
             legend: 'team',
             legendPosition: 'middle',
             legendOffset: 32,
-            format: function (value) {
+            format: (value) => {
               return value
                 .match(/\b(\w)/g)
                 .join('')
@@ -225,10 +225,10 @@ function RegularSeasonStarts({ positionalScoring }) {
               ],
             },
           ]}
-          animate={true}
+          animate
           motionStiffness={90}
           motionDamping={15}
-          tooltip={function ({ data, id, value }) {
+          tooltip={({ data, id, value }) => {
             return (
               <div className={classes.tip}>
                 {data.team}: {id} - {value} starts
