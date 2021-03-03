@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MaterialTable from 'material-table';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import { filterBetween, createLookup } from '../materialTableHelpers';
+
 import {
   PlayerAvatarLink,
   OwnerAvatarLink,
@@ -18,11 +22,25 @@ const useStyles = makeStyles({
   },
 });
 
+function LabCardFilterCheck({ onlyOwnedCards }) {
+  return (
+    <FormGroup row>
+      <FormControlLabel
+        control={
+          <Checkbox checked={onlyOwnedCards} name="checkedA" />
+        }
+        label="Filter Only Owned Cards"
+      />
+    </FormGroup>
+  );
+}
+
 function LabCardFinder({ allCards }) {
   const classes = useStyles();
+  const [onlyOwnedCards, setOnlyOwnedCards] = useState(false);
 
   const unfrozenData = allCards
-    .filter((c) => c.users.length > 0)
+    .filter((c) => (onlyOwnedCards ? c.users.length > 0 : c))
     .map((p) => {
       const { id, year, player, rankPpr, rankReg, owner, users } = p;
       return {
@@ -52,6 +70,15 @@ function LabCardFinder({ allCards }) {
         exportAllData: true,
         showTitle: true,
       }}
+      actions={[
+        {
+          icon: () => (
+            <LabCardFilterCheck onlyOwnedCards={onlyOwnedCards} />
+          ),
+          isFreeAction: true,
+          onClick: () => setOnlyOwnedCards(!onlyOwnedCards),
+        },
+      ]}
       columns={[
         {
           title: 'Card ID',

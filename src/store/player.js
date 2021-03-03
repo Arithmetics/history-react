@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
 
@@ -113,7 +115,7 @@ export const newPlayer = ({
         birthdate,
       },
     });
-    dispatch(newPlayerSuccess(response.data.player));
+    return dispatch(newPlayerSuccess(response.data.player));
   } catch (e) {
     dispatch(newPlayerError());
     return console.error(e.message);
@@ -124,7 +126,7 @@ export const getAllPlayers = () => async (dispatch) => {
   dispatch(allPlayersLoading());
   try {
     const response = await api.get('/players.json');
-    dispatch(allPlayersSuccess(response.data.players));
+    return dispatch(allPlayersSuccess(response.data.players));
   } catch (e) {
     dispatch(allPlayersError());
     return console.error(e.message);
@@ -135,7 +137,7 @@ export const deletePlayer = (playerId) => async (dispatch) => {
   dispatch(deletePlayerLoading());
   try {
     await api.delete(`players/${playerId}.json`);
-    dispatch(deletePlayerSuccess(playerId));
+    return dispatch(deletePlayerSuccess(playerId));
   } catch (e) {
     dispatch(deletePlayerError());
     return console.error(e.message);

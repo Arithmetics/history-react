@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
 
@@ -71,7 +73,7 @@ export const getOwnersCards = (ownerId) => async (dispatch) => {
   dispatch(getOwnersCardsLoading());
   try {
     const response = await api.get(`/season_cards/${ownerId}.json`);
-    dispatch(
+    return dispatch(
       getOwnersCardsSuccess({
         ownerId,
         seasonCards: response.data.seasonCards,
@@ -87,7 +89,7 @@ export const getAllCards = () => async (dispatch) => {
   dispatch(getAllCardsLoading());
   try {
     const response = await api.get(`/season_cards.json`);
-    dispatch(getAllCardsSuccess(response.data.seasonCards));
+    return dispatch(getAllCardsSuccess(response.data.seasonCards));
   } catch (e) {
     dispatch(getAllCardsError());
     return console.error(e.message);

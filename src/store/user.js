@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
 
@@ -59,7 +60,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     });
     const { admin } = response.data;
     const { authorization } = response.headers;
-    dispatch(
+    return dispatch(
       loginSuccess({
         user: { email, isAdmin: admin },
         token: authorization,

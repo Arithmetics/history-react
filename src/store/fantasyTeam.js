@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
 
@@ -43,7 +45,9 @@ export const getAllFantasyTeams = () => async (dispatch) => {
   dispatch(allFantasyTeamsLoading());
   try {
     const response = await api.get('/fantasy_teams.json');
-    dispatch(allFantasyTeamsSuccess(response.data.fantasyTeams));
+    return dispatch(
+      allFantasyTeamsSuccess(response.data.fantasyTeams),
+    );
   } catch (e) {
     dispatch(allFantasyTeamsError());
     return console.error(e.message);

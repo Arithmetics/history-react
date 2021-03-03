@@ -44,7 +44,7 @@ export default function OwnersLabCards({ match }) {
 
       {getOwnersCardsSuccess && (
         <div className={classes.cardContainer}>
-          {ownersCards[ownerId].map((seasonCard) => (
+          {ownersCards[ownerId]?.map((seasonCard) => (
             <LabCard
               key={seasonCard.id}
               card={seasonCard}

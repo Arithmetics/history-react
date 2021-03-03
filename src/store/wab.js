@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
 
@@ -100,7 +102,7 @@ export const newWAB = ({ playerId, year, week, teamBids }) => async (
 ) => {
   dispatch(newWABLoading());
 
-  const team_bids = teamBids.map((b, i) => {
+  const builtTeamBids = teamBids.map((b) => {
     return {
       fantasy_team_id: b.team.id,
       amount: parseInt(b.amount, 10),
@@ -114,10 +116,10 @@ export const newWAB = ({ playerId, year, week, teamBids }) => async (
         player_id: playerId,
         year,
         week,
-        team_bids,
+        team_bids: builtTeamBids,
       },
     });
-    dispatch(newWABSuccess(response.data.waiverBids));
+    return dispatch(newWABSuccess(response.data.waiverBids));
   } catch (e) {
     dispatch(newWABError());
     return console.error(e.message);
@@ -128,7 +130,7 @@ export const getAllWAB = () => async (dispatch) => {
   dispatch(allWABLoading());
   try {
     const response = await api.get('/waiver_bids.json');
-    dispatch(allWABSuccess(response.data.waiverBids));
+    return dispatch(allWABSuccess(response.data.waiverBids));
   } catch (e) {
     dispatch(allWABError());
     return console.error(e.message);
@@ -139,7 +141,7 @@ export const deleteWAB = (wabId) => async (dispatch) => {
   dispatch(deleteWABLoading());
   try {
     await api.delete(`waiver_bids/${wabId}.json`);
-    dispatch(deleteWABSuccess(wabId));
+    return dispatch(deleteWABSuccess(wabId));
   } catch (e) {
     dispatch(deleteWABError());
     return console.error(e.message);
