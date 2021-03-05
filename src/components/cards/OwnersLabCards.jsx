@@ -13,7 +13,32 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
   },
+  hr: {
+    margin: '50px 0',
+  },
+  profileImage: {
+    borderRadius: 500,
+    display: 'block',
+    border: '1px solid #0b878c',
+    maxHeight: 200,
+  },
 });
+
+function cardIsRare(card) {
+  if (card.position === 'QB') {
+    return card.rankReg < 6 || card.rankPpr < 6;
+  }
+
+  if (card.position === 'RB' || card.position === 'WR') {
+    return card.rankReg < 11 || card.rankPpr < 11;
+  }
+
+  if (card.position === 'TE') {
+    return card.rankReg < 4 || card.rankPpr < 4;
+  }
+
+  return false;
+}
 
 export default function OwnersLabCards({ match }) {
   const classes = useStyles();
@@ -33,9 +58,6 @@ export default function OwnersLabCards({ match }) {
 
   return (
     <>
-      <Typography variant="h3" gutterBottom>
-        Owners Cards
-      </Typography>
       {getOwnersCardsLoading && (
         <LoadingSpinner isLoading={getOwnersCardsLoading} />
       )}
@@ -43,15 +65,42 @@ export default function OwnersLabCards({ match }) {
       {getOwnersCardsError && <p>Error bad bad error</p>}
 
       {getOwnersCardsSuccess && (
-        <div className={classes.cardContainer}>
-          {ownersCards[ownerId]?.map((seasonCard) => (
-            <LabCard
-              key={seasonCard.id}
-              card={seasonCard}
-              startUnknown
-            />
-          ))}
-        </div>
+        <>
+          <Typography variant="h3" gutterBottom>
+            Card Collection
+          </Typography>
+          <img
+            alt="owner-profile-pic"
+            className={classes.profileImage}
+            src={`/ownerAvatars/${ownerId}.png`}
+          />
+          <hr className={classes.hr} />
+          <Typography variant="h3" gutterBottom>
+            Rare Cards
+          </Typography>
+          <div className={classes.cardContainer}>
+            {ownersCards[ownerId]
+              ?.filter((card) => cardIsRare(card))
+              .map((seasonCard) => (
+                <LabCard
+                  key={`${seasonCard.id}${seasonCard.year}`}
+                  card={seasonCard}
+                />
+              ))}
+          </div>
+          <hr className={classes.hr} />
+          <Typography variant="h3" gutterBottom>
+            Common Cards
+          </Typography>
+          <div className={classes.cardContainer}>
+            {ownersCards[ownerId]
+              ?.filter((card) => !cardIsRare(card))
+              .map((seasonCard) => (
+                // <LabCard key={seasonCard.id} card={seasonCard} />
+                <p>{seasonCard.id}</p>
+              ))}
+          </div>
+        </>
       )}
     </>
   );

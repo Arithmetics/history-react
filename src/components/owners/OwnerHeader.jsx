@@ -30,7 +30,7 @@ function OwnerHeader(props) {
         {owner.name}
       </Typography>
       <img
-        alt="player-profile-pic"
+        alt="owner-profile-pic"
         className={classes.profileImage}
         src={`/ownerAvatars/${owner.id}.png`}
       />
