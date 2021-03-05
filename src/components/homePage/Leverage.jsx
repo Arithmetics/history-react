@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import theme from '../../theme';
 import { lineGraphSettings } from '../nivoGraphHelpers';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   graph: {
     height: 1000,
   },

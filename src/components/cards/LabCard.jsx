@@ -63,8 +63,7 @@ const useStyles = makeStyles(() => ({
       zIndex: 1,
       animation: `$holoGradient 15s ease infinite`,
       animationDelay: ({ animationDelay }) => `${animationDelay}s`,
-      boxShadow: ({ colorOne, colorTwo }) =>
-        `0px 0px 15px 5px ${colorOne}`,
+      boxShadow: ({ colorOne }) => `0px 0px 15px 5px ${colorOne}`,
     },
     '&::after': {
       content: '""',

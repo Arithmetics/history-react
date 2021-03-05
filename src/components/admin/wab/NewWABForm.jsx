@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
@@ -198,7 +199,7 @@ export default function NewWABForm() {
             />
           </Grid>
           <Hidden mdUp xsDown>
-            <Grid item xs={4}></Grid>
+            <Grid item xs={4} />
           </Hidden>
           <Grid item xs={4} md={2}>
             <FormControl
@@ -266,7 +267,7 @@ export default function NewWABForm() {
               <FormHelperText>{errors.week?.message}</FormHelperText>
             </FormControl>
           </Grid>
-          <Grid item xs={2} md={4}></Grid>
+          <Grid item xs={2} md={4} />
           <Divider />
           {indexes.map((index) => {
             return (

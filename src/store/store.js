@@ -17,6 +17,15 @@ const reducer = combineReducers({
 
 const store = configureStore({
   reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        warnAfter: 100,
+      },
+      immutableCheck: {
+        warnAfter: 100,
+      },
+    }),
 });
 
 export default store;

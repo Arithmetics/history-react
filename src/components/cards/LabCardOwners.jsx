@@ -144,7 +144,7 @@ function LabCardOwners({ allCards }) {
                 />
                 <h3>{owner.name}</h3>
               </div>
-              <Typography variant="p" className={classes.totalCount}>
+              <Typography className={classes.totalCount}>
                 All cards: {totalCards}/{totalCardCount}
               </Typography>
               <LinearProgress
@@ -168,7 +168,7 @@ function LabCardOwners({ allCards }) {
                     {Object.keys(counts).map((year) => {
                       const yearsCounts = counts[year];
                       return (
-                        <div>
+                        <div key={year}>
                           {Object.keys(yearsCounts).map(
                             (position) => {
                               const slicedCards =
@@ -184,9 +184,9 @@ function LabCardOwners({ allCards }) {
                               return (
                                 <div
                                   className={classes.progressMarker}
+                                  key={`${year}-${position}`}
                                 >
                                   <Typography
-                                    variant="p"
                                     className={classes.totalCount}
                                   >
                                     {year} - {position} -{' '}
