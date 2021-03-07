@@ -23,33 +23,39 @@ import RecentActorsIcon from '@material-ui/icons/RecentActors';
 const sideLinks = [
   {
     page: 'home',
+    display: 'Home',
     icon: <HomeIcon />,
   },
   {
     page: 'owners',
+    display: 'Owners',
     icon: <PeopleIcon />,
   },
   {
     page: 'auctions',
+    display: 'Auctions',
     icon: <GavelIcon />,
   },
   {
     page: 'players',
+    display: 'Players',
     icon: <DirectionsRunIcon />,
   },
   {
     page: 'podcasts',
+    display: 'Podcasts',
     icon: <AudiotrackIcon />,
   },
   {
-    page: 'admin',
-    icon: <BuildIcon />,
-    adminOnly: true,
+    page: 'cards',
+    display: 'Cards',
+    icon: <RecentActorsIcon />,
   },
   {
-    page: 'cards',
-    icon: <RecentActorsIcon />,
-    userOnly: true,
+    page: 'admin',
+    display: 'Admin',
+    icon: <BuildIcon />,
+    adminOnly: true,
   },
 ];
 

@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   root: {
@@ -34,6 +36,14 @@ function OwnerHeader(props) {
         className={classes.profileImage}
         src={`/ownerAvatars/${owner.id}.png`}
       />
+      <Button
+        color="primary"
+        variant="contained"
+        component={RouterLink}
+        to={`/cards/${owner.id}`}
+      >
+        See Cards
+      </Button>
       <Chip
         className={classes.statChip}
         label={`Record: ${cumulativeStats.totalWins} - ${

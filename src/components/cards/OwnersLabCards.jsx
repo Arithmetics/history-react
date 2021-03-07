@@ -12,6 +12,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
+    gap: 20,
   },
   hr: {
     margin: '50px 0',
@@ -82,10 +83,7 @@ export default function OwnersLabCards({ match }) {
             {ownersCards[ownerId]
               ?.filter((card) => cardIsRare(card))
               .map((seasonCard) => (
-                <LabCard
-                  key={`${seasonCard.id}${seasonCard.year}`}
-                  card={seasonCard}
-                />
+                <LabCard key={seasonCard.id} card={seasonCard} />
               ))}
           </div>
           <hr className={classes.hr} />
@@ -96,8 +94,7 @@ export default function OwnersLabCards({ match }) {
             {ownersCards[ownerId]
               ?.filter((card) => !cardIsRare(card))
               .map((seasonCard) => (
-                // <LabCard key={seasonCard.id} card={seasonCard} />
-                <p>{seasonCard.id}</p>
+                <LabCard key={seasonCard.id} card={seasonCard} />
               ))}
           </div>
         </>

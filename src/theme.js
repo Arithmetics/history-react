@@ -34,6 +34,18 @@ let theme = createMuiTheme({
       graph7: '#F0A58F',
     },
   },
+  overrides: {
+    // Style sheet name ⚛️
+    MuiLink: {
+      // Name of the rule
+      root: {
+        // Some CSS
+        '&:hover': {
+          color: '#d65155',
+        },
+      },
+    },
+  },
 });
 
 theme = responsiveFontSizes(theme);
