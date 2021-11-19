@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
 
@@ -39,6 +40,7 @@ const {
   allFantasyTeamsError,
 } = slice.actions;
 
+// eslint-disable-next-line consistent-return
 export const getAllFantasyTeams = () => async (dispatch) => {
   dispatch(allFantasyTeamsLoading());
   try {

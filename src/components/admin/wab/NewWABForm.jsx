@@ -78,11 +78,8 @@ export default function NewWABForm() {
   const { newWABLoading, newWABError, newWABSuccess } = useSelector(
     (state) => state.wab,
   );
-  const {
-    allPlayersLoading,
-    allPlayers,
-    allPlayersError,
-  } = useSelector((state) => state.player);
+  const { allPlayersLoading, allPlayers, allPlayersError } =
+    useSelector((state) => state.player);
   const {
     allFantasyTeamsLoading,
     allFantasyTeams,
@@ -198,6 +195,7 @@ export default function NewWABForm() {
             />
           </Grid>
           <Hidden mdUp xsDown>
+            // eslint-disable-next-line react/self-closing-comp
             <Grid item xs={4}></Grid>
           </Hidden>
           <Grid item xs={4} md={2}>

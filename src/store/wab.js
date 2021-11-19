@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
 
@@ -95,34 +96,34 @@ const {
   deleteWABError,
 } = slice.actions;
 
-export const newWAB = ({ playerId, year, week, teamBids }) => async (
-  dispatch,
-) => {
-  dispatch(newWABLoading());
+export const newWAB =
+  ({ playerId, year, week, teamBids }) =>
+  async (dispatch) => {
+    dispatch(newWABLoading());
 
-  const team_bids = teamBids.map((b, i) => {
-    return {
-      fantasy_team_id: b.team.id,
-      amount: parseInt(b.amount, 10),
-      winning: b.winning,
-    };
-  });
-
-  try {
-    const response = await api.post('/waiver_bids.json', {
-      waiver_bid: {
-        player_id: playerId,
-        year,
-        week,
-        team_bids,
-      },
+    const team_bids = teamBids.map((b, i) => {
+      return {
+        fantasy_team_id: b.team.id,
+        amount: parseInt(b.amount, 10),
+        winning: b.winning,
+      };
     });
-    dispatch(newWABSuccess(response.data.waiverBids));
-  } catch (e) {
-    dispatch(newWABError());
-    return console.error(e.message);
-  }
-};
+
+    try {
+      const response = await api.post('/waiver_bids.json', {
+        waiver_bid: {
+          player_id: playerId,
+          year,
+          week,
+          team_bids,
+        },
+      });
+      dispatch(newWABSuccess(response.data.waiverBids));
+    } catch (e) {
+      dispatch(newWABError());
+      return console.error(e.message);
+    }
+  };
 
 export const getAllWAB = () => async (dispatch) => {
   dispatch(allWABLoading());

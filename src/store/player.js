@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from '../api';
 
@@ -95,30 +96,26 @@ const {
   deletePlayerReset,
 } = slice.actions;
 
-export const newPlayer = ({
-  name,
-  profileId,
-  pictureId,
-  nflURLName,
-  birthdate,
-}) => async (dispatch) => {
-  dispatch(newPlayerLoading());
-  try {
-    const response = await api.post('/players.json', {
-      player: {
-        name,
-        id: profileId,
-        picture_id: pictureId,
-        nfl_URL_name: nflURLName,
-        birthdate,
-      },
-    });
-    dispatch(newPlayerSuccess(response.data.player));
-  } catch (e) {
-    dispatch(newPlayerError());
-    return console.error(e.message);
-  }
-};
+export const newPlayer =
+  ({ name, profileId, pictureId, nflURLName, birthdate }) =>
+  async (dispatch) => {
+    dispatch(newPlayerLoading());
+    try {
+      const response = await api.post('/players.json', {
+        player: {
+          name,
+          id: profileId,
+          picture_id: pictureId,
+          nfl_URL_name: nflURLName,
+          birthdate,
+        },
+      });
+      dispatch(newPlayerSuccess(response.data.player));
+    } catch (e) {
+      dispatch(newPlayerError());
+      return console.error(e.message);
+    }
+  };
 
 export const getAllPlayers = () => async (dispatch) => {
   dispatch(allPlayersLoading());

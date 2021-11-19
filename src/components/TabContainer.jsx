@@ -57,6 +57,7 @@ export default function TabContainer(props) {
         </Tabs>
       </AppBar>
       {tabs.map((tab, i) => (
+        // eslint-disable-next-line react/no-array-index-key
         <TabPanel key={i} value={selectedTabIndex} index={i}>
           {tab}
         </TabPanel>

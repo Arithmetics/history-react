@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -6,6 +7,7 @@ export default function ControlledAutocomplete({
   options = [],
   renderInput,
   getOptionLabel,
+  // eslint-disable-next-line no-unused-vars
   onChange: ignored,
   control,
   defaultValue,
