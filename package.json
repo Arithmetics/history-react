@@ -26,7 +26,7 @@
     "material-table": "^1.58.0",
     "material-ui-json-schema-viewer": "^1.1.1",
     "moment": "^2.29.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-table-next": "^3.3.5",
